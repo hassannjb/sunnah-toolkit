@@ -1,0 +1,22 @@
+.git
+.gitignore
+.venv
+venv
+.env
+.idea
+.claude
+.mcp.json
+*.iml
+*.egg-info
+__pycache__
+*.py[cod]
+.pytest_cache
+.DS_Store
+
+# Built inside the image
+data
+.cache
+
+# Not needed at runtime
+deploy
+README.md

@@ -1,0 +1,23 @@
+# Cloudflare Tunnel config for exposing sunnah-toolkit publicly.
+#
+# Setup:
+#   1. brew install cloudflared
+#   2. cloudflared tunnel login
+#   3. cloudflared tunnel create sunnah-toolkit
+#   4. cp config.yml.example ~/.cloudflared/config.yml
+#      and replace REPLACE-WITH-TUNNEL-UUID + USERNAME + your hostname below
+#   5. cloudflared tunnel route dns sunnah-toolkit sunnah.example.com
+#   6. cloudflared tunnel run sunnah-toolkit
+#      (or `cloudflared service install` to run it as a launchd daemon)
+#
+# Auth: /v1/* routes can require a bearer token when the container is started
+# with a keys file mounted in. Rate limiting is handled at the Cloudflare edge,
+# not in the app.
+
+tunnel: REPLACE-WITH-TUNNEL-UUID
+credentials-file: /Users/USERNAME/.cloudflared/REPLACE-WITH-TUNNEL-UUID.json
+
+ingress:
+  - hostname: sunnah.example.com
+    service: http://localhost:8000
+  - service: http_status:404
