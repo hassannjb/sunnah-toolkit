@@ -2,9 +2,9 @@
   "mcpServers": {
     "sunnah": {
       "type": "stdio",
-      "command": "/Users/hassan.najeeb/PycharmProjects/sunnah-mcp/.venv/bin/python",
+      "command": "/Users/hassan.najeeb/PycharmProjects/sunnah-toolkit/.venv/bin/python",
       "args": ["-m", "sunnah_toolkit"],
-      "cwd": "/Users/hassan.najeeb/PycharmProjects/sunnah-mcp"
+      "cwd": "/Users/hassan.najeeb/PycharmProjects/sunnah-toolkit"
     }
   }
 }

@@ -4,7 +4,7 @@ Run from project root:
     python -m scripts.build_embeddings
 
 This is a one-shot script. The output (data/embeddings.npy + data/embeddings_meta.json)
-is consumed by sunnah_mcp.semantic at server startup.
+is consumed by sunnah_toolkit.core.semantic at server startup.
 """
 
 from __future__ import annotations
