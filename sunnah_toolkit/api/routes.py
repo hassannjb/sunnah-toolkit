@@ -1,10 +1,18 @@
-"""REST endpoints for the hadith library. Mounted under /v1 by app.py."""
+"""REST endpoints for the hadith library. Mounted under /v1 by app.py.
+
+Each route depends on auth.authenticate (returns the tier so handlers can
+specialise if they ever need to; rate limiting itself lives at the edge,
+e.g. Cloudflare Rate Limiting in front of the public instance).
+"""
 
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException, Query
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, Query
 
 from ..core import tools
+from .auth import authenticate
 
 router = APIRouter(prefix="/v1")
 
@@ -23,23 +31,27 @@ def _unwrap(result: dict) -> dict:
     return result
 
 
+Auth = Annotated[tuple[str, str | None], Depends(authenticate)]
+
+
 @router.get("/collections")
-def list_collections() -> dict:
+def list_collections(_: Auth) -> dict:
     return _unwrap(tools.list_collections())
 
 
 @router.get("/collections/{collection}/books")
-def list_books(collection: str) -> dict:
+def list_books(collection: str, _: Auth) -> dict:
     return _unwrap(tools.list_books(collection))
 
 
 @router.get("/hadith/{collection}/{number}")
-def get_hadith(collection: str, number: int) -> dict:
+def get_hadith(collection: str, number: int, _: Auth) -> dict:
     return _unwrap(tools.get_hadith(collection, number))
 
 
 @router.get("/search")
 def search_hadith(
+    _: Auth,
     query: str = Query(..., description="English keyword(s)"),
     collection: str | None = None,
     limit: int = Query(10, ge=1, le=50),
@@ -49,6 +61,7 @@ def search_hadith(
 
 @router.get("/search/term")
 def search_hadith_term(
+    _: Auth,
     term: str = Query(..., description="English transliteration of an Arabic term"),
     collection: str | None = None,
     limit: int = Query(20, ge=1, le=100),
@@ -58,6 +71,7 @@ def search_hadith_term(
 
 @router.get("/search/semantic")
 def search_hadith_semantic(
+    _: Auth,
     query: str = Query(..., description="Natural-language query (concept or keyword)"),
     collection: str | None = None,
     limit: int = Query(10, ge=1, le=50),
@@ -66,5 +80,5 @@ def search_hadith_semantic(
 
 
 @router.get("/random")
-def random_hadith(collection: str | None = None) -> dict:
+def random_hadith(_: Auth, collection: str | None = None) -> dict:
     return _unwrap(tools.random_hadith(collection))

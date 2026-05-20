@@ -1,0 +1,14 @@
+# Example keys file. Copy to ./keys.yaml at the repo root (or pass via --keys-file)
+# and replace the placeholder tokens with your own.
+#
+# Tokens listed here grant the "keyed" tier — a higher rate limit
+# (600/min by default vs. 60/min/IP for the open tier). Tokens are
+# checked against the Authorization: Bearer <token> header.
+#
+# If this file is absent, the server runs fully open (no auth, only
+# the per-IP rate limit).
+keys:
+  - name: hassan-dev
+    key: sk_change_me_to_something_random
+  - name: example-partner
+    key: sk_also_change_me

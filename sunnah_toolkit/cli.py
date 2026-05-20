@@ -7,11 +7,13 @@ HTTP mode serves the FastAPI app, which exposes both REST under /v1
 and the MCP streamable-http transport at /mcp:
     python -m sunnah_toolkit --transport http
     python -m sunnah_toolkit --transport http --host 0.0.0.0 --port 8080
+    python -m sunnah_toolkit --transport http --keys-file ./keys.yaml
 """
 
 from __future__ import annotations
 
 import argparse
+from pathlib import Path
 
 
 def main() -> None:
@@ -33,6 +35,12 @@ def main() -> None:
         default=8000,
         help="HTTP bind port (only used with --transport http).",
     )
+    parser.add_argument(
+        "--keys-file",
+        default=None,
+        help="YAML file mapping bearer tokens to names. "
+             "Default: ./keys.yaml if it exists, else open mode (no auth).",
+    )
     args = parser.parse_args()
 
     if args.transport == "stdio":
@@ -41,4 +49,11 @@ def main() -> None:
     else:
         import uvicorn
         from .api.app import create_app
-        uvicorn.run(create_app(), host=args.host, port=args.port)
+
+        keys_file = args.keys_file
+        if keys_file is None:
+            default = Path("keys.yaml")
+            if default.exists():
+                keys_file = str(default)
+
+        uvicorn.run(create_app(keys_file=keys_file), host=args.host, port=args.port)

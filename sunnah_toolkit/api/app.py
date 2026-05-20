@@ -1,17 +1,25 @@
-"""FastAPI application factory. Serves REST under /v1 and MCP under /mcp."""
+"""FastAPI application factory. Serves REST under /v1 and MCP under /mcp.
+
+Rate limiting is intentionally left to the edge (Cloudflare Rate Limiting
+in front of the public instance, or whatever the self-hoster puts in
+front). The app only handles auth + business logic.
+"""
 
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from ..mcp.server import mcp
+from . import auth
 from .routes import router
 
 
-def create_app() -> FastAPI:
+def create_app(keys_file: str | Path | None = None) -> FastAPI:
+    auth.load_keys(keys_file)
     mcp_app = mcp.streamable_http_app()
 
     @asynccontextmanager
