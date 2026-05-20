@@ -163,9 +163,12 @@ def random_hadith(collection: str | None = None) -> str:
     return tools.random_hadith(collection)
 
 
-def main() -> None:
-    mcp.run()
-
-
-if __name__ == "__main__":
-    main()
+def run(transport: str = "stdio", host: str = "127.0.0.1", port: int = 8000) -> None:
+    if transport == "http":
+        mcp.settings.host = host
+        mcp.settings.port = port
+        mcp.run(transport="streamable-http")
+    elif transport == "stdio":
+        mcp.run()
+    else:
+        raise ValueError(f"Unknown transport: {transport!r}")

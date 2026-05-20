@@ -1,3 +1,3 @@
-from sunnah_toolkit.mcp.server import main
+from sunnah_toolkit.cli import main
 
 main()
