@@ -1,22 +1,16 @@
-"""sunnah-mcp FastMCP server: exposes hadith tools over stdio."""
+"""sunnah-toolkit MCP server: exposes hadith tools via FastMCP.
+
+Thin wrappers around sunnah_toolkit.core.tools — the docstrings here are
+the LLM-facing tool descriptions that FastMCP surfaces.
+"""
 
 from __future__ import annotations
 
-import random
-
 from mcp.server.fastmcp import FastMCP
 
-from .data import load
-from .format import (
-    format_collection_summary,
-    format_hadith,
-    format_search_result,
-    format_semantic_result,
-    format_term_results,
-)
-from . import semantic
+from ..core import tools
 
-mcp = FastMCP("sunnah-mcp")
+mcp = FastMCP("sunnah-toolkit")
 
 
 @mcp.tool()
@@ -27,13 +21,7 @@ def list_collections() -> str:
     using `get_hadith`, so you know the valid collection slugs (e.g.
     `bukhari`, `muslim`, `nawawi40`).
     """
-    library = load()
-    lines = ["Available hadith collections:", ""]
-    for slug in sorted(library.collections.keys()):
-        col = library.collections[slug]
-        count = len(library.hadiths[slug])
-        lines.append(format_collection_summary(col, count))
-    return "\n".join(lines)
+    return tools.list_collections()
 
 
 @mcp.tool()
@@ -49,17 +37,7 @@ def list_books(collection: str) -> str:
         collection: slug of the collection, e.g. `bukhari`. See
             `list_collections` for valid slugs.
     """
-    library = load()
-    col = library.get_collection(collection)
-    if not col:
-        return f"Unknown collection: {collection!r}. Try `list_collections` for valid slugs."
-
-    chapters = library.chapters.get(collection, [])
-    lines = [f"{col.english_title} ({col.arabic_title}) — {len(chapters)} chapters:", ""]
-    for ch in chapters:
-        idx = f"{ch.id}" if ch.id is not None else "—"
-        lines.append(f"  {idx:>4}  {ch.english_title}")
-    return "\n".join(lines)
+    return tools.list_books(collection)
 
 
 @mcp.tool()
@@ -79,18 +57,7 @@ def get_hadith(collection: str, number: int) -> str:
         collection: slug of the collection, e.g. `bukhari`.
         number: the hadith number within that collection (1-indexed).
     """
-    library = load()
-    if collection not in library.collections:
-        return f"Unknown collection: {collection!r}. Try `list_collections` for valid slugs."
-
-    h = library.get_hadith(collection, number)
-    if not h:
-        total = len(library.hadiths[collection])
-        return (
-            f"No hadith #{number} in {collection}. "
-            f"Valid range: 1..{total}."
-        )
-    return format_hadith(h, library)
+    return tools.get_hadith(collection, number)
 
 
 @mcp.tool()
@@ -111,25 +78,7 @@ def search_hadith(query: str, collection: str | None = None, limit: int = 10) ->
         collection: optional slug to restrict search to one collection.
         limit: max number of results (1..50).
     """
-    library = load()
-    limit = max(1, min(limit, 50))
-
-    if collection and collection not in library.collections:
-        return f"Unknown collection: {collection!r}. Try `list_collections`."
-
-    total, results = library.search(query, collection=collection, limit=limit)
-    if not results:
-        scope = f" in {collection}" if collection else ""
-        return f"No matches for {query!r}{scope}."
-
-    scope = f" in {collection}" if collection else ""
-    lines = [f"Found {total} hadith(s){scope} matching {query!r}."]
-    if total > len(results):
-        lines.append(f"Showing first {len(results)}:")
-    lines.append("")
-    for h in results:
-        lines.append(format_search_result(h, library, query))
-    return "\n".join(lines)
+    return tools.search_hadith(query, collection=collection, limit=limit)
 
 
 @mcp.tool()
@@ -162,14 +111,7 @@ def search_hadith_term(term: str, collection: str | None = None, limit: int = 20
         collection: optional slug to restrict the search.
         limit: max number of hadiths to return (1..100).
     """
-    library = load()
-    limit = max(1, min(limit, 100))
-
-    if collection and collection not in library.collections:
-        return f"Unknown collection: {collection!r}. Try `list_collections`."
-
-    total, word_freq, results = library.search_term(term, collection=collection, limit=limit)
-    return format_term_results(term, total, word_freq, results, library, collection)
+    return tools.search_hadith_term(term, collection=collection, limit=limit)
 
 
 @mcp.tool()
@@ -202,32 +144,7 @@ def search_hadith_semantic(query: str, collection: str | None = None, limit: int
         collection: optional slug to restrict to one collection.
         limit: max number of hadiths to return (1..50).
     """
-    library = load()
-    limit = max(1, min(limit, 50))
-
-    if collection and collection not in library.collections:
-        return f"Unknown collection: {collection!r}. Try `list_collections`."
-
-    try:
-        results = semantic.search(query, collection=collection, limit=limit)
-    except FileNotFoundError as e:
-        return f"Semantic search unavailable: {e}"
-
-    if not results:
-        scope = f" in {collection}" if collection else ""
-        return f"No semantic matches for {query!r}{scope}."
-
-    scope = f" in {collection}" if collection else ""
-    lines = [
-        f"Top {len(results)} semantic match(es) for {query!r}{scope}:",
-        "(Semantic search ranks the whole corpus by similarity; "
-        "there is no 'total matches' count — use the similarity scores to "
-        "judge how good each hit is.)",
-        "",
-    ]
-    for h, score in results:
-        lines.append(format_semantic_result(h, library, score))
-    return "\n".join(lines)
+    return tools.search_hadith_semantic(query, collection=collection, limit=limit)
 
 
 @mcp.tool()
@@ -243,14 +160,7 @@ def random_hadith(collection: str | None = None) -> str:
         collection: optional slug to restrict to one collection. If omitted,
             picks from any of the 17 collections, weighted by their size.
     """
-    library = load()
-    if collection and collection not in library.collections:
-        return f"Unknown collection: {collection!r}. Try `list_collections`."
-
-    pool = library.hadiths[collection] if collection else list(library.iter_hadiths())
-    if not pool:
-        return "No hadiths available."
-    return format_hadith(random.choice(pool), library)
+    return tools.random_hadith(collection)
 
 
 def main() -> None:

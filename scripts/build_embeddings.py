@@ -17,7 +17,7 @@ from pathlib import Path
 
 import numpy as np
 
-from sunnah_mcp.data import load
+from sunnah_toolkit.core.data import load
 
 MODEL_ID = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 BATCH_SIZE = 64

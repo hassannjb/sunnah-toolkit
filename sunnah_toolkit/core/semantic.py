@@ -16,7 +16,7 @@ import numpy as np
 
 from .data import Hadith, load
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 EMBEDDINGS_PATH = DATA_DIR / "embeddings.npy"
 META_PATH = DATA_DIR / "embeddings_meta.json"
 

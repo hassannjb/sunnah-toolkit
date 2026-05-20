@@ -3,7 +3,7 @@
     "sunnah": {
       "type": "stdio",
       "command": "/Users/hassan.najeeb/PycharmProjects/sunnah-mcp/.venv/bin/python",
-      "args": ["-m", "sunnah_mcp"],
+      "args": ["-m", "sunnah_toolkit"],
       "cwd": "/Users/hassan.najeeb/PycharmProjects/sunnah-mcp"
     }
   }

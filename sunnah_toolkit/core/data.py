@@ -13,7 +13,7 @@ from rank_bm25 import BM25Okapi
 
 from .translit import arabic_words, fold_index, fold_query
 
-DATA_ROOT = Path(__file__).resolve().parent.parent / "data" / "by_book"
+DATA_ROOT = Path(__file__).resolve().parent.parent.parent / "data" / "by_book"
 
 _TOKEN_RE = re.compile(r"[A-Za-z0-9']+")
 

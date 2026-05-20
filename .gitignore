@@ -6,6 +6,10 @@ venv/
 *.iml
 .idea/
 
+# Editable-install metadata (pip install -e .)
+*.egg-info/
+.eggs/
+
 # Downloaded hadith dataset (fetched via scripts/fetch_data.py)
 data/
 
