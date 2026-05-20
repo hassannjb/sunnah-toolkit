@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "sunnah": {
+      "type": "stdio",
+      "command": "/Users/hassan.najeeb/PycharmProjects/sunnah-mcp/.venv/bin/python",
+      "args": ["-m", "sunnah_mcp"],
+      "cwd": "/Users/hassan.najeeb/PycharmProjects/sunnah-mcp"
+    }
+  }
+}
