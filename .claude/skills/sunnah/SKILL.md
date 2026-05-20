@@ -5,9 +5,11 @@ description: Use when the user asks about hadith, sunnah, or citing Islamic narr
 
 # Sunnah skill
 
-This project ships an MCP server (`sunnah-mcp`) with 50,884 hadiths across
-17 collections, sourced from sunnah.com. This skill teaches you how to use
-its tools effectively and how to cite the results correctly.
+This project ships the `sunnah-toolkit` package, which exposes 50,884 hadiths
+across 17 collections (sourced from sunnah.com) over both MCP and a REST API
+at `/v1`. This skill uses the MCP surface — REST is documented in the README.
+It teaches you how to use the tools effectively and how to cite results
+correctly.
 
 ## QUOTING POLICY (non-negotiable)
 
