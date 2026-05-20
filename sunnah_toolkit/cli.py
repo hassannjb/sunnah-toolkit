@@ -3,7 +3,8 @@
 By default runs the MCP server over stdio (compatible with Claude
 Desktop, Claude Code, Cursor, etc. via .mcp.json).
 
-HTTP mode:
+HTTP mode serves the FastAPI app, which exposes both REST under /v1
+and the MCP streamable-http transport at /mcp:
     python -m sunnah_toolkit --transport http
     python -m sunnah_toolkit --transport http --host 0.0.0.0 --port 8080
 """
@@ -11,8 +12,6 @@ HTTP mode:
 from __future__ import annotations
 
 import argparse
-
-from .mcp import server
 
 
 def main() -> None:
@@ -35,4 +34,11 @@ def main() -> None:
         help="HTTP bind port (only used with --transport http).",
     )
     args = parser.parse_args()
-    server.run(transport=args.transport, host=args.host, port=args.port)
+
+    if args.transport == "stdio":
+        from .mcp.server import run_stdio
+        run_stdio()
+    else:
+        import uvicorn
+        from .api.app import create_app
+        uvicorn.run(create_app(), host=args.host, port=args.port)

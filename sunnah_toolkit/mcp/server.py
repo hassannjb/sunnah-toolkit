@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from mcp.server.fastmcp import FastMCP
 
-from ..core import tools
+from ..core import text_format, tools
 
 mcp = FastMCP("sunnah-toolkit")
 
@@ -21,7 +21,7 @@ def list_collections() -> str:
     using `get_hadith`, so you know the valid collection slugs (e.g.
     `bukhari`, `muslim`, `nawawi40`).
     """
-    return tools.list_collections()
+    return text_format.list_collections(tools.list_collections())
 
 
 @mcp.tool()
@@ -37,7 +37,7 @@ def list_books(collection: str) -> str:
         collection: slug of the collection, e.g. `bukhari`. See
             `list_collections` for valid slugs.
     """
-    return tools.list_books(collection)
+    return text_format.list_books(tools.list_books(collection))
 
 
 @mcp.tool()
@@ -57,7 +57,7 @@ def get_hadith(collection: str, number: int) -> str:
         collection: slug of the collection, e.g. `bukhari`.
         number: the hadith number within that collection (1-indexed).
     """
-    return tools.get_hadith(collection, number)
+    return text_format.hadith(tools.get_hadith(collection, number))
 
 
 @mcp.tool()
@@ -78,7 +78,7 @@ def search_hadith(query: str, collection: str | None = None, limit: int = 10) ->
         collection: optional slug to restrict search to one collection.
         limit: max number of results (1..50).
     """
-    return tools.search_hadith(query, collection=collection, limit=limit)
+    return text_format.search_hadith(tools.search_hadith(query, collection=collection, limit=limit))
 
 
 @mcp.tool()
@@ -111,7 +111,7 @@ def search_hadith_term(term: str, collection: str | None = None, limit: int = 20
         collection: optional slug to restrict the search.
         limit: max number of hadiths to return (1..100).
     """
-    return tools.search_hadith_term(term, collection=collection, limit=limit)
+    return text_format.search_hadith_term(tools.search_hadith_term(term, collection=collection, limit=limit))
 
 
 @mcp.tool()
@@ -144,7 +144,7 @@ def search_hadith_semantic(query: str, collection: str | None = None, limit: int
         collection: optional slug to restrict to one collection.
         limit: max number of hadiths to return (1..50).
     """
-    return tools.search_hadith_semantic(query, collection=collection, limit=limit)
+    return text_format.search_hadith_semantic(tools.search_hadith_semantic(query, collection=collection, limit=limit))
 
 
 @mcp.tool()
@@ -160,15 +160,8 @@ def random_hadith(collection: str | None = None) -> str:
         collection: optional slug to restrict to one collection. If omitted,
             picks from any of the 17 collections, weighted by their size.
     """
-    return tools.random_hadith(collection)
+    return text_format.hadith(tools.random_hadith(collection))
 
 
-def run(transport: str = "stdio", host: str = "127.0.0.1", port: int = 8000) -> None:
-    if transport == "http":
-        mcp.settings.host = host
-        mcp.settings.port = port
-        mcp.run(transport="streamable-http")
-    elif transport == "stdio":
-        mcp.run()
-    else:
-        raise ValueError(f"Unknown transport: {transport!r}")
+def run_stdio() -> None:
+    mcp.run()
