@@ -1,0 +1,13 @@
+services:
+  sunnah-toolkit:
+    build: .
+    # Or, if you've already built / pulled the image:
+    # image: sunnah-toolkit:latest
+    container_name: sunnah-toolkit
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    # Optional: enable bearer-token auth by mounting a keys file.
+    # volumes:
+    #   - ./keys.yaml:/app/keys.yaml:ro
+    # command: ["--transport", "http", "--host", "0.0.0.0", "--port", "8000", "--keys-file", "/app/keys.yaml"]

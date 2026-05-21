@@ -26,6 +26,168 @@ transports:
 Every result includes a `sunnah.com/<collection>:<number>` reference URL so
 the model can cite accurately.
 
+## Architecture
+
+### Network topology
+
+```mermaid
+graph LR
+    subgraph Internet
+      Client["MCP client / curl"]
+      CF["Cloudflare edge<br/>(TLS + rate-limit)"]
+    end
+    subgraph "Self-hosted server"
+      Tunnel["cloudflared<br/>(outbound tunnel)"]
+      Box["Docker container<br/>sunnah-toolkit :8000"]
+    end
+    Client -->|HTTPS| CF
+    CF <-.->|persistent tunnel| Tunnel
+    Tunnel -->|http://localhost:8000| Box
+```
+
+No inbound ports on the host — `cloudflared` opens an outbound tunnel to Cloudflare, which terminates TLS at the edge and forwards requests through the tunnel to the container.
+
+### Components
+
+```mermaid
+graph TD
+    subgraph Clients
+      C1["MCP stdio<br/>(Claude Desktop / Code)"]
+      C2["MCP HTTP<br/>(streamable-http)"]
+      C3["REST<br/>(curl / apps)"]
+    end
+
+    subgraph Transports
+      MCP["mcp/server.py<br/>FastMCP"]
+      API["api/app.py + routes.py<br/>FastAPI · auth.py"]
+    end
+
+    subgraph "Core (protocol-agnostic)"
+      Tools["core/tools.py<br/>7 tool functions"]
+      Fmt["core/text_format.py"]
+    end
+
+    subgraph "Data &amp; algorithms"
+      Data["core/data.py<br/>hadith JSON + BM25"]
+      Sem["core/semantic.py<br/>embeddings + MiniLM"]
+      Tr["core/translit.py<br/>Arabic folding"]
+    end
+
+    subgraph "On-disk assets"
+      Raw[("data/raw/*.json")]
+      Emb[("data/embeddings.npy")]
+    end
+
+    C1 --> MCP
+    C2 --> MCP
+    C3 --> API
+    MCP --> Tools
+    API --> Tools
+    Tools --> Fmt
+    Tools --> Data
+    Tools --> Sem
+    Tools --> Tr
+    Data --> Raw
+    Sem --> Emb
+    Sem --> Raw
+```
+
+Both transports delegate to the same `core/tools.py` — REST returns structured JSON, MCP returns LLM-friendly text via `text_format.py`.
+
+### Request flow — semantic search
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant A as auth.py
+    participant R as routes.py
+    participant T as tools.py
+    participant S as semantic.py
+    participant D as data.py
+    participant F as text_format.py
+
+    C->>A: GET /v1/search/semantic?query=…
+    A->>A: check optional Bearer token
+    A->>R: pass-through (anon or identified)
+    R->>T: search_hadith_semantic(query, collection, limit)
+    T->>S: encode(query) → vector
+    S->>S: cosine sim vs embeddings.npy
+    S-->>T: top-k hadith IDs + scores
+    T->>D: hydrate(ids) → full records
+    D-->>T: hadith records
+    T->>F: format(records, scores)
+    F-->>R: JSON (REST) / text (MCP)
+    R-->>C: 200 OK
+```
+
+Semantic search exercises the most layers; BM25 keyword search (`/v1/search`) follows the same shape but skips `semantic.py` and queries `data.py`'s BM25 index directly.
+
+### Auth flow
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant M as auth.py middleware
+    participant R as route handler
+
+    C->>M: request to /v1/* [Authorization?]
+
+    alt no keys file loaded (open mode)
+        M->>R: pass-through, caller=anonymous
+        R-->>C: 200
+    else keys file loaded
+        alt no Authorization header
+            M->>R: pass-through, caller=anonymous
+            R-->>C: 200
+        else valid Bearer token
+            M->>R: pass-through, caller=alice
+            R-->>C: 200
+        else invalid Bearer token
+            M-->>C: 401 Unauthorized
+        end
+    end
+
+    Note over C,R: /mcp bypasses auth entirely (by design)
+```
+
+The keyed tier identifies callers; it does not gatekeep them. Rate-limiting and abuse control live at the Cloudflare edge.
+
+### Build pipeline
+
+```mermaid
+graph LR
+    subgraph Inputs
+      DS["AhmedBaset/hadith-json<br/>@v1.2.0"]
+      HF["HuggingFace<br/>MiniLM-L12-v2"]
+    end
+
+    subgraph "Build-time scripts"
+      Fetch["scripts/fetch_data.py"]
+      Build["scripts/build_embeddings.py"]
+    end
+
+    subgraph "On-disk artifacts"
+      Raw[("data/raw/*.json<br/>~76 MB")]
+      Emb[("data/embeddings.npy<br/>~75 MB")]
+      Cache[("HF model cache<br/>~120 MB")]
+    end
+
+    Docker["Dockerfile<br/>multi-stage build"]
+    Image["sunnah-toolkit image<br/>(~1.4 GB, offline at runtime)"]
+
+    DS --> Fetch --> Raw
+    HF --> Build
+    Raw --> Build
+    Build --> Emb
+    Build --> Cache
+    Raw --> Docker
+    Emb --> Docker
+    Cache --> Docker
+    Docker --> Image
+```
+
+Data and model are baked into the image at build time — no network needed at query time, which is what lets the container survive Cloudflare outages and keeps cold-start latency predictable.
+
 ## Quickstart — local dev (stdio MCP)
 
 ```bash
@@ -147,17 +309,21 @@ through as anonymous and still succeed. `/mcp` is unauthenticated by design —
 the keyed tier exists for identification, and rate-limiting / abuse control
 live at the edge (e.g. Cloudflare in front of the public instance).
 
-## Self-host on macOS (Docker + launchd + Cloudflare Tunnel)
+## Self-hosting
+
+Any Linux, Unix, or macOS host with Docker can run the container. Put a
+reverse proxy (nginx, Caddy, Traefik) or a Cloudflare Tunnel in front for
+TLS and a public hostname; use the platform's preferred service manager
+(systemd, runit, OpenRC, etc.) to keep the container running across
+reboots.
+
+The simplest way to launch it is via the included `docker-compose.yml`:
+
+```bash
+docker compose up -d
+```
 
 Artifacts in `deploy/`:
-
-- `deploy/launchd/com.sunnah-toolkit.plist` — LaunchAgent that runs the
-  container at login and restarts it on crash. Install with:
-  ```bash
-  cp deploy/launchd/com.sunnah-toolkit.plist ~/Library/LaunchAgents/
-  launchctl load ~/Library/LaunchAgents/com.sunnah-toolkit.plist
-  ```
-  Docker Desktop must be set to open at login separately.
 
 - `deploy/cloudflared/config.yml.example` — Cloudflare Tunnel ingress example
   to expose `localhost:8000` on a hostname. Setup steps are in the file
@@ -178,7 +344,7 @@ sunnah_toolkit/
 scripts/
   fetch_data.py        downloads the pinned hadith dataset
   build_embeddings.py  pre-computes embeddings (run once per dataset change)
-deploy/                launchd, cloudflared, keys.yaml examples
+deploy/                cloudflared, keys.yaml examples
 data/                  (gitignored) hadith JSON + embeddings.npy
 Dockerfile             multi-stage, self-contained image
 ```
