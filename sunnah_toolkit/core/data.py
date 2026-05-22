@@ -1,9 +1,14 @@
-"""In-memory hadith library loaded from data/by_book/*.json at startup."""
+"""In-memory hadith library loaded from data/hadith.sqlite at startup.
+
+Backed by sunnah.com's official MariaDB dump (converted to SQLite by
+scripts/build_sqlite.py). Preserves the [narrator id=... role=... tooltip=...]
+markup verbatim in `Hadith.arabic` for downstream parsing.
+"""
 
 from __future__ import annotations
 
-import json
 import re
+import sqlite3
 from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
@@ -13,7 +18,105 @@ from rank_bm25 import BM25Okapi
 
 from .translit import arabic_words, fold_index, fold_query
 
-DATA_ROOT = Path(__file__).resolve().parent.parent.parent / "data" / "by_book"
+DB_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "hadith.sqlite"
+
+
+# Hardcoded metadata for the 15 collections sunnah.com hosts. Keys are the
+# slugs that appear in HadithTable.collection. Order here also defines the
+# canonical iteration order for list_collections and the BM25 corpus.
+COLLECTIONS_METADATA: dict[str, dict[str, str]] = {
+    "bukhari": {
+        "english_title": "Sahih al-Bukhari",
+        "arabic_title": "صحيح البخاري",
+        "english_author": "Imam Muhammad ibn Ismail al-Bukhari",
+        "arabic_author": "الإمام محمد بن إسماعيل البخاري",
+    },
+    "muslim": {
+        "english_title": "Sahih Muslim",
+        "arabic_title": "صحيح مسلم",
+        "english_author": "Imam Muslim ibn al-Hajjaj al-Naysaburi",
+        "arabic_author": "الإمام مسلم بن الحجاج القشيري النيسابوري",
+    },
+    "abudawud": {
+        "english_title": "Sunan Abi Dawud",
+        "arabic_title": "سنن أبي داود",
+        "english_author": "Imam Sulayman ibn al-Ash'ath Abu Dawud al-Sijistani",
+        "arabic_author": "الإمام سليمان بن الأشعث أبو داود السجستاني",
+    },
+    "tirmidhi": {
+        "english_title": "Jami' al-Tirmidhi",
+        "arabic_title": "جامع الترمذي",
+        "english_author": "Imam Abu Isa Muhammad ibn Isa al-Tirmidhi",
+        "arabic_author": "الإمام أبو عيسى محمد بن عيسى الترمذي",
+    },
+    "nasai": {
+        "english_title": "Sunan al-Nasa'i",
+        "arabic_title": "سنن النسائي",
+        "english_author": "Imam Ahmad ibn Shu'ayb al-Nasa'i",
+        "arabic_author": "الإمام أبو عبد الرحمن أحمد بن شعيب النسائي",
+    },
+    "ibnmajah": {
+        "english_title": "Sunan Ibn Majah",
+        "arabic_title": "سنن ابن ماجه",
+        "english_author": "Imam Muhammad ibn Yazid Ibn Majah al-Qazwini",
+        "arabic_author": "الإمام محمد بن يزيد بن ماجه القزويني",
+    },
+    "ahmad": {
+        "english_title": "Musnad Ahmad ibn Hanbal",
+        "arabic_title": "مسند الإمام أحمد بن حنبل",
+        "english_author": "Imam Ahmad ibn Hanbal",
+        "arabic_author": "الإمام أحمد بن حنبل",
+    },
+    "mishkat": {
+        "english_title": "Mishkat al-Masabih",
+        "arabic_title": "مشكاة المصابيح",
+        "english_author": "Al-Khatib Al-Tabrizi",
+        "arabic_author": "الإمام الكاتب التبريزي",
+    },
+    "riyadussalihin": {
+        "english_title": "Riyad as-Salihin",
+        "arabic_title": "رياض الصالحين",
+        "english_author": "Imam Yahya ibn Sharaf al-Nawawi",
+        "arabic_author": "الإمام يحيى بن شرف النووي",
+    },
+    "shamail": {
+        "english_title": "Shama'il al-Muhammadiyah",
+        "arabic_title": "الشمائل المحمدية",
+        "english_author": "Imam Abu Isa Muhammad ibn Isa al-Tirmidhi",
+        "arabic_author": "الإمام أبو عيسى محمد بن عيسى الترمذي",
+    },
+    "bulugh": {
+        "english_title": "Bulugh al-Maram",
+        "arabic_title": "بلوغ المرام",
+        "english_author": "Ibn Hajar al-Asqalani",
+        "arabic_author": "الإمام ابن حجر العسقلاني",
+    },
+    "adab": {
+        "english_title": "Al-Adab Al-Mufrad",
+        "arabic_title": "الأدب المفرد",
+        "english_author": "Imam Muhammad ibn Ismail al-Bukhari",
+        "arabic_author": "الإمام محمد بن إسماعيل البخاري",
+    },
+    "forty": {
+        "english_title": "Forty Hadith Collections",
+        "arabic_title": "الأربعون",
+        "english_author": "Various (Nawawi, Qudsi, Shah Waliullah)",
+        "arabic_author": "علماء متعددون",
+    },
+    "hisn": {
+        "english_title": "Hisn al-Muslim",
+        "arabic_title": "حصن المسلم",
+        "english_author": "Sa'id ibn Ali ibn Wahf al-Qahtani",
+        "arabic_author": "سعيد بن علي بن وهف القحطاني",
+    },
+    "virtues": {
+        "english_title": "Virtues",
+        "arabic_title": "الفضائل",
+        "english_author": "Various",
+        "arabic_author": "علماء متعددون",
+    },
+}
+
 
 _TOKEN_RE = re.compile(r"[A-Za-z0-9']+")
 
@@ -25,12 +128,19 @@ def _tokenize(text: str) -> list[str]:
 @dataclass(frozen=True, slots=True)
 class Hadith:
     collection: str
-    id_in_book: int
-    global_id: int
-    chapter_id: int | None
-    arabic: str
-    english_narrator: str
-    english_text: str
+    id_in_book: int            # 1-indexed ordinal in canonical sort within the collection
+    global_id: int             # arabicURN — globally unique across all collections
+    chapter_id: int | None     # int(babID); fractional info preserved in SQLite babID column
+    arabic: str                # arabicText with [narrator id=...]...[/narrator] markup verbatim
+    english_narrator: str      # leading "Narrated X:" line, if any (split off from englishText)
+    english_text: str          # remainder of englishText after the narrator line is stripped
+    # Fields added in Stage H, surfaced in tool outputs in Stage J:
+    hadith_number: str = ""    # canonical citation string (e.g. "1", "402b", "272, 273")
+    book_number: str = ""      # bookNumber within collection (usually integer-as-string)
+    urn_arabic: int = 0
+    urn_english: int = 0
+    arabic_grade: str = ""     # Arabic grading (e.g. "صحيح")
+    english_grade: str = ""    # English grading (e.g. "Sahih")
 
 
 @dataclass(frozen=True, slots=True)
@@ -138,65 +248,119 @@ class Library:
         return len(results), word_freq, results[:limit]
 
 
-def _english_title(value: object) -> str:
-    if isinstance(value, str):
-        return value
-    if isinstance(value, dict):
-        return str(value.get("title", "") or value.get("text", ""))
-    return ""
+def _split_narrator(text: str) -> tuple[str, str]:
+    """Split a leading 'Narrated X:' line off the english text.
 
-
-def _load_file(path: Path, slug: str) -> tuple[Collection, list[Chapter], list[Hadith]]:
-    raw = json.loads(path.read_text(encoding="utf-8"))
-    meta = raw["metadata"]
-    collection = Collection(
-        slug=slug,
-        english_title=_english_title(meta.get("english", {}).get("title", "")),
-        arabic_title=str(meta.get("arabic", {}).get("title", "")),
-        english_author=str(meta.get("english", {}).get("author", "")),
-        arabic_author=str(meta.get("arabic", {}).get("author", "")),
-        hadith_count=int(meta.get("length", len(raw["hadiths"]))),
-    )
-    chapters = [
-        Chapter(
-            id=int(c["id"]) if c.get("id") is not None else None,
-            arabic_title=str(c.get("arabic", "")),
-            english_title=_english_title(c.get("english", "")),
-        )
-        for c in raw.get("chapters", [])
-    ]
-    hadiths = [
-        Hadith(
-            collection=slug,
-            id_in_book=int(h["idInBook"]),
-            global_id=int(h["id"]),
-            chapter_id=int(h["chapterId"]) if h.get("chapterId") is not None else None,
-            arabic=str(h.get("arabic", "")),
-            english_narrator=str(h.get("english", {}).get("narrator", "")),
-            english_text=str(h.get("english", {}).get("text", "")),
-        )
-        for h in raw.get("hadiths", [])
-    ]
-    return collection, chapters, hadiths
+    Sunnah.com bundles the narrator line into englishText (one block).
+    AhmedBaset kept narrator and text separate. To preserve the existing tool
+    output shape (separate narrator + english_text fields), we lift a short
+    leading line ending with ':' into the narrator field, ignoring any
+    leading ``<p>`` tags that sunnah.com sometimes prepends. If no such line
+    is found, narrator is empty and english_text is the full block.
+    """
+    if not text:
+        return "", text
+    work = text.lstrip()
+    while work.startswith("<p>"):
+        work = work[3:].lstrip()
+    nl = work.find("\n")
+    if nl == -1:
+        return "", text
+    first_line = work[:nl].strip()
+    if not first_line.endswith(":") or len(first_line) > 200:
+        return "", text
+    rest = work[nl + 1 :].lstrip()
+    while rest.startswith("<p>"):
+        rest = rest[3:].lstrip()
+    return first_line, rest
 
 
 @lru_cache(maxsize=1)
 def load() -> Library:
-    if not DATA_ROOT.exists():
+    if not DB_PATH.exists():
         raise FileNotFoundError(
-            f"Dataset not found at {DATA_ROOT}. "
-            "Run: python -m scripts.fetch_data"
+            f"SQLite dataset not found at {DB_PATH}. "
+            "Run: python -m scripts.build_sqlite"
         )
+
     lib = Library()
-    for category_dir in sorted(DATA_ROOT.iterdir()):
-        if not category_dir.is_dir():
-            continue
-        for json_file in sorted(category_dir.glob("*.json")):
-            slug = json_file.stem
-            collection, chapters, hadiths = _load_file(json_file, slug)
-            lib.collections[slug] = collection
-            lib.chapters[slug] = chapters
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    try:
+        for slug in COLLECTIONS_METADATA:
+            rows = conn.execute(
+                """
+                SELECT
+                  bookNumber, babID, hadithNumber,
+                  arabicURN, englishURN,
+                  arabicBabName, arabicText, arabicgrade1,
+                  englishBabName, englishText, englishgrade1
+                FROM HadithTable
+                WHERE collection = ?
+                ORDER BY CAST(bookNumber AS INTEGER), bookNumber, babID, arabicURN
+                """,
+                (slug,),
+            ).fetchall()
+
+            if not rows:
+                continue
+
+            hadiths: list[Hadith] = []
+            for idx, r in enumerate(rows, start=1):
+                narrator, body = _split_narrator(r["englishText"] or "")
+                hadiths.append(
+                    Hadith(
+                        collection=slug,
+                        id_in_book=idx,
+                        global_id=int(r["arabicURN"]),
+                        chapter_id=int(r["babID"]) if r["babID"] is not None else None,
+                        arabic=r["arabicText"] or "",
+                        english_narrator=narrator,
+                        english_text=body,
+                        hadith_number=r["hadithNumber"] or "",
+                        book_number=r["bookNumber"] or "",
+                        urn_arabic=int(r["arabicURN"]),
+                        urn_english=int(r["englishURN"]),
+                        arabic_grade=r["arabicgrade1"] or "",
+                        english_grade=r["englishgrade1"] or "",
+                    )
+                )
             lib.hadiths[slug] = hadiths
+
+            meta = COLLECTIONS_METADATA[slug]
+            lib.collections[slug] = Collection(
+                slug=slug,
+                english_title=meta["english_title"],
+                arabic_title=meta["arabic_title"],
+                english_author=meta["english_author"],
+                arabic_author=meta["arabic_author"],
+                hadith_count=len(hadiths),
+            )
+
+            chapter_rows = conn.execute(
+                """
+                SELECT
+                  bookNumber,
+                  babID,
+                  MAX(CASE WHEN trim(englishBabName) != '' THEN englishBabName END) AS englishBabName,
+                  MAX(CASE WHEN trim(arabicBabName) != '' THEN arabicBabName END) AS arabicBabName
+                FROM HadithTable
+                WHERE collection = ?
+                GROUP BY bookNumber, babID
+                ORDER BY CAST(bookNumber AS INTEGER), bookNumber, babID
+                """,
+                (slug,),
+            ).fetchall()
+            lib.chapters[slug] = [
+                Chapter(
+                    id=int(cr["babID"]) if cr["babID"] is not None else None,
+                    arabic_title=cr["arabicBabName"] or "",
+                    english_title=cr["englishBabName"] or "",
+                )
+                for cr in chapter_rows
+            ]
+    finally:
+        conn.close()
 
     corpus: list[Hadith] = []
     tokenized: list[list[str]] = []
