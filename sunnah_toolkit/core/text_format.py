@@ -4,11 +4,26 @@ from __future__ import annotations
 
 from typing import Any
 
+from .data import strip_narrator_markup
+
 
 def _err(result: dict[str, Any]) -> str | None:
     if "error" in result:
         return result["error"]
     return None
+
+
+def _grade_tag(result: dict[str, Any]) -> str:
+    """Returns ' — <grade>' if the result carries a non-empty english_grade,
+    otherwise empty string. Use inline in title lines."""
+    grade = (result.get("english_grade") or "").strip()
+    return f" — {grade}" if grade else ""
+
+
+def _cite(result: dict[str, Any]) -> str:
+    """Citation number for display: prefer hadith_number string, fallback to
+    integer ordinal. e.g. '402b' or '1' or just '5'."""
+    return str(result.get("hadith_number") or result.get("number") or "")
 
 
 def list_collections(result: dict[str, Any]) -> str:
@@ -40,14 +55,29 @@ def list_books(result: dict[str, Any]) -> str:
 def hadith(result: dict[str, Any]) -> str:
     if msg := _err(result):
         return msg
-    lines = [f"{result['english_title']} #{result['number']}", ""]
-    if result["narrator"]:
+    lines = [f"{result['english_title']} #{_cite(result)}{_grade_tag(result)}", ""]
+    if result.get("narrator"):
         lines.append(result["narrator"])
-    if result["english_text"]:
+    if result.get("english_text"):
         lines.append(result["english_text"])
-    if result["arabic"]:
-        lines += ["", f"Arabic: {result['arabic']}"]
-    lines += ["", f"Reference: {result['reference']}"]
+
+    arabic_raw = result.get("arabic", "")
+    if arabic_raw:
+        lines += ["", "Arabic:", strip_narrator_markup(arabic_raw)]
+
+    chain = result.get("chain") or []
+    if chain:
+        lines += ["", f"Chain of narration ({len(chain)} narrators):"]
+        for n in chain:
+            role = n.get("role") or ""
+            name = n.get("tooltip") or n.get("inline_name") or ""
+            role_tag = f"  ({role})" if role else ""
+            lines.append(f"  {n['position'] + 1}. {name}{role_tag}")
+
+    ref_line = f"Reference: {result['reference']}"
+    if result.get("urn"):
+        ref_line += f"  (URN {result['urn']})"
+    lines += ["", ref_line]
     return "\n".join(lines)
 
 
@@ -66,7 +96,7 @@ def search_hadith(result: dict[str, Any]) -> str:
         lines.append(f"Showing first {len(results)}:")
     lines.append("")
     for h in results:
-        lines.append(f"- {h['english_title']} #{h['number']} — {h['snippet']}")
+        lines.append(f"- {h['english_title']} #{_cite(h)}{_grade_tag(h)} — {h['snippet']}")
     return "\n".join(lines)
 
 
@@ -96,7 +126,7 @@ def search_hadith_term(result: dict[str, Any]) -> str:
     lines.append("")
     for h in results:
         words_str = " | ".join(h["matched_words"])
-        lines.append(f"- {h['english_title']} #{h['number']}  [{words_str}]")
+        lines.append(f"- {h['english_title']} #{_cite(h)}{_grade_tag(h)}  [{words_str}]")
         lines.append(f"    {h['snippet']}")
     return "\n".join(lines)
 
@@ -118,6 +148,6 @@ def search_hadith_semantic(result: dict[str, Any]) -> str:
         "",
     ]
     for h in results:
-        lines.append(f"- {h['english_title']} #{h['number']}  (similarity {h['similarity']:.2f})")
+        lines.append(f"- {h['english_title']} #{_cite(h)}{_grade_tag(h)}  (similarity {h['similarity']:.2f})")
         lines.append(f"    {h['snippet']}")
     return "\n".join(lines)

@@ -13,7 +13,7 @@ import random
 from typing import Any
 
 from . import semantic
-from .data import Hadith, Library, load
+from .data import Hadith, Library, load, parse_narrators
 
 
 def _collection_meta(library: Library, slug: str) -> dict[str, Any]:
@@ -27,14 +27,24 @@ def _collection_meta(library: Library, slug: str) -> dict[str, Any]:
 
 def _hadith_dict(library: Library, h: Hadith) -> dict[str, Any]:
     col = library.get_collection(h.collection)
+    # Reference URL uses the canonical citation number sunnah.com serves on.
+    # For paired/range hadithNumbers like "272, 273", use the first number —
+    # sunnah.com serves the row under that primary URL.
+    raw_num = h.hadith_number or str(h.id_in_book)
+    cite_id = raw_num.split(",", 1)[0].strip()
     return {
         "collection": h.collection,
         "number": h.id_in_book,
+        "hadith_number": h.hadith_number,
         "english_title": col.english_title if col else h.collection,
         "narrator": h.english_narrator,
         "english_text": h.english_text,
         "arabic": h.arabic,
-        "reference": f"sunnah.com/{h.collection}:{h.id_in_book}",
+        "english_grade": h.english_grade,
+        "arabic_grade": h.arabic_grade,
+        "chain": parse_narrators(h.arabic),
+        "urn": h.urn_english,
+        "reference": f"sunnah.com/{h.collection}:{cite_id}",
     }
 
 
@@ -116,6 +126,8 @@ def search_hadith(query: str, collection: str | None = None, limit: int = 10) ->
         "results": [
             {**_collection_meta(library, h.collection),
              "number": h.id_in_book,
+             "hadith_number": h.hadith_number,
+             "english_grade": h.english_grade,
              "snippet": _snippet(h.english_text, query)}
             for h in hits
         ],
@@ -143,6 +155,8 @@ def search_hadith_term(term: str, collection: str | None = None, limit: int = 20
         "results": [
             {**_collection_meta(library, h.collection),
              "number": h.id_in_book,
+             "hadith_number": h.hadith_number,
+             "english_grade": h.english_grade,
              "matched_words": sorted(matched),
              "snippet": (h.english_text[:140] + "…") if len(h.english_text) > 140 else h.english_text}
             for h, matched in hits
@@ -169,6 +183,8 @@ def search_hadith_semantic(query: str, collection: str | None = None, limit: int
         "results": [
             {**_collection_meta(library, h.collection),
              "number": h.id_in_book,
+             "hadith_number": h.hadith_number,
+             "english_grade": h.english_grade,
              "similarity": float(score),
              "snippet": (h.english_text[:200] + "…") if len(h.english_text) > 200 else h.english_text}
             for h, score in results

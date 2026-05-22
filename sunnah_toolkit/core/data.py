@@ -120,9 +120,59 @@ COLLECTIONS_METADATA: dict[str, dict[str, str]] = {
 
 _TOKEN_RE = re.compile(r"[A-Za-z0-9']+")
 
+# Matches sunnah.com's [narrator id="..." role="..." tooltip="..."]name[/narrator]
+# markup embedded in arabicText. Attribute order is consistent across the dump.
+_NARRATOR_RE = re.compile(
+    r'\[narrator\s+id="(\d+)"\s+role="([^"]*)"\s+tooltip="([^"]*)"\](.*?)\[/narrator\]',
+    re.DOTALL,
+)
+
+# Brackets used as content markers in arabicText: [prematn] separates the
+# isnad (chain) from the matn (the prophetic statement). There may be others
+# in the future — strip generically.
+_MARKER_RE = re.compile(r"\[(?!narrator\b|/narrator\b)[^\]]*\]")
+
 
 def _tokenize(text: str) -> list[str]:
     return [tok for tok in _TOKEN_RE.findall(text.lower()) if len(tok) >= 2]
+
+
+def parse_narrators(arabic_text: str) -> list[dict]:
+    """Extract the structured narrator chain from a hadith's arabicText.
+
+    Returns a list of dicts in chain order, one per [narrator id=... role=...
+    tooltip=...]name[/narrator] tag found. Empty list if no markup is present.
+
+    Each dict carries:
+      - position    int  0-indexed order in the isnad
+      - id          int  sunnah.com's narrator ID (stable across hadiths)
+      - role        str  "first", "chain", or whatever sunnah.com assigns
+      - tooltip     str  canonical Arabic name (often the fuller form)
+      - inline_name str  the name as it appears inline in the text
+    """
+    out: list[dict] = []
+    for i, m in enumerate(_NARRATOR_RE.finditer(arabic_text or "")):
+        out.append({
+            "position": i,
+            "id": int(m.group(1)),
+            "role": m.group(2),
+            "tooltip": m.group(3),
+            "inline_name": m.group(4).strip(),
+        })
+    return out
+
+
+def strip_narrator_markup(arabic_text: str) -> str:
+    """Return arabicText with all [narrator ...]...[/narrator] tags removed
+    (keeping the inline name) and [prematn]/[postmatn] markers stripped.
+
+    Intended for display in LLM-facing text where the markup would be noise.
+    The structured chain (parse_narrators) carries the same data."""
+    if not arabic_text:
+        return ""
+    s = _NARRATOR_RE.sub(lambda m: m.group(4), arabic_text)
+    s = _MARKER_RE.sub("", s)
+    return s.strip()
 
 
 @dataclass(frozen=True, slots=True)
