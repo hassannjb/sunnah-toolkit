@@ -2,23 +2,26 @@
 
 REST and MCP API for the hadith corpus from [sunnah.com](https://sunnah.com).
 
-Wraps the [`AhmedBaset/hadith-json`](https://github.com/AhmedBaset/hadith-json)
-dataset (50,884 hadiths across 17 collections, pinned to `v1.2.0`) with hybrid
-BM25 + multilingual-semantic search, and exposes the same 7 tools over two
-transports:
+Built on top of sunnah.com's official MariaDB snapshot (44,896 hadiths
+across 15 collections) with hybrid BM25 + multilingual-semantic search.
+Exposes 7 tools over two transports:
 
 - **MCP** — for AI assistants (Claude Desktop, Claude Code, Cursor, etc.) via
   stdio or streamable-http.
 - **REST** — for everything else, at `/v1/*`.
 
+Per-hadith data includes the **grading** (`Sahih` / `Hasan` / `Da'if` / …)
+and the **structured chain of narration** with sunnah.com's stable narrator
+IDs — enough to filter by authenticity tier or analyse isnad relationships.
+
 ## Tools
 
 | Tool | What it does |
 |------|--------------|
-| `list_collections` | All 17 collections with names and hadith counts |
+| `list_collections` | All 15 collections with names and hadith counts |
 | `list_books` | Chapters within a collection (e.g. the 97 books of Bukhari) |
-| `get_hadith` | Single hadith by collection + number, with Arabic + English + narrator |
-| `search_hadith` | English keyword search, BM25-ranked |
+| `get_hadith` | Single hadith by collection + number, with Arabic + English + narrator + grading + parsed isnad chain |
+| `search_hadith` | English keyword search, BM25-ranked. Results include a grade tag. |
 | `search_hadith_term` | Find hadiths containing a specific Arabic term, accepting any transliteration spelling (`qunut`/`qunoot`/`qonot` all match قنوت; `azan`↔`adhan`, `ramazan`↔`ramadan`). Returns matched Arabic word frequencies so collisions are visible. |
 | `search_hadith_semantic` | Meaning-based search via multilingual embeddings — handles conceptual queries (`humility`, `caring for orphans`) and cross-lingual queries (`الصلاة` finds the same hadiths as `prayer`). Returns similarity scores. |
 | `random_hadith` | A random hadith, optionally from one collection |
@@ -68,13 +71,13 @@ graph TD
     end
 
     subgraph "Data &amp; algorithms"
-      Data["core/data.py<br/>hadith JSON + BM25"]
+      Data["core/data.py<br/>SQLite + BM25 + narrator parser"]
       Sem["core/semantic.py<br/>embeddings + MiniLM"]
       Tr["core/translit.py<br/>Arabic folding"]
     end
 
     subgraph "On-disk assets"
-      Raw[("data/raw/*.json")]
+      DB[("data/hadith.sqlite")]
       Emb[("data/embeddings.npy")]
     end
 
@@ -87,9 +90,9 @@ graph TD
     Tools --> Data
     Tools --> Sem
     Tools --> Tr
-    Data --> Raw
+    Data --> DB
     Sem --> Emb
-    Sem --> Raw
+    Sem --> DB
 ```
 
 Both transports delegate to the same `core/tools.py` — REST returns structured JSON, MCP returns LLM-friendly text via `text_format.py`.
@@ -157,44 +160,49 @@ The keyed tier identifies callers; it does not gatekeep them. Rate-limiting and 
 ```mermaid
 graph LR
     subgraph Inputs
-      DS["AhmedBaset/hadith-json<br/>@v1.2.0"]
+      DS["sunnah.com<br/>HadithTable.sql.gz<br/>(MariaDB dump, ~16 MB)"]
       HF["HuggingFace<br/>MiniLM-L12-v2"]
     end
 
     subgraph "Build-time scripts"
-      Fetch["scripts/fetch_data.py"]
+      Sqlite["scripts/build_sqlite.py"]
       Build["scripts/build_embeddings.py"]
     end
 
     subgraph "On-disk artifacts"
-      Raw[("data/raw/*.json<br/>~76 MB")]
-      Emb[("data/embeddings.npy<br/>~75 MB")]
+      DB[("data/hadith.sqlite<br/>~80 MB")]
+      Emb[("data/embeddings.npy<br/>~66 MB")]
       Cache[("HF model cache<br/>~120 MB")]
     end
 
     Docker["Dockerfile<br/>multi-stage build"]
-    Image["sunnah-toolkit image<br/>(~1.4 GB, offline at runtime)"]
+    Image["sunnah-toolkit image<br/>(~3.0 GB, offline at runtime)"]
 
-    DS --> Fetch --> Raw
+    DS --> Sqlite --> DB
     HF --> Build
-    Raw --> Build
+    DB --> Build
     Build --> Emb
     Build --> Cache
-    Raw --> Docker
+    DB --> Docker
     Emb --> Docker
     Cache --> Docker
     Docker --> Image
 ```
 
-Data and model are baked into the image at build time — no network needed at query time, which is what lets the container survive Cloudflare outages and keeps cold-start latency predictable.
+Data and model are baked into the image at build time — no network needed at query time, which is what lets the container survive Cloudflare outages and keeps cold-start latency predictable. The runtime image is ~3.0 GB; most of it is the CPU-only PyTorch wheel + transformers (~1.3 GB) and the HF model cache (~120 MB).
 
 ## Quickstart — local dev (stdio MCP)
+
+Get the dataset first. Drop sunnah.com's SQL dump at
+`data/HadithTable.sql.gz` — you receive it from sunnah.com along with their
+API key (request access at <https://sunnah.com/developers>; both are sent to
+your inbox). Then:
 
 ```bash
 python3 -m venv .venv
 .venv/bin/pip install -e .
-.venv/bin/python -m scripts.fetch_data         # downloads ~76 MB hadith JSON into data/
-.venv/bin/python -m scripts.build_embeddings   # one-time, ~3 min on Apple Silicon → data/embeddings.npy (~75 MB)
+.venv/bin/python -m scripts.build_sqlite       # ~5s — converts the dump into data/hadith.sqlite
+.venv/bin/python -m scripts.build_embeddings   # one-time, ~2 min on Apple Silicon → data/embeddings.npy (~66 MB)
 .venv/bin/python -m sunnah_toolkit             # runs MCP server over stdio
 ```
 
@@ -202,11 +210,14 @@ python3 -m venv .venv
 It downloads the `paraphrase-multilingual-MiniLM-L12-v2` model (~120 MB) into
 the HuggingFace cache on first run.
 
+Sunnah.com asks downstream apps to refresh the data at least once a month so
+upstream corrections propagate — see [Refresh the dataset](#refresh-the-dataset).
+
 ## Run as an HTTP server (Docker)
 
-The included `Dockerfile` is a self-contained image (~1.4 GB) that bakes the
-dataset, embeddings, and model cache in at build time — no network needed at
-query time.
+The included `Dockerfile` is a self-contained image (~3.0 GB) that bakes
+the SQLite database, embeddings, and model cache in at build time — no
+network needed at query time.
 
 ```bash
 docker build -t sunnah-toolkit .
@@ -342,12 +353,31 @@ sunnah_toolkit/
   cli.py       argparse entrypoint: --transport {stdio,http}, --host,
                --port, --keys-file
 scripts/
-  fetch_data.py        downloads the pinned hadith dataset
-  build_embeddings.py  pre-computes embeddings (run once per dataset change)
+  build_sqlite.py      converts data/HadithTable.sql.gz → data/hadith.sqlite
+  build_embeddings.py  pre-computes embeddings (run once per dataset refresh)
 deploy/                cloudflared, keys.yaml examples
-data/                  (gitignored) hadith JSON + embeddings.npy
+data/                  (gitignored except for the input dump)
+                         HadithTable.sql.gz      sunnah.com snapshot (input)
+                         hadith.sqlite           built by build_sqlite
+                         embeddings.npy          built by build_embeddings
+                         embeddings_meta.json    fingerprint + model meta
 Dockerfile             multi-stage, self-contained image
 ```
+
+## Refresh the dataset
+
+Per sunnah.com's request, refresh the local snapshot at least once a month
+so upstream corrections (text fixes, grading updates, new translations)
+propagate. Two ways:
+
+- **Re-download the dump** from sunnah.com using the link they sent with
+  your API key, replace `data/HadithTable.sql.gz`, then rerun
+  `scripts.build_sqlite` + `scripts.build_embeddings` and rebuild the
+  Docker image.
+- **Fetch from the API** if you'd prefer to script it. Limits are 5 req/s
+  and 5,000 req/day on a personal key; request a higher cap if you're
+  refreshing a public-facing service. **Never bundle the API key in the
+  image or commit it to the repo** — sunnah.com is explicit about this.
 
 ## Known limitations
 
@@ -361,16 +391,25 @@ Dockerfile             multi-stage, self-contained image
 - **Short skeletons can collide** in `search_hadith_term` (e.g. `azan`
   matches both أذان and زنى/أظن because both fold to `zn`). Mitigated by
   surfacing the matched Arabic words with frequencies so users can spot it.
-- **Darimi has no English translation** in the dataset — its 3,406 hadiths
-  are masked out of semantic search; they still appear in `get_hadith` etc.
-- **One English translation** per hadith — the dataset doesn't include
+- **Coverage = whatever sunnah.com serves.** Darimi and Muwatta Malik are
+  not in the dump and therefore not in this toolkit. Musnad Ahmad is
+  partial (chapters past book 7 are absent from sunnah.com itself, not
+  just from this build). Track the upstream gaps at
+  [sunnah.com/developers](https://sunnah.com/developers).
+- **One English translation** per hadith — sunnah.com doesn't ship
   alternative translations.
-- **Musnad Ahmad** chapters 8–30 are missing in the upstream dataset.
-- **No grading info** (sahih / hasan / da'if) — not in the dataset.
+- **The `xrefs` column is present in the schema but empty** in the snapshot
+  we received — sunnah.com didn't populate cross-references. We preserve the
+  column in SQLite in case future snapshots fill it in.
 
 ## Credits
 
-- Data: [AhmedBaset/hadith-json](https://github.com/AhmedBaset/hadith-json)
-  (scraped from sunnah.com), released under its own terms.
+- **Data**: official MariaDB snapshot from [sunnah.com](https://sunnah.com),
+  used with permission and per their API/data terms. Refresh monthly; never
+  bundle the API key with the app.
 - Reference architecture: [quran/quran-mcp](https://github.com/quran/quran-mcp).
 - Protocol: [Model Context Protocol](https://modelcontextprotocol.io/).
+- Earlier versions of this toolkit used
+  [AhmedBaset/hadith-json](https://github.com/AhmedBaset/hadith-json) (a
+  community scrape of sunnah.com) as the data source; thanks to that
+  project for bootstrapping the build pipeline.

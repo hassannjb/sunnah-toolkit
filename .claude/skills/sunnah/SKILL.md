@@ -5,11 +5,11 @@ description: Use when the user asks about hadith, sunnah, or citing Islamic narr
 
 # Sunnah skill
 
-This project ships the `sunnah-toolkit` package, which exposes 50,884 hadiths
-across 17 collections (sourced from sunnah.com) over both MCP and a REST API
-at `/v1`. This skill uses the MCP surface — REST is documented in the README.
-It teaches you how to use the tools effectively and how to cite results
-correctly.
+This project ships the `sunnah-toolkit` package, which exposes 44,896 hadiths
+across 15 collections (sourced from sunnah.com's official MariaDB snapshot)
+over both MCP and a REST API at `/v1`. This skill uses the MCP surface —
+REST is documented in the README. It teaches you how to use the tools
+effectively and how to cite results correctly.
 
 ## QUOTING POLICY (non-negotiable)
 
@@ -28,17 +28,22 @@ worst possible failure mode of this skill. Always:
    call `get_hadith` to retrieve it.
 5. **Include the reference URL** when `get_hadith` returns one
    (`sunnah.com/<slug>:<number>`).
+6. **Surface the grading** when it's present. The dataset carries an
+   `english_grade` field per hadith (`Sahih`, `Hasan`, `Da'if`, `Sahih Isnād`,
+   sometimes empty). When you quote a hadith and the grade is non-empty,
+   include it inline, e.g. "Sahih al-Bukhari #1 (Sahih) — …". Don't infer or
+   fabricate a grade if the field is empty.
 
 ## Available tools
 
 | Tool | What it does |
 |------|--------------|
-| `list_collections` | Show the 17 collections with names and hadith counts. |
+| `list_collections` | Show the 15 collections with names and hadith counts. |
 | `list_books(collection)` | Show the chapter/book list for one collection. |
-| `get_hadith(collection, number)` | **Authoritative.** Fetch one hadith verbatim with Arabic, English, narrator, and reference. |
-| `search_hadith(query)` | English keyword search, BM25-ranked. Returns snippets. |
-| `search_hadith_term(term)` | Find hadiths containing a specific Arabic term, accepting any transliteration. Returns snippets + matched Arabic words. |
-| `search_hadith_semantic(query)` | Meaning-based search (multilingual embeddings). Returns snippets + similarity scores. |
+| `get_hadith(collection, number)` | **Authoritative.** Fetch one hadith verbatim with Arabic, English, narrator, **grading**, the **structured isnad chain** (narrator IDs + roles + canonical names), and reference URL. |
+| `search_hadith(query)` | English keyword search, BM25-ranked. Returns snippets with per-hit grading. |
+| `search_hadith_term(term)` | Find hadiths containing a specific Arabic term, accepting any transliteration. Returns snippets + matched Arabic words + per-hit grading. |
+| `search_hadith_semantic(query)` | Meaning-based search (multilingual embeddings). Returns snippets + similarity scores + per-hit grading. |
 | `random_hadith` | A random hadith (or one from a given collection). Authoritative. |
 
 ## Tool-selection cheat sheet
@@ -54,6 +59,8 @@ worst possible failure mode of this skill. Always:
 | "Find hadiths mentioning qunut" / "qunoot" / "qonot" (Arabic term, variable spelling) | `search_hadith_term` |
 | "Find hadiths mentioning azan" / "ramazan" / "adhan" | `search_hadith_term` |
 | "Show me a random hadith" / "daily hadith" | `random_hadith` |
+| "What's the grading of this hadith?" / "Is this sahih?" | `get_hadith` (read the `english_grade` field) |
+| "Who's in the chain for this hadith?" / "Trace the isnad" | `get_hadith` (read the `chain` list) |
 
 When in doubt between `search_hadith` and `search_hadith_semantic`, prefer
 `search_hadith_semantic` — it handles both exact words and concepts and
@@ -117,10 +124,15 @@ works across English/Arabic queries.
 - **For semantic search, treat low similarity as uncertainty.** A
   similarity of 0.35 means "the closest hadith I found" — not "the right
   hadith." Tell the user the match is weak; offer to refine the query.
-- **Darimi has no English text in the dataset.** Semantic search masks it
-  out automatically, but `get_hadith("darimi", N)` will return an empty
-  English field. Inform the user when this happens; the Arabic is still
-  available.
+- **Darimi and Muwatta Malik are not in this toolkit.** sunnah.com doesn't
+  host them in the snapshot we use. If a user asks for them, say so plainly
+  and offer an equivalent from another collection where possible.
+- **The isnad chain is structured.** `get_hadith` returns a `chain` list
+  with the narrators in order, each carrying `{position, id, role, tooltip,
+  inline_name}`. `role` is usually `first` for the immediate narrator,
+  `chain` for intermediate links, and `sahabi` for the Companion at the end.
+  If the user asks about the chain or wants to trace narrators, draw from
+  this list directly — don't paraphrase it from the Arabic text.
 
 ## When tools fail
 

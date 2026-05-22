@@ -298,6 +298,24 @@ class Library:
         return len(results), word_freq, results[:limit]
 
 
+_MULTI_BLANK_LINES = re.compile(r"\n{3,}")
+_PARA_TAG = re.compile(r"<p>")
+
+
+def _clean_english_text(text: str) -> str:
+    """Normalise sunnah.com englishText for clean display.
+
+    Replaces ``<p>`` paragraph markers with a blank-line break, collapses
+    runs of 3+ newlines down to a paragraph break, and trims surrounding
+    whitespace. Preserves intentional indentation inside paragraphs.
+    """
+    if not text:
+        return text
+    s = _PARA_TAG.sub("\n", text)
+    s = _MULTI_BLANK_LINES.sub("\n\n", s)
+    return s.strip()
+
+
 def _split_narrator(text: str) -> tuple[str, str]:
     """Split a leading 'Narrated X:' line off the english text.
 
@@ -305,8 +323,8 @@ def _split_narrator(text: str) -> tuple[str, str]:
     AhmedBaset kept narrator and text separate. To preserve the existing tool
     output shape (separate narrator + english_text fields), we lift a short
     leading line ending with ':' into the narrator field, ignoring any
-    leading ``<p>`` tags that sunnah.com sometimes prepends. If no such line
-    is found, narrator is empty and english_text is the full block.
+    leading ``<p>`` tags that sunnah.com sometimes prepends. The remaining
+    body is normalised by ``_clean_english_text``.
     """
     if not text:
         return "", text
@@ -315,14 +333,12 @@ def _split_narrator(text: str) -> tuple[str, str]:
         work = work[3:].lstrip()
     nl = work.find("\n")
     if nl == -1:
-        return "", text
+        return "", _clean_english_text(text)
     first_line = work[:nl].strip()
     if not first_line.endswith(":") or len(first_line) > 200:
-        return "", text
-    rest = work[nl + 1 :].lstrip()
-    while rest.startswith("<p>"):
-        rest = rest[3:].lstrip()
-    return first_line, rest
+        return "", _clean_english_text(text)
+    rest = work[nl + 1 :]
+    return first_line, _clean_english_text(rest)
 
 
 @lru_cache(maxsize=1)

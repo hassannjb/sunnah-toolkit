@@ -1,10 +1,15 @@
 # syntax=docker/dockerfile:1.7
 
 # ---------- Builder ----------
-# Installs Python deps, fetches the hadith dataset, and builds the embeddings.
-# Running build_embeddings.py here also warms the HuggingFace cache with the
-# SentenceTransformer model weights — those get copied into the runtime stage
-# so the container has zero network dependencies at query time.
+# Installs Python deps, converts sunnah.com's MariaDB dump into SQLite, and
+# builds the embeddings. Running build_embeddings.py here also warms the
+# HuggingFace cache with the SentenceTransformer model weights — those get
+# copied into the runtime stage so the container has zero network
+# dependencies at query time.
+#
+# The sunnah.com SQL dump (data/HadithTable.sql.gz) must be present in the
+# build context. Get a fresh dump per sunnah.com's monthly-refresh request;
+# see README § "Refresh the dataset".
 FROM python:3.12-slim AS builder
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -21,11 +26,12 @@ RUN pip install --index-url https://download.pytorch.org/whl/cpu torch
 COPY pyproject.toml ./
 COPY sunnah_toolkit ./sunnah_toolkit
 COPY scripts ./scripts
+COPY data/HadithTable.sql.gz ./data/HadithTable.sql.gz
 
 RUN pip install .
 
-# Bake dataset + embeddings + HF model cache into the image.
-RUN python -m scripts.fetch_data \
+# Bake the SQLite database + embeddings + HF model cache into the image.
+RUN python -m scripts.build_sqlite \
  && python -m scripts.build_embeddings
 
 # ---------- Runtime ----------

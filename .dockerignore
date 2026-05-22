@@ -13,8 +13,10 @@ __pycache__
 .pytest_cache
 .DS_Store
 
-# Built inside the image
-data
+# Most of data/ is built inside the image; the sunnah.com SQL dump is
+# the build input and must pass through.
+data/*
+!data/HadithTable.sql.gz
 .cache
 
 # Not needed at runtime
