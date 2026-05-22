@@ -355,6 +355,8 @@ sunnah_toolkit/
 scripts/
   build_sqlite.py      converts data/HadithTable.sql.gz → data/hadith.sqlite
   build_embeddings.py  pre-computes embeddings (run once per dataset refresh)
+  refresh.sh           one-command monthly-refresh wrapper (see § "Refresh
+                       the dataset")
 deploy/                cloudflared, keys.yaml examples
 data/                  (gitignored except for the input dump)
                          HadithTable.sql.gz      sunnah.com snapshot (input)
@@ -368,16 +370,48 @@ Dockerfile             multi-stage, self-contained image
 
 Per sunnah.com's request, refresh the local snapshot at least once a month
 so upstream corrections (text fixes, grading updates, new translations)
-propagate. Two ways:
+propagate. Sunnah.com publishes new snapshots by overwriting the file at
+the same static URL (`https://sunnah.com/HadithTable.sql.gz`); the refresh
+script does an HTTP conditional GET, so it's safe to run on a cron — it
+no-ops if there's nothing new upstream.
 
-- **Re-download the dump** from sunnah.com using the link they sent with
-  your API key, replace `data/HadithTable.sql.gz`, then rerun
-  `scripts.build_sqlite` + `scripts.build_embeddings` and rebuild the
-  Docker image.
-- **Fetch from the API** if you'd prefer to script it. Limits are 5 req/s
-  and 5,000 req/day on a personal key; request a higher cap if you're
-  refreshing a public-facing service. **Never bundle the API key in the
-  image or commit it to the repo** — sunnah.com is explicit about this.
+```bash
+./scripts/refresh.sh
+```
+
+What it does:
+
+1. Conditional GET against `sunnah.com/HadithTable.sql.gz`. If the
+   server's `Last-Modified` matches your local file, exit immediately —
+   nothing to do. Otherwise download in place.
+2. Rebuild `data/hadith.sqlite` from the new dump.
+3. Rebuild `data/embeddings.npy` against the new SQLite corpus.
+4. Tag the current image as `sunnah-toolkit:previous` (rollback save
+   point) and `docker build` the new `sunnah-toolkit:latest`.
+5. Restart the running `sunnah` container against the new image and poll
+   `/healthz`.
+
+Total runtime when an update *is* available: ~12 min on Apple Silicon.
+When nothing has changed: ~1 second.
+
+Flags: `--no-image` (refresh only the local venv, for stdio-MCP users),
+`--no-deploy` (rebuild the image but leave the container alone),
+`--help` for the full inline doc.
+
+If something looks wrong after a refresh, roll back instantly:
+
+```bash
+docker tag sunnah-toolkit:previous sunnah-toolkit:latest
+docker stop sunnah && docker rm sunnah
+docker run -d --restart unless-stopped -p 8000:8000 \
+    --name sunnah sunnah-toolkit:latest
+```
+
+The dump URL is a public download — no API key required. Sunnah.com's
+authenticated API at `api.sunnah.com` is a separate channel (5 req/s,
+5,000 req/day on a personal key) that we don't use here. **Never bundle
+that API key with the image or commit it to the repo** — sunnah.com is
+explicit about that, even though it doesn't apply to the dump flow.
 
 ## Known limitations
 
