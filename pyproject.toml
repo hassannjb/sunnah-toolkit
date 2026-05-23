@@ -22,5 +22,8 @@ dependencies = [
     "PyYAML>=6.0",
 ]
 
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
 [tool.setuptools.packages.find]
 include = ["sunnah_toolkit*"]

@@ -7,8 +7,11 @@ markup verbatim in `Hadith.arabic` for downstream parsing.
 
 from __future__ import annotations
 
+import functools
+import json
 import re
 import sqlite3
+import unicodedata
 from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
@@ -19,6 +22,71 @@ from rank_bm25 import BM25Okapi
 from .translit import arabic_words, fold_index, fold_query
 
 DB_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "hadith.sqlite"
+
+
+COLLECTION_TIER: dict[str, int] = {
+    "bukhari": 0,
+    "muslim": 1,
+    "abudawud": 2,
+    "tirmidhi": 3,
+    "nasai": 4,
+    "ibnmajah": 5,
+    "ahmad": 6,
+    "mishkat": 7,
+    "riyadussalihin": 8,
+    "adab": 9,
+    "bulugh": 10,
+    "shamail": 11,
+    "forty": 12,
+    "hisn": 13,
+    "virtues": 14,
+}
+
+GRADE_TIER: dict[str, int] = {
+    "sahih": 0,
+    "hasan_sahih": 1,
+    "hasan": 2,
+    "daif": 3,
+    "ungraded": 4,
+    "maudu": 5,
+}
+
+
+_APOSTROPHES = str.maketrans({"'": "", "’": "", "‘": "", "`": "", "´": ""})
+
+
+@functools.lru_cache(maxsize=None)
+def normalize_grade(raw: str) -> str:
+    """Map an englishgrade1 value to one of GRADE_TIER's keys."""
+    if not raw:
+        return "ungraded"
+
+    stripped = raw.lstrip()
+    if stripped.startswith("[{"):
+        try:
+            data = json.loads(stripped)
+            if isinstance(data, list) and data:
+                inner = data[0].get("grade", "") if isinstance(data[0], dict) else ""
+                return normalize_grade(inner)
+        except (json.JSONDecodeError, ValueError):
+            pass
+
+    folded = unicodedata.normalize("NFKD", raw).encode("ascii", "ignore").decode("ascii")
+    folded = folded.translate(_APOSTROPHES).lower()
+
+    if "maudu" in folded or "fabricated" in folded:
+        return "maudu"
+    if "hasan sahih" in folded or "sahih hasan" in folded:
+        return "hasan_sahih"
+    if "muttafaqun" in folded:
+        return "sahih"
+    if "sahih" in folded:
+        return "sahih"
+    if "hasan" in folded:
+        return "hasan"
+    if "daif" in folded or "weak" in folded:
+        return "daif"
+    return "ungraded"
 
 
 # Hardcoded metadata for the 15 collections sunnah.com hosts. Keys are the
