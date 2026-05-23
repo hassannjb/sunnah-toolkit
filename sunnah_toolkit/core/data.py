@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import functools
 import json
+import math
 import re
 import sqlite3
 import unicodedata
@@ -287,6 +288,9 @@ class Library:
     bm25: BM25Okapi | None = None
     bm25_corpus: list[Hadith] = field(default_factory=list)
     arabic_index: dict[str, list[tuple[int, str]]] = field(default_factory=dict)
+    # Word -> number of hadiths containing it. Used to weight Arabic-term
+    # matches: rarer words contribute more to the per-hadith score.
+    arabic_word_doc_freq: dict[str, int] = field(default_factory=dict)
 
     def get_collection(self, slug: str) -> Collection | None:
         return self.collections.get(slug)
@@ -311,6 +315,67 @@ class Library:
         for hs in self.hadiths.values():
             yield from hs
 
+    def retrieve_keyword(
+        self,
+        query: str,
+        collection: str | None = None,
+        limit: int = 100,
+    ) -> list[tuple[int, float]]:
+        """BM25 over English text. Returns (corpus_idx, bm25_score) top-N
+        with positive scores."""
+        tokens = _tokenize(query)
+        if not tokens or self.bm25 is None:
+            return []
+        scores = self.bm25.get_scores(tokens)
+        candidates: list[tuple[int, float]] = []
+        for idx, score in enumerate(scores):
+            if score <= 0:
+                continue
+            if collection is not None and self.bm25_corpus[idx].collection != collection:
+                continue
+            candidates.append((idx, float(score)))
+        candidates.sort(key=lambda p: p[1], reverse=True)
+        return candidates[:limit]
+
+    def retrieve_term(
+        self,
+        query: str,
+        collection: str | None = None,
+        limit: int = 100,
+    ) -> tuple[list[tuple[int, float, set[str]]], dict[str, int]]:
+        """Arabic-skeleton match. Returns
+        (list of (corpus_idx, score, matched_words) top-N, {word: freq}).
+
+        Per-hadith score is sum(1 / log(1 + global_word_doc_freq[w])) over
+        matched words. Rarer words contribute more; common skeletons (which
+        collide widely) contribute very little. Score is 0 only when no
+        matched words have a known frequency (all unknown).
+        """
+        query_skeletons = fold_query(query)
+        if not query_skeletons:
+            return [], {}
+
+        matched_by_hadith: dict[int, set[str]] = {}
+        for skel in query_skeletons:
+            for corpus_idx, arabic_word in self.arabic_index.get(skel, ()):
+                matched_by_hadith.setdefault(corpus_idx, set()).add(arabic_word)
+
+        results: list[tuple[int, float, set[str]]] = []
+        word_freq: dict[str, int] = {}
+        for corpus_idx, matched_words in matched_by_hadith.items():
+            h = self.bm25_corpus[corpus_idx]
+            if collection is not None and h.collection != collection:
+                continue
+            score = 0.0
+            for w in matched_words:
+                df = self.arabic_word_doc_freq.get(w, 1)
+                score += 1.0 / math.log(1 + df + 1)
+                word_freq[w] = word_freq.get(w, 0) + 1
+            results.append((corpus_idx, score, matched_words))
+
+        results.sort(key=lambda t: t[1], reverse=True)
+        return results[:limit], word_freq
+
     def search(
         self,
         query: str,
@@ -322,7 +387,7 @@ class Library:
         tokens = _tokenize(query)
         if not tokens or self.bm25 is None:
             return 0, []
-
+        # We still need the total count across all positive scores.
         scores = self.bm25.get_scores(tokens)
         ranked = sorted(
             (
@@ -346,32 +411,25 @@ class Library:
     ) -> tuple[int, dict[str, int], list[tuple[Hadith, set[str]]]]:
         """Find hadiths whose Arabic text contains a word matching the query's
         consonant skeleton. Returns
-        (total_match_count, {arabic_word: frequency}, top-N (hadith, matched_words))."""
-        query_skeletons = fold_query(query)
-        if not query_skeletons:
+        (total_match_count, {arabic_word: frequency}, top-N (hadith, matched_words)).
+
+        Backward-compat wrapper around retrieve_term: collects ALL matches,
+        sorts by (collection, id_in_book) as before, then trims to `limit`.
+        """
+        # Pull the full match set (limit = large) so we can produce the
+        # legacy total/order.
+        full, word_freq = self.retrieve_term(query, collection=collection, limit=10**9)
+        if not full:
             return 0, {}, []
-
-        matched_by_hadith: dict[int, set[str]] = {}
-        for skel in query_skeletons:
-            for corpus_idx, arabic_word in self.arabic_index.get(skel, ()):
-                matched_by_hadith.setdefault(corpus_idx, set()).add(arabic_word)
-
-        results: list[tuple[Hadith, set[str]]] = []
-        word_freq: dict[str, int] = {}
-        for corpus_idx, matched_words in matched_by_hadith.items():
-            h = self.bm25_corpus[corpus_idx]
-            if collection is not None and h.collection != collection:
-                continue
-            results.append((h, matched_words))
-            for w in matched_words:
-                word_freq[w] = word_freq.get(w, 0) + 1
-
-        results.sort(key=lambda pair: (
+        rows: list[tuple[Hadith, set[str]]] = [
+            (self.bm25_corpus[idx], matched) for idx, _score, matched in full
+        ]
+        rows.sort(key=lambda pair: (
             COLLECTION_TIER[pair[0].collection],
             pair[0].grade_tier,
             pair[0].id_in_book,
         ))
-        return len(results), word_freq, results[:limit]
+        return len(rows), word_freq, rows[:limit]
 
 
 _MULTI_BLANK_LINES = re.compile(r"\n{3,}")
@@ -509,6 +567,7 @@ def load() -> Library:
     corpus: list[Hadith] = []
     tokenized: list[list[str]] = []
     arabic_index: dict[str, list[tuple[int, str]]] = {}
+    arabic_word_doc_freq: dict[str, int] = {}
     for hs in lib.hadiths.values():
         for h in hs:
             corpus_idx = len(corpus)
@@ -519,9 +578,11 @@ def load() -> Library:
                 if word in seen_words:
                     continue
                 seen_words.add(word)
+                arabic_word_doc_freq[word] = arabic_word_doc_freq.get(word, 0) + 1
                 for skel in fold_index(word):
                     arabic_index.setdefault(skel, []).append((corpus_idx, word))
     lib.bm25_corpus = corpus
     lib.bm25 = BM25Okapi(tokenized)
     lib.arabic_index = arabic_index
+    lib.arabic_word_doc_freq = arabic_word_doc_freq
     return lib

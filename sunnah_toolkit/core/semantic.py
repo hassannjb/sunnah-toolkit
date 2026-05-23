@@ -78,12 +78,13 @@ def _ensure_loaded() -> None:
         _engine.content_mask = content_mask
 
 
-def search(
+def retrieve(
     query: str,
     collection: str | None = None,
-    limit: int = 10,
-) -> list[tuple[Hadith, float]]:
-    """Embed `query`, cosine-similarity rank against the corpus, return top-N."""
+    limit: int = 100,
+) -> list[tuple[int, float]]:
+    """Embed `query`, cosine-rank against the corpus, return
+    (corpus_idx, similarity) top-N."""
     if not query.strip():
         return []
 
@@ -107,17 +108,28 @@ def search(
         mask = np.array([h.collection == collection for h in corpus])
         scores = np.where(mask, scores, -np.inf)
 
-    # Enlarge the candidate pool so the tier reorder below has room to
-    # surface a high-tier hit that ranked, say, 50th on raw cosine.
-    pool = min(max(limit * 20, 200), scores.size)
-    top_idx = np.argpartition(-scores, range(pool))[:pool]
+    k = min(limit, scores.size)
+    top_idx = np.argpartition(-scores, range(k))[:k]
     top_idx = top_idx[np.argsort(-scores[top_idx])]
 
-    candidates = [
-        (corpus[int(i)], float(scores[int(i)]))
+    return [
+        (int(i), float(scores[int(i)]))
         for i in top_idx
         if scores[int(i)] > -np.inf
     ]
+
+
+def search(
+    query: str,
+    collection: str | None = None,
+    limit: int = 10,
+) -> list[tuple[Hadith, float]]:
+    """Backward-compat wrapper around `retrieve` that resolves indices to
+    Hadith records and applies the collection/grade tier sort."""
+    library = load()
+    corpus = library.bm25_corpus
+    pool = max(limit * 20, 200)
+    candidates = [(corpus[idx], score) for idx, score in retrieve(query, collection, pool)]
     candidates.sort(key=lambda pair: (
         COLLECTION_TIER[pair[0].collection],
         pair[0].grade_tier,

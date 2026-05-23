@@ -102,6 +102,26 @@ INDEX_HTML = r"""<!doctype html>
     .result-row .ref { font-weight: 600; color: var(--accent); margin-bottom: 0.2rem; font-size: 0.95rem; }
     .result-row .snippet { color: var(--muted); font-size: 0.92rem; }
     .result-row .score { float: right; font-size: 0.8rem; color: var(--muted); font-weight: 400; }
+    .result-row.weak { border-color: #e2d5b8; background: #fbfaf3; }
+    .result-row.weak:hover { border-color: #c9b988; background: #fff; }
+    .weak-divider {
+      margin: 0.9rem 0 0.5rem;
+      padding: 0.45rem 0.6rem;
+      border-top: 1px dashed var(--border);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    .weak-toggle {
+      display: inline-block;
+      margin: 0.6rem 0;
+      padding: 0.35rem 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--card);
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .weak-toggle:hover { border-color: var(--accent); }
     .hadith {
       background: var(--card);
       border: 1px solid var(--border);
@@ -342,6 +362,8 @@ INDEX_HTML = r"""<!doctype html>
     // (collection chips for all modes; matched-Arabic-word chips in term mode)
     // can re-filter the displayed rows without re-fetching.
     let lastResults = [];
+    let lastResultsWeak = [];                // below-threshold matches from rerank pipeline
+    let weakVisible = false;                 // toggled by "Show N weak matches"
     let lastMode = null;
     let lastShowScore = false;
     let lastMatchedWords = [];               // term mode only
@@ -452,6 +474,8 @@ INDEX_HTML = r"""<!doctype html>
       resultsRowsEl.innerHTML = "";
       detailEl.innerHTML = "";
       lastResults = [];
+      lastResultsWeak = [];
+      weakVisible = false;
       lastMode = null;
       lastShowScore = false;
       lastMatchedWords = [];
@@ -517,7 +541,7 @@ INDEX_HTML = r"""<!doctype html>
       );
     }
 
-    function renderResultRow(item, showScore) {
+    function renderResultRow(item, showScore, isWeak) {
       const slug = item.slug;
       const num = item.number;
       const label = refLabel(slug, item.hadith_number, num);
@@ -525,9 +549,12 @@ INDEX_HTML = r"""<!doctype html>
       let score = "";
       if (showScore && typeof item.similarity === "number") {
         score = '<span class="score">' + item.similarity.toFixed(2) + '</span>';
+      } else if (typeof item.score === "number") {
+        score = '<span class="score">' + item.score.toFixed(2) + '</span>';
       }
+      const cls = isWeak ? "result-row weak" : "result-row";
       return (
-        '<div class="result-row" data-slug="' + escapeHtml(slug) + '" data-num="' + num + '">' +
+        '<div class="' + cls + '" data-slug="' + escapeHtml(slug) + '" data-num="' + num + '">' +
           '<div class="ref">' + score + escapeHtml(label) + '</div>' +
           '<div class="snippet">' + escapeHtml(snippet) + '</div>' +
         '</div>'
@@ -578,10 +605,11 @@ INDEX_HTML = r"""<!doctype html>
       );
       const ok = responses.filter((r) => r.status === "fulfilled").map((r) => r.value);
 
-      const merged = { results: [], matched_words: [] };
+      const merged = { results: [], results_weak: [], matched_words: [] };
       const wordSum = new Map();
       for (const j of ok) {
         merged.results.push(...(j.results || []));
+        merged.results_weak.push(...(j.results_weak || []));
         for (const w of (j.matched_words || [])) {
           wordSum.set(w.word, (wordSum.get(w.word) || 0) + w.count);
         }
@@ -590,10 +618,10 @@ INDEX_HTML = r"""<!doctype html>
         .map(([word, count]) => ({ word, count }))
         .sort((a, b) => (b.count - a.count) || a.word.localeCompare(b.word));
 
-      // Semantic similarity is comparable across collections — re-rank globally.
-      if (merged.results.length && typeof merged.results[0].similarity === "number") {
-        merged.results.sort((a, b) => (b.similarity || 0) - (a.similarity || 0));
-      }
+      // Cross-encoder score is comparable across collections — re-rank globally.
+      const cmp = (a, b) => (b.score || b.similarity || 0) - (a.score || a.similarity || 0);
+      merged.results.sort(cmp);
+      merged.results_weak.sort(cmp);
       return merged;
     }
 
@@ -603,9 +631,10 @@ INDEX_HTML = r"""<!doctype html>
     // Re-running this re-applies the current filter state to lastResults
     // without re-fetching from the API.
     function renderResultsView() {
-      // Build collection counts from lastResults.
+      // Build collection counts from strong + weak so chips reflect the full
+      // candidate set, not just what's currently shown.
       const collCounts = new Map();
-      for (const r of lastResults) {
+      for (const r of lastResults.concat(lastResultsWeak)) {
         collCounts.set(r.slug, (collCounts.get(r.slug) || 0) + 1);
       }
       const orderedCols = Array.from(collCounts.entries())
@@ -656,27 +685,58 @@ INDEX_HTML = r"""<!doctype html>
 
       // Apply filters in sequence. An empty selection at either layer
       // means "everything passes" (avoids silent-zero confusion).
-      let filtered = lastResults;
-      if (orderedCols.length >= 2 && selectedResultCollections.size > 0) {
-        filtered = filtered.filter((r) => selectedResultCollections.has(r.slug));
-      }
-      if (lastMode === "term" && lastMatchedWords.length && selectedWords.size > 0) {
-        filtered = filtered.filter((r) =>
-          Array.isArray(r.matched_words) && r.matched_words.some((w) => selectedWords.has(w))
-        );
+      function applyFilters(rows) {
+        let f = rows;
+        if (orderedCols.length >= 2 && selectedResultCollections.size > 0) {
+          f = f.filter((r) => selectedResultCollections.has(r.slug));
+        }
+        if (lastMode === "term" && lastMatchedWords.length && selectedWords.size > 0) {
+          f = f.filter((r) =>
+            Array.isArray(r.matched_words) && r.matched_words.some((w) => selectedWords.has(w))
+          );
+        }
+        return f;
       }
 
-      resultsRowsEl.innerHTML = filtered.map((it) => renderResultRow(it, lastShowScore)).join("");
+      const filteredStrong = applyFilters(lastResults);
+      const filteredWeak = applyFilters(lastResultsWeak);
+
+      let html = filteredStrong.map((it) => renderResultRow(it, lastShowScore, false)).join("");
+      if (lastResultsWeak.length > 0) {
+        if (weakVisible) {
+          if (filteredWeak.length > 0) {
+            html += '<div class="weak-divider">Weak matches (below reranker threshold)</div>';
+            html += filteredWeak.map((it) => renderResultRow(it, lastShowScore, true)).join("");
+          }
+          html += '<button type="button" id="show-weak" class="weak-toggle">Hide ' + filteredWeak.length + ' weak match' + (filteredWeak.length === 1 ? "" : "es") + '</button>';
+        } else {
+          html += '<button type="button" id="show-weak" class="weak-toggle">Show ' + filteredWeak.length + ' weak match' + (filteredWeak.length === 1 ? "" : "es") + '</button>';
+        }
+      }
+      resultsRowsEl.innerHTML = html;
       attachRowHandlers();
 
-      const shown = filtered.length;
-      const total = lastResults.length;
-      if (shown === 0) {
+      const showWeakBtn = resultsRowsEl.querySelector("#show-weak");
+      if (showWeakBtn) {
+        showWeakBtn.addEventListener("click", () => {
+          weakVisible = !weakVisible;
+          renderResultsView();
+        });
+      }
+
+      const shownStrong = filteredStrong.length;
+      const totalStrong = lastResults.length;
+      const totalWeak = lastResultsWeak.length;
+      if (shownStrong === 0 && filteredWeak.length === 0) {
         setStatus("Nothing matches the current filters. Tick more chips to see hadiths.");
-      } else if (shown < total) {
-        setStatus("Showing " + shown + " of " + total + " (filtered). Tap a row to read the full hadith.");
+      } else if (shownStrong < totalStrong || (lastResultsWeak.length && filteredWeak.length < totalWeak)) {
+        setStatus("Showing " + shownStrong + " of " + totalStrong + " strong" +
+                  (totalWeak ? " (+ " + totalWeak + " weak)" : "") +
+                  " — filtered. Tap a row to read.");
       } else {
-        setStatus(total + " result(s). Tap a row to read the full hadith.");
+        setStatus(totalStrong + " strong" +
+                  (totalWeak ? " (+ " + totalWeak + " weak)" : "") +
+                  " result(s). Tap a row to read the full hadith.");
       }
 
       // Wire up toggle handlers (the innerHTML rewrite blew away any prior listeners).
@@ -771,8 +831,9 @@ INDEX_HTML = r"""<!doctype html>
 
         const j = await searchAcrossCollections(mode, q);
         let items = j.results || [];
+        let weakItems = j.results_weak || [];
 
-        if (!items.length) {
+        if (!items.length && !weakItems.length) {
           if (filtering) {
             setStatus("No matches in the selected collections. Try ticking more, or change the wording.");
           } else {
@@ -782,16 +843,21 @@ INDEX_HTML = r"""<!doctype html>
         }
 
         items = items.slice(0, displayCap);
+        // Cap weak too so a noisy reranker can't flood the UI with hundreds
+        // of rows when the user toggles "Show weak".
+        weakItems = weakItems.slice(0, Math.max(displayCap * 3, 60));
 
         // Cache results so the chip filters can re-render without re-fetching.
         lastResults = items;
+        lastResultsWeak = weakItems;
+        weakVisible = false;
         lastMode = mode;
         lastShowScore = showScore;
         lastMatchedWords = (mode === "term" && Array.isArray(j.matched_words)) ? j.matched_words : [];
         selectedWords = (mode === "term")
           ? new Set(lastMatchedWords.slice(0, 8).map((w) => w.word))
           : new Set();
-        selectedResultCollections = new Set(items.map((r) => r.slug));
+        selectedResultCollections = new Set(items.concat(weakItems).map((r) => r.slug));
 
         renderResultsView();
       } catch (e) {

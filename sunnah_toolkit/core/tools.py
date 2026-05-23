@@ -5,15 +5,26 @@ sunnah_toolkit.core.text_format. The REST API (sunnah_toolkit.api) returns
 them as JSON directly.
 
 Error shape: {"error": str, "kind": "unknown_collection" | "not_found" | "unavailable"}.
+
+Issue #2: search functions now route through `_search_with_rerank` by
+default. The response is additive — it gains `results_weak`, `threshold`,
+and `reranker` alongside the existing `results` / `total` fields. Setting
+`rerank=False` (or env $RERANKER_DISABLED=1) falls back to the legacy
+single-retriever path so the eval harness can baseline.
 """
 
 from __future__ import annotations
 
+import logging
 import random
 from typing import Any
 
+from . import reranker as reranker_mod
 from . import semantic
 from .data import Hadith, Library, load, parse_narrators
+from .retrieval import Candidate, retrieve_union
+
+logger = logging.getLogger(__name__)
 
 
 def _collection_meta(library: Library, slug: str) -> dict[str, Any]:
@@ -110,12 +121,164 @@ def get_hadith(collection: str, number: int) -> dict[str, Any]:
     return _hadith_dict(library, h)
 
 
-def search_hadith(query: str, collection: str | None = None, limit: int = 10) -> dict[str, Any]:
+def _doc_text(library: Library, c: Candidate) -> str:
+    """Per-candidate document template for the cross-encoder.
+
+    Stripped Arabic (no [narrator] markup) is appended so the reranker has
+    the matn — important for Arabic-term queries where the English text
+    may not contain the user's transliterated word at all.
+    """
+    from .data import strip_narrator_markup
+
+    h = c.hadith
+    col = library.get_collection(h.collection)
+    title = col.english_title if col else h.collection
+    return (
+        f"{title}\n"
+        f"{h.english_narrator}\n"
+        f"{h.english_text}\n"
+        f"{strip_narrator_markup(h.arabic)}"
+    )
+
+
+def _search_with_rerank(
+    query: str,
+    mode_hint: str = "concept",
+    collection: str | None = None,
+    limit: int = 10,
+    k_per_retriever: int = 100,
+) -> dict[str, Any]:
+    """Run the union retriever + cross-encoder reranker, split by threshold.
+
+    Returns a dict shaped:
+      {
+        "query", "collection", "mode_hint", "limit",
+        "total",           # strong + weak count
+        "reranker",        # model name (or "none")
+        "threshold",       # float used for the split
+        "results":      [...]  # strong matches, len ≤ limit
+        "results_weak": [...]  # weak matches (below threshold), reranker order
+        "matched_words": [...] # only present if `term` retriever fired
+      }
+    """
+    library = load()
+
+    candidates = retrieve_union(query, collection=collection, k_per_retriever=k_per_retriever)
+
+    if not candidates:
+        return {
+            "query": query,
+            "collection": collection,
+            "mode_hint": mode_hint,
+            "total": 0,
+            "limit": limit,
+            "reranker": "none",
+            "threshold": 0.0,
+            "results": [],
+            "results_weak": [],
+            "matched_words": [],
+        }
+
+    rerank_on = reranker_mod.reranker_enabled()
+    name = reranker_mod.default_reranker_name()
+    threshold = reranker_mod.default_threshold()
+
+    scored: list[tuple[Candidate, float]]
+    if rerank_on:
+        try:
+            r = reranker_mod.get_reranker(name)
+            docs = [_doc_text(library, c) for c in candidates]
+            scores = r.score(query, docs)
+            scored = list(zip(candidates, scores))
+            scored.sort(key=lambda p: p[1], reverse=True)
+        except Exception as e:
+            logger.warning("reranker %s failed (%s); falling back to first-stage order", name, e)
+            rerank_on = False
+            name = "none"
+
+    if not rerank_on:
+        # Fallback ordering: max of normalised first-stage signals weighted
+        # by mode_hint. Concept favours semantic, keyword favours bm25,
+        # term favours the Arabic-skeleton score.
+        weights = {
+            "concept": (0.2, 1.0, 0.4),
+            "keyword": (1.0, 0.4, 0.4),
+            "term": (0.2, 0.4, 1.0),
+        }.get(mode_hint, (0.5, 0.5, 0.5))
+        wb, ws, wt = weights
+
+        def _heuristic(c: Candidate) -> float:
+            return wb * c.bm25_norm + ws * c.semantic_norm + wt * c.term_norm
+
+        scored = [(c, _heuristic(c)) for c in candidates]
+        scored.sort(key=lambda p: p[1], reverse=True)
+        # When the reranker is off, threshold doesn't carry calibrated
+        # meaning — push everything into the strong bucket so the API stays
+        # backward-compatible with prior expectations.
+        threshold = -float("inf")
+
+    strong: list[dict[str, Any]] = []
+    weak: list[dict[str, Any]] = []
+    word_freq: dict[str, int] = {}
+
+    for cand, score in scored:
+        h = cand.hadith
+        row: dict[str, Any] = {
+            **_collection_meta(library, h.collection),
+            "number": h.id_in_book,
+            "hadith_number": h.hadith_number,
+            "english_grade": h.english_grade,
+            "snippet": _snippet(h.english_text, query),
+            "score": float(score),
+            "sources": sorted(cand.sources),
+        }
+        if cand.matched_words:
+            row["matched_words"] = sorted(cand.matched_words)
+            for w in cand.matched_words:
+                word_freq[w] = word_freq.get(w, 0) + 1
+        # Per-mode legacy field preservation: keep `similarity` when semantic
+        # contributed, so existing API consumers don't break.
+        if "semantic" in cand.sources:
+            row["similarity"] = cand.semantic
+
+        if score >= threshold and len(strong) < limit:
+            strong.append(row)
+        else:
+            weak.append(row)
+
+    matched_words = sorted(
+        ({"word": w, "count": n} for w, n in word_freq.items()),
+        key=lambda x: (-x["count"], x["word"]),
+    )
+
+    return {
+        "query": query,
+        "collection": collection,
+        "mode_hint": mode_hint,
+        "total": len(strong) + len(weak),
+        "limit": limit,
+        "reranker": name,
+        "threshold": float(threshold) if threshold != -float("inf") else None,
+        "results": strong,
+        "results_weak": weak,
+        "matched_words": matched_words,
+    }
+
+
+def search_hadith(
+    query: str,
+    collection: str | None = None,
+    limit: int = 10,
+    rerank: bool = True,
+) -> dict[str, Any]:
     library = load()
     limit = max(1, min(limit, 50))
 
     if collection and collection not in library.collections:
         return {"error": f"Unknown collection: {collection!r}", "kind": "unknown_collection"}
+
+    if rerank:
+        return _search_with_rerank(query, mode_hint="keyword", collection=collection, limit=limit)
 
     total, hits = library.search(query, collection=collection, limit=limit)
     return {
@@ -134,12 +297,20 @@ def search_hadith(query: str, collection: str | None = None, limit: int = 10) ->
     }
 
 
-def search_hadith_term(term: str, collection: str | None = None, limit: int = 20) -> dict[str, Any]:
+def search_hadith_term(
+    term: str,
+    collection: str | None = None,
+    limit: int = 20,
+    rerank: bool = True,
+) -> dict[str, Any]:
     library = load()
     limit = max(1, min(limit, 100))
 
     if collection and collection not in library.collections:
         return {"error": f"Unknown collection: {collection!r}", "kind": "unknown_collection"}
+
+    if rerank:
+        return _search_with_rerank(term, mode_hint="term", collection=collection, limit=limit)
 
     total, word_freq, hits = library.search_term(term, collection=collection, limit=limit)
     matched_words = sorted(
@@ -164,12 +335,23 @@ def search_hadith_term(term: str, collection: str | None = None, limit: int = 20
     }
 
 
-def search_hadith_semantic(query: str, collection: str | None = None, limit: int = 10) -> dict[str, Any]:
+def search_hadith_semantic(
+    query: str,
+    collection: str | None = None,
+    limit: int = 10,
+    rerank: bool = True,
+) -> dict[str, Any]:
     library = load()
     limit = max(1, min(limit, 50))
 
     if collection and collection not in library.collections:
         return {"error": f"Unknown collection: {collection!r}", "kind": "unknown_collection"}
+
+    if rerank:
+        try:
+            return _search_with_rerank(query, mode_hint="concept", collection=collection, limit=limit)
+        except FileNotFoundError as e:
+            return {"error": f"Semantic search unavailable: {e}", "kind": "unavailable"}
 
     try:
         results = semantic.search(query, collection=collection, limit=limit)
