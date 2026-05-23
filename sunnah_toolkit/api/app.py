@@ -7,16 +7,37 @@ front). The app only handles auth + business logic.
 
 from __future__ import annotations
 
+import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from ..core import reranker as _reranker_mod
 from ..mcp.server import mcp
 from . import auth
 from .routes import router
 from .ui import index as _ui_index
+
+
+_log = logging.getLogger(__name__)
+
+
+def _warm_reranker() -> None:
+    """Eagerly load + run one dummy pair so the first user request doesn't
+    pay the model-load and JIT-warmup cost. Best-effort: if the reranker is
+    disabled or the model isn't available, log and continue."""
+    if not _reranker_mod.reranker_enabled():
+        _log.info("reranker disabled; skipping warm load")
+        return
+    name = _reranker_mod.default_reranker_name()
+    try:
+        r = _reranker_mod.get_reranker(name)
+        r.score("warmup", ["A short warmup document."])
+        _log.info("reranker %s warmed", name)
+    except Exception as e:
+        _log.warning("reranker %s warm load failed: %s", name, e)
 
 
 def create_app(keys_file: str | Path | None = None) -> FastAPI:
@@ -25,6 +46,7 @@ def create_app(keys_file: str | Path | None = None) -> FastAPI:
 
     @asynccontextmanager
     async def lifespan(_app: FastAPI):
+        _warm_reranker()
         async with mcp_app.router.lifespan_context(mcp_app):
             yield
 
