@@ -1,0 +1,30 @@
+# Run-only compose: launches a pre-built image (no `build:` context) plus a
+# Cloudflare quick tunnel that exposes it on a *.trycloudflare.com URL.
+#
+# Intended for a secondary machine (e.g. a spare laptop, a VPS, or a friend's
+# box) that does NOT have the source repo — only the image tarball.
+#
+# Bring up:
+#   docker compose -f docker-compose.run.yml up -d
+#
+# See the public URL (rotates every cloudflared restart in quick-tunnel mode):
+#   docker compose -f docker-compose.run.yml logs cloudflared | grep trycloudflare.com
+#
+# Tear down:
+#   docker compose -f docker-compose.run.yml down
+
+services:
+  sunnah-toolkit:
+    image: sunnah-toolkit:latest
+    container_name: sunnah-toolkit
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: sunnah-cloudflared
+    restart: unless-stopped
+    depends_on:
+      - sunnah-toolkit
+    command: tunnel --url http://sunnah-toolkit:8000 --no-autoupdate
