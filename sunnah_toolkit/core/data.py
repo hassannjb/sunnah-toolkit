@@ -330,8 +330,11 @@ class Library:
                 for score, h in zip(scores, self.bm25_corpus)
                 if score > 0 and (collection is None or h.collection == collection)
             ),
-            key=lambda pair: pair[0],
-            reverse=True,
+            key=lambda pair: (
+                COLLECTION_TIER[pair[1].collection],
+                pair[1].grade_tier,
+                -pair[0],
+            ),
         )
         return len(ranked), [h for _, h in ranked[:limit]]
 
