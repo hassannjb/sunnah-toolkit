@@ -16,6 +16,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from ..mcp.server import mcp
 from . import auth
 from .routes import router
+from .ui import index as _ui_index
 
 
 def create_app(keys_file: str | Path | None = None) -> FastAPI:
@@ -44,6 +45,9 @@ def create_app(keys_file: str | Path | None = None) -> FastAPI:
     @app.get("/healthz")
     def healthz() -> dict:
         return {"ok": True}
+
+    # Demo UI at /. Must be registered before the catch-all MCP mount below.
+    app.get("/", include_in_schema=False)(_ui_index)
 
     app.include_router(router)
     app.mount("/", mcp_app)
