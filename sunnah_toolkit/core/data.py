@@ -366,7 +366,11 @@ class Library:
             for w in matched_words:
                 word_freq[w] = word_freq.get(w, 0) + 1
 
-        results.sort(key=lambda pair: (pair[0].collection, pair[0].id_in_book))
+        results.sort(key=lambda pair: (
+            COLLECTION_TIER[pair[0].collection],
+            pair[0].grade_tier,
+            pair[0].id_in_book,
+        ))
         return len(results), word_freq, results[:limit]
 
 
