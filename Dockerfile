@@ -31,8 +31,12 @@ COPY data/HadithTable.sql.gz ./data/HadithTable.sql.gz
 RUN pip install .
 
 # Bake the SQLite database + embeddings + HF model cache into the image.
+# Pre-downloads ONLY the default reranker (bge-reranker-v2-m3) — the other
+# three Issue #2 candidates stay out of the image to hold size to ~3 GB.
+# Power users can fetch the rest at runtime via `python -m scripts.build_models`.
 RUN python -m scripts.build_sqlite \
- && python -m scripts.build_embeddings
+ && python -m scripts.build_embeddings \
+ && python -m scripts.build_models --only bge-v2-m3
 
 # ---------- Runtime ----------
 FROM python:3.12-slim AS runtime
