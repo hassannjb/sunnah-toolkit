@@ -7,9 +7,12 @@ markup verbatim in `Hadith.arabic` for downstream parsing.
 
 from __future__ import annotations
 
+import functools
+import json
 import math
 import re
 import sqlite3
+import unicodedata
 from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
@@ -20,6 +23,71 @@ from rank_bm25 import BM25Okapi
 from .translit import arabic_words, fold_index, fold_query
 
 DB_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "hadith.sqlite"
+
+
+COLLECTION_TIER: dict[str, int] = {
+    "bukhari": 0,
+    "muslim": 1,
+    "abudawud": 2,
+    "tirmidhi": 3,
+    "nasai": 4,
+    "ibnmajah": 5,
+    "ahmad": 6,
+    "mishkat": 7,
+    "riyadussalihin": 8,
+    "adab": 9,
+    "bulugh": 10,
+    "shamail": 11,
+    "forty": 12,
+    "hisn": 13,
+    "virtues": 14,
+}
+
+GRADE_TIER: dict[str, int] = {
+    "sahih": 0,
+    "hasan_sahih": 1,
+    "hasan": 2,
+    "daif": 3,
+    "ungraded": 4,
+    "maudu": 5,
+}
+
+
+_APOSTROPHES = str.maketrans({"'": "", "’": "", "‘": "", "`": "", "´": ""})
+
+
+@functools.lru_cache(maxsize=None)
+def normalize_grade(raw: str) -> str:
+    """Map an englishgrade1 value to one of GRADE_TIER's keys."""
+    if not raw:
+        return "ungraded"
+
+    stripped = raw.lstrip()
+    if stripped.startswith("[{"):
+        try:
+            data = json.loads(stripped)
+            if isinstance(data, list) and data:
+                inner = data[0].get("grade", "") if isinstance(data[0], dict) else ""
+                return normalize_grade(inner)
+        except (json.JSONDecodeError, ValueError):
+            pass
+
+    folded = unicodedata.normalize("NFKD", raw).encode("ascii", "ignore").decode("ascii")
+    folded = folded.translate(_APOSTROPHES).lower()
+
+    if "maudu" in folded or "fabricated" in folded:
+        return "maudu"
+    if "hasan sahih" in folded or "sahih hasan" in folded:
+        return "hasan_sahih"
+    if "muttafaqun" in folded:
+        return "sahih"
+    if "sahih" in folded:
+        return "sahih"
+    if "hasan" in folded:
+        return "hasan"
+    if "daif" in folded or "weak" in folded:
+        return "daif"
+    return "ungraded"
 
 
 # Hardcoded metadata for the 15 collections sunnah.com hosts. Keys are the
@@ -192,6 +260,7 @@ class Hadith:
     urn_english: int = 0
     arabic_grade: str = ""     # Arabic grading (e.g. "صحيح")
     english_grade: str = ""    # English grading (e.g. "Sahih")
+    grade_tier: int = 4        # GRADE_TIER index; default 4 == "ungraded"
 
 
 @dataclass(frozen=True, slots=True)
@@ -326,8 +395,11 @@ class Library:
                 for score, h in zip(scores, self.bm25_corpus)
                 if score > 0 and (collection is None or h.collection == collection)
             ),
-            key=lambda pair: pair[0],
-            reverse=True,
+            key=lambda pair: (
+                COLLECTION_TIER[pair[1].collection],
+                pair[1].grade_tier,
+                -pair[0],
+            ),
         )
         return len(ranked), [h for _, h in ranked[:limit]]
 
@@ -352,7 +424,11 @@ class Library:
         rows: list[tuple[Hadith, set[str]]] = [
             (self.bm25_corpus[idx], matched) for idx, _score, matched in full
         ]
-        rows.sort(key=lambda pair: (pair[0].collection, pair[0].id_in_book))
+        rows.sort(key=lambda pair: (
+            COLLECTION_TIER[pair[0].collection],
+            pair[0].grade_tier,
+            pair[0].id_in_book,
+        ))
         return len(rows), word_freq, rows[:limit]
 
 
@@ -432,6 +508,7 @@ def load() -> Library:
             hadiths: list[Hadith] = []
             for idx, r in enumerate(rows, start=1):
                 narrator, body = _split_narrator(r["englishText"] or "")
+                english_grade = r["englishgrade1"] or ""
                 hadiths.append(
                     Hadith(
                         collection=slug,
@@ -446,7 +523,8 @@ def load() -> Library:
                         urn_arabic=int(r["arabicURN"]),
                         urn_english=int(r["englishURN"]),
                         arabic_grade=r["arabicgrade1"] or "",
-                        english_grade=r["englishgrade1"] or "",
+                        english_grade=english_grade,
+                        grade_tier=GRADE_TIER[normalize_grade(english_grade)],
                     )
                 )
             lib.hadiths[slug] = hadiths

@@ -14,7 +14,7 @@ from threading import Lock
 
 import numpy as np
 
-from .data import Hadith, load
+from .data import COLLECTION_TIER, Hadith, load
 
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 EMBEDDINGS_PATH = DATA_DIR / "embeddings.npy"
@@ -125,7 +125,14 @@ def search(
     limit: int = 10,
 ) -> list[tuple[Hadith, float]]:
     """Backward-compat wrapper around `retrieve` that resolves indices to
-    Hadith records."""
+    Hadith records and applies the collection/grade tier sort."""
     library = load()
     corpus = library.bm25_corpus
-    return [(corpus[idx], score) for idx, score in retrieve(query, collection, limit)]
+    pool = max(limit * 20, 200)
+    candidates = [(corpus[idx], score) for idx, score in retrieve(query, collection, pool)]
+    candidates.sort(key=lambda pair: (
+        COLLECTION_TIER[pair[0].collection],
+        pair[0].grade_tier,
+        -pair[1],
+    ))
+    return candidates[:limit]

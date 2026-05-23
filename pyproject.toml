@@ -26,5 +26,8 @@ dependencies = [
     "onnxruntime>=1.18",
 ]
 
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
 [tool.setuptools.packages.find]
 include = ["sunnah_toolkit*"]
