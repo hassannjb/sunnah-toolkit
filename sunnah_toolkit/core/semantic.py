@@ -14,7 +14,7 @@ from threading import Lock
 
 import numpy as np
 
-from .data import Hadith, load
+from .data import COLLECTION_TIER, Hadith, load
 
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 EMBEDDINGS_PATH = DATA_DIR / "embeddings.npy"
@@ -107,12 +107,20 @@ def search(
         mask = np.array([h.collection == collection for h in corpus])
         scores = np.where(mask, scores, -np.inf)
 
-    k = min(limit, scores.size)
-    top_idx = np.argpartition(-scores, range(k))[:k]
+    # Enlarge the candidate pool so the tier reorder below has room to
+    # surface a high-tier hit that ranked, say, 50th on raw cosine.
+    pool = min(max(limit * 20, 200), scores.size)
+    top_idx = np.argpartition(-scores, range(pool))[:pool]
     top_idx = top_idx[np.argsort(-scores[top_idx])]
 
-    return [
+    candidates = [
         (corpus[int(i)], float(scores[int(i)]))
         for i in top_idx
         if scores[int(i)] > -np.inf
     ]
+    candidates.sort(key=lambda pair: (
+        COLLECTION_TIER[pair[0].collection],
+        pair[0].grade_tier,
+        -pair[1],
+    ))
+    return candidates[:limit]
