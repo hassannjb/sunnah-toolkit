@@ -259,6 +259,7 @@ class Hadith:
     urn_english: int = 0
     arabic_grade: str = ""     # Arabic grading (e.g. "صحيح")
     english_grade: str = ""    # English grading (e.g. "Sahih")
+    grade_tier: int = 4        # GRADE_TIER index; default 4 == "ungraded"
 
 
 @dataclass(frozen=True, slots=True)
@@ -442,6 +443,7 @@ def load() -> Library:
             hadiths: list[Hadith] = []
             for idx, r in enumerate(rows, start=1):
                 narrator, body = _split_narrator(r["englishText"] or "")
+                english_grade = r["englishgrade1"] or ""
                 hadiths.append(
                     Hadith(
                         collection=slug,
@@ -456,7 +458,8 @@ def load() -> Library:
                         urn_arabic=int(r["arabicURN"]),
                         urn_english=int(r["englishURN"]),
                         arabic_grade=r["arabicgrade1"] or "",
-                        english_grade=r["englishgrade1"] or "",
+                        english_grade=english_grade,
+                        grade_tier=GRADE_TIER[normalize_grade(english_grade)],
                     )
                 )
             lib.hadiths[slug] = hadiths
