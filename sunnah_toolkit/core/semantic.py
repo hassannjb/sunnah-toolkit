@@ -78,12 +78,13 @@ def _ensure_loaded() -> None:
         _engine.content_mask = content_mask
 
 
-def search(
+def retrieve(
     query: str,
     collection: str | None = None,
-    limit: int = 10,
-) -> list[tuple[Hadith, float]]:
-    """Embed `query`, cosine-similarity rank against the corpus, return top-N."""
+    limit: int = 100,
+) -> list[tuple[int, float]]:
+    """Embed `query`, cosine-rank against the corpus, return
+    (corpus_idx, similarity) top-N."""
     if not query.strip():
         return []
 
@@ -112,7 +113,19 @@ def search(
     top_idx = top_idx[np.argsort(-scores[top_idx])]
 
     return [
-        (corpus[int(i)], float(scores[int(i)]))
+        (int(i), float(scores[int(i)]))
         for i in top_idx
         if scores[int(i)] > -np.inf
     ]
+
+
+def search(
+    query: str,
+    collection: str | None = None,
+    limit: int = 10,
+) -> list[tuple[Hadith, float]]:
+    """Backward-compat wrapper around `retrieve` that resolves indices to
+    Hadith records."""
+    library = load()
+    corpus = library.bm25_corpus
+    return [(corpus[idx], score) for idx, score in retrieve(query, collection, limit)]
