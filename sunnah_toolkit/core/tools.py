@@ -232,7 +232,11 @@ def _search_with_rerank(
 
     strong: list[dict[str, Any]] = []
     weak: list[dict[str, Any]] = []
-    word_freq: dict[str, int] = {}
+    # Issue #3: aggregate matched_words from the STRONG result set only so
+    # the chip strip reflects what the user actually sees. Fall back to weak
+    # if strong is empty (rare — only when no above-threshold hits exist).
+    strong_word_freq: dict[str, int] = {}
+    weak_word_freq: dict[str, int] = {}
 
     for cand, score in scored:
         h = cand.hadith
@@ -247,8 +251,6 @@ def _search_with_rerank(
         }
         if cand.matched_words:
             row["matched_words"] = sorted(cand.matched_words)
-            for w in cand.matched_words:
-                word_freq[w] = word_freq.get(w, 0) + 1
         # Per-mode legacy field preservation: keep `similarity` when semantic
         # contributed, so existing API consumers don't break.
         if "semantic" in cand.sources:
@@ -256,11 +258,23 @@ def _search_with_rerank(
 
         if score >= threshold and len(strong) < limit:
             strong.append(row)
+            if cand.matched_words:
+                for w in cand.matched_words:
+                    strong_word_freq[w] = strong_word_freq.get(w, 0) + 1
         else:
             weak.append(row)
+            if cand.matched_words:
+                for w in cand.matched_words:
+                    weak_word_freq[w] = weak_word_freq.get(w, 0) + 1
 
+    # Issue #3: aggregate matched_words from the STRONG result set only.
+    # Fallback to weak ONLY when the strong list is literally empty — not
+    # merely when strong rows have no matched_words. A strong bucket with
+    # non-term hits (semantic/BM25 only, no matched_words) should still
+    # suppress the chip strip because there's nothing for the user to filter.
+    chip_source = strong_word_freq if strong else weak_word_freq
     matched_words = sorted(
-        ({"word": w, "count": n} for w, n in word_freq.items()),
+        ({"word": w, "count": n} for w, n in chip_source.items()),
         key=lambda x: (-x["count"], x["word"]),
     )
 
