@@ -269,6 +269,32 @@ INDEX_HTML = r"""<!doctype html>
     .coll-item input { margin: 0; flex-shrink: 0; }
     .coll-name { flex: 1; }
     .coll-hcount { color: var(--muted); font-size: 0.78rem; }
+    .page-nav {
+      display: flex;
+      gap: 0.3rem;
+      justify-content: center;
+      align-items: center;
+      margin: 1rem 0 0.5rem;
+      flex-wrap: wrap;
+    }
+    .page-nav .pn-btn {
+      padding: 0.4rem 0.7rem;
+      font-size: 0.9rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-weight: 500;
+      min-width: 2.4rem;
+    }
+    .page-nav .pn-btn:hover:not(:disabled) { background: var(--soft); border-color: var(--accent); }
+    .page-nav .pn-btn.pn-current {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      cursor: default;
+    }
+    .page-nav .pn-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .page-nav .pn-ellipsis { color: var(--muted); padding: 0 0.2rem; }
     footer { margin-top: 2rem; text-align: center; color: var(--muted); font-size: 0.8rem; }
     footer a { color: var(--muted); }
     @media (max-width: 480px) {
@@ -330,6 +356,7 @@ INDEX_HTML = r"""<!doctype html>
     <section id="results">
       <div id="results-header"></div>
       <div id="results-rows"></div>
+      <div id="page-nav"></div>
     </section>
     <section id="detail"></section>
 
@@ -345,7 +372,12 @@ INDEX_HTML = r"""<!doctype html>
     const statusEl = $("status");
     const resultsHeaderEl = $("results-header");
     const resultsRowsEl = $("results-rows");
+    const pageNavEl = $("page-nav");
     const detailEl = $("detail");
+
+    const PAGE_SIZE = 10;
+    const ALL_LIMIT = 50000;
+    let currentPage = 1;
     const searchBtn = $("search-btn");
     const randomBtn = $("random-btn");
     const collCountEl = $("coll-count");
@@ -472,6 +504,7 @@ INDEX_HTML = r"""<!doctype html>
     function clearAll() {
       resultsHeaderEl.innerHTML = "";
       resultsRowsEl.innerHTML = "";
+      pageNavEl.innerHTML = "";
       detailEl.innerHTML = "";
       lastResults = [];
       lastResultsWeak = [];
@@ -481,6 +514,7 @@ INDEX_HTML = r"""<!doctype html>
       lastMatchedWords = [];
       selectedWords = new Set();
       selectedResultCollections = new Set();
+      currentPage = 1;
     }
 
     function escapeHtml(s) {
@@ -590,18 +624,16 @@ INDEX_HTML = r"""<!doctype html>
     async function searchAcrossCollections(mode, query) {
       const filtering = isCollectionFilterActive();
       if (!filtering) {
-        const lim = (mode === "term") ? 20 : 10;
-        return await call(buildSearchUrl(mode, query, null, lim));
+        return await call(buildSearchUrl(mode, query, null, ALL_LIMIT));
       }
       const slugs = Array.from(selectedCollections);
-      const perCallLimit = (mode === "term") ? 30 : 15;
 
       if (slugs.length === 1) {
-        return await call(buildSearchUrl(mode, query, slugs[0], perCallLimit));
+        return await call(buildSearchUrl(mode, query, slugs[0], ALL_LIMIT));
       }
 
       const responses = await Promise.allSettled(
-        slugs.map((s) => call(buildSearchUrl(mode, query, s, perCallLimit)))
+        slugs.map((s) => call(buildSearchUrl(mode, query, s, ALL_LIMIT)))
       );
       const ok = responses.filter((r) => r.status === "fulfilled").map((r) => r.value);
 
@@ -698,45 +730,71 @@ INDEX_HTML = r"""<!doctype html>
         return f;
       }
 
+      // Paginate the currently-visible set.
+      //   weak hidden -> paginate strong only.
+      //   weak shown  -> paginate strong concatenated with weak (still 10 per page).
+      // Weak rows keep their .result-row.weak styling via renderResultRow's isWeak flag.
       const filteredStrong = applyFilters(lastResults);
       const filteredWeak = applyFilters(lastResultsWeak);
+      const strongCount = filteredStrong.length;
+      const visible = weakVisible
+        ? filteredStrong.concat(filteredWeak)
+        : filteredStrong;
 
-      let html = filteredStrong.map((it) => renderResultRow(it, lastShowScore, false)).join("");
-      if (lastResultsWeak.length > 0) {
-        if (weakVisible) {
-          if (filteredWeak.length > 0) {
-            html += '<div class="weak-divider">Weak matches (below reranker threshold)</div>';
-            html += filteredWeak.map((it) => renderResultRow(it, lastShowScore, true)).join("");
-          }
-          html += '<button type="button" id="show-weak" class="weak-toggle">Hide ' + filteredWeak.length + ' weak match' + (filteredWeak.length === 1 ? "" : "es") + '</button>';
-        } else {
-          html += '<button type="button" id="show-weak" class="weak-toggle">Show ' + filteredWeak.length + ' weak match' + (filteredWeak.length === 1 ? "" : "es") + '</button>';
-        }
+      const totalStrong = lastResults.length;
+      const totalWeak = lastResultsWeak.length;
+      const visibleTotal = visible.length;
+      const totalPages = Math.max(1, Math.ceil(visibleTotal / PAGE_SIZE));
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+      const start = (currentPage - 1) * PAGE_SIZE;
+      const pageItems = visible.slice(start, start + PAGE_SIZE);
+
+      // A weak row is any visible-list index >= strongCount.
+      let html = pageItems
+        .map((it, i) => renderResultRow(it, lastShowScore, (start + i) >= strongCount))
+        .join("");
+
+      // Single weak-toggle button at the end (only when weak matches exist).
+      if (totalWeak > 0) {
+        const verb = weakVisible ? "Hide" : "Show";
+        const noun = "weak match" + (totalWeak === 1 ? "" : "es");
+        html += '<button type="button" id="show-weak" class="weak-toggle">' +
+                verb + ' ' + totalWeak + ' ' + noun + '</button>';
       }
-      resultsRowsEl.innerHTML = html;
-      attachRowHandlers();
 
+      resultsRowsEl.innerHTML = html;
+      pageNavEl.innerHTML = renderPageNav(totalPages, currentPage);
+      attachRowHandlers();
+      attachPageNavHandlers();
+
+      // Toggling weak resets to page 1 (the visible-set size just changed).
       const showWeakBtn = resultsRowsEl.querySelector("#show-weak");
       if (showWeakBtn) {
         showWeakBtn.addEventListener("click", () => {
           weakVisible = !weakVisible;
+          currentPage = 1;
           renderResultsView();
         });
       }
 
-      const shownStrong = filteredStrong.length;
-      const totalStrong = lastResults.length;
-      const totalWeak = lastResultsWeak.length;
-      if (shownStrong === 0 && filteredWeak.length === 0) {
+      if (visibleTotal === 0) {
         setStatus("Nothing matches the current filters. Tick more chips to see hadiths.");
-      } else if (shownStrong < totalStrong || (lastResultsWeak.length && filteredWeak.length < totalWeak)) {
-        setStatus("Showing " + shownStrong + " of " + totalStrong + " strong" +
-                  (totalWeak ? " (+ " + totalWeak + " weak)" : "") +
-                  " — filtered. Tap a row to read.");
       } else {
-        setStatus(totalStrong + " strong" +
-                  (totalWeak ? " (+ " + totalWeak + " weak)" : "") +
-                  " result(s). Tap a row to read the full hadith.");
+        const endIdx = Math.min(start + PAGE_SIZE, visibleTotal);
+        const filteredFromTotal = weakVisible ? (totalStrong + totalWeak) : totalStrong;
+        const filteredNote = (visibleTotal < filteredFromTotal)
+          ? " (filtered from " + filteredFromTotal.toLocaleString() + ")"
+          : "";
+        const pageNote = (totalPages > 1) ? " — page " + currentPage + " of " + totalPages : "";
+        const weakHint = (!weakVisible && totalWeak > 0)
+          ? " (+ " + totalWeak + " weak hidden)"
+          : "";
+        setStatus(
+          "Showing " + (start + 1).toLocaleString() + "–" + endIdx.toLocaleString() +
+          " of " + visibleTotal.toLocaleString() + filteredNote + weakHint + pageNote +
+          ". Tap a row to read the full hadith."
+        );
       }
 
       // Wire up toggle handlers (the innerHTML rewrite blew away any prior listeners).
@@ -745,6 +803,7 @@ INDEX_HTML = r"""<!doctype html>
           selectedResultCollections = new Set(
             Array.from(resultsHeaderEl.querySelectorAll(".rc-chip input:checked")).map((i) => i.value)
           );
+          currentPage = 1;
           renderResultsView();
         });
       });
@@ -758,6 +817,7 @@ INDEX_HTML = r"""<!doctype html>
             selectedResultCollections = new Set(
               Array.from(colsBox.querySelectorAll(".rc-chip input:checked")).map((i) => i.value)
             );
+            currentPage = 1;
             renderResultsView();
           });
         });
@@ -767,7 +827,48 @@ INDEX_HTML = r"""<!doctype html>
           selectedWords = new Set(
             Array.from(resultsHeaderEl.querySelectorAll(".word-chip input:checked")).map((i) => i.value)
           );
+          currentPage = 1;
           renderResultsView();
+        });
+      });
+    }
+
+    function renderPageNav(totalPages, current) {
+      if (totalPages <= 1) return "";
+      const w = 2;
+      const wanted = new Set([1, totalPages]);
+      for (let p = Math.max(1, current - w); p <= Math.min(totalPages, current + w); p++) {
+        wanted.add(p);
+      }
+      const sorted = Array.from(wanted).sort((a, b) => a - b);
+      const parts = [];
+      let prev = 0;
+      for (const p of sorted) {
+        if (prev && p - prev > 1) parts.push('<span class="pn-ellipsis">&hellip;</span>');
+        const cls = (p === current) ? "pn-btn pn-current" : "pn-btn";
+        const dis = (p === current) ? " disabled" : "";
+        parts.push('<button type="button" class="' + cls + '" data-page="' + p + '"' + dis + '>' + p + '</button>');
+        prev = p;
+      }
+      const prevDis = current <= 1 ? " disabled" : "";
+      const nextDis = current >= totalPages ? " disabled" : "";
+      return '<nav class="page-nav">' +
+        '<button type="button" class="pn-btn" data-page="' + (current - 1) + '"' + prevDis + '>&lsaquo; Prev</button>' +
+        parts.join("") +
+        '<button type="button" class="pn-btn" data-page="' + (current + 1) + '"' + nextDis + '>Next &rsaquo;</button>' +
+        '</nav>';
+    }
+
+    function attachPageNavHandlers() {
+      pageNavEl.querySelectorAll("button[data-page]").forEach((btn) => {
+        if (btn.disabled) return;
+        btn.addEventListener("click", () => {
+          const p = parseInt(btn.dataset.page, 10);
+          if (isNaN(p)) return;
+          currentPage = p;
+          renderResultsView();
+          const top = (resultsHeaderEl.firstChild) ? resultsHeaderEl : resultsRowsEl;
+          top.scrollIntoView({ behavior: "smooth", block: "start" });
         });
       });
     }
@@ -821,17 +922,11 @@ INDEX_HTML = r"""<!doctype html>
         }
 
         const filtering = isCollectionFilterActive();
-        const multiCollection = filtering && selectedCollections.size > 1;
         const showScore = (mode === "semantic");
-        // Display caps: bump when filtering across multiple collections so each
-        // ticked collection has room to surface results.
-        let displayCap;
-        if (mode === "term") displayCap = multiCollection ? 40 : 20;
-        else displayCap = multiCollection ? 20 : 10;
 
         const j = await searchAcrossCollections(mode, q);
-        let items = j.results || [];
-        let weakItems = j.results_weak || [];
+        const items = j.results || [];
+        const weakItems = j.results_weak || [];
 
         if (!items.length && !weakItems.length) {
           if (filtering) {
@@ -842,11 +937,8 @@ INDEX_HTML = r"""<!doctype html>
           return;
         }
 
-        items = items.slice(0, displayCap);
-        // Cap weak too so a noisy reranker can't flood the UI with hundreds
-        // of rows when the user toggles "Show weak".
-        weakItems = weakItems.slice(0, Math.max(displayCap * 3, 60));
-
+        // No client-side cap — the union retriever already caps the pool
+        // (k_per_retriever) and PAGE_SIZE keeps the rendered page small.
         // Cache results so the chip filters can re-render without re-fetching.
         lastResults = items;
         lastResultsWeak = weakItems;
@@ -857,7 +949,10 @@ INDEX_HTML = r"""<!doctype html>
         selectedWords = (mode === "term")
           ? new Set(lastMatchedWords.slice(0, 8).map((w) => w.word))
           : new Set();
+        // Collection chip set spans strong + weak so toggling weak doesn't
+        // suddenly surface rows whose slug isn't represented in the chip strip.
         selectedResultCollections = new Set(items.concat(weakItems).map((r) => r.slug));
+        currentPage = 1;
 
         renderResultsView();
       } catch (e) {
