@@ -153,13 +153,20 @@ def _search_with_rerank(
     Returns a dict shaped:
       {
         "query", "collection", "mode_hint", "limit",
-        "total",           # strong + weak count
+        "pool_size",       # len(union retriever output) — the universe we ranked
+        "total",           # strong + weak count (== pool_size minus any
+                           #   strong-bucket truncation; this is the post-union
+                           #   split count, NOT the BM25-positive universe)
         "reranker",        # model name (or "none")
         "threshold",       # float used for the split
         "results":      [...]  # strong matches, len ≤ limit
         "results_weak": [...]  # weak matches (below threshold), reranker order
         "matched_words": [...] # only present if `term` retriever fired
       }
+
+    `limit` is clamped at `pool_size` server-side so callers requesting more
+    than the union pool no longer pretend to honour the value. See review
+    finding CR-003.
     """
     library = load()
 
@@ -172,6 +179,7 @@ def _search_with_rerank(
             "mode_hint": mode_hint,
             "total": 0,
             "limit": limit,
+            "pool_size": 0,
             "reranker": "none",
             "threshold": 0.0,
             "results": [],
@@ -217,6 +225,11 @@ def _search_with_rerank(
         # backward-compatible with prior expectations.
         threshold = -float("inf")
 
+    # CR-003: clamp limit at the actual union pool size — a caller asking
+    # for limit=1000 when only 173 candidates exist should not pretend.
+    pool_size = len(scored)
+    limit = min(limit, pool_size)
+
     strong: list[dict[str, Any]] = []
     weak: list[dict[str, Any]] = []
     word_freq: dict[str, int] = {}
@@ -257,6 +270,7 @@ def _search_with_rerank(
         "mode_hint": mode_hint,
         "total": len(strong) + len(weak),
         "limit": limit,
+        "pool_size": pool_size,
         "reranker": name,
         "threshold": float(threshold) if threshold != -float("inf") else None,
         "results": strong,
