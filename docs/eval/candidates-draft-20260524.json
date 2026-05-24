@@ -1,0 +1,3538 @@
+{
+  "queries": [
+    {
+      "query": "supplication when going to sleep",
+      "mode_hint": "concept",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 213,
+          "hadith_number": "213",
+          "snippet": "The Prophet said, \"If anyone of you feels drowsy while praying, he should sleep till he understands  what he is saying (reciting)."
+        },
+        {
+          "slug": "bukhari",
+          "number": 6044,
+          "hadith_number": "6279",
+          "snippet": "We used to have a midday nap and take our meals after the Jumua (prayer)."
+        },
+        {
+          "slug": "bukhari",
+          "number": 6059,
+          "hadith_number": "6296",
+          "snippet": "Allah s Apostle said, \"When you intend going to bed at night, put out the lights, close the doors, tie  the mouths of the water skins, and cover your food and drinks.\" Hamrnam said, \"I think he (the o"
+        },
+        {
+          "slug": "bukhari",
+          "number": 918,
+          "hadith_number": "940",
+          "snippet": "We used to offer the Jumua prayer early and then have the afternoon nap."
+        },
+        {
+          "slug": "bukhari",
+          "number": 212,
+          "hadith_number": "212",
+          "snippet": "Allah's Apostle said, \"If anyone of you feels drowsy while praying he should go to bed (sleep) till his  slumber is over because in praying while drowsy one does not know whether one is asking for  fo"
+        },
+        {
+          "slug": "bukhari",
+          "number": 917,
+          "hadith_number": "939",
+          "snippet": "As above with the addition: We never had an afternoon nap nor meals except after offering the Jumua  prayer."
+        },
+        {
+          "slug": "bukhari",
+          "number": 4366,
+          "hadith_number": "4572",
+          "snippet": "That once he stayed overnight in the house of his aunt, the wife of the Prophet. He added: I lay on the  cushion transversely while Allah's Apostle lay along with his wife in the lengthwise direction "
+        },
+        {
+          "slug": "bukhari",
+          "number": 1101,
+          "hadith_number": "1133",
+          "snippet": "In my house he (Prophet (p.b.u.h) ) never passed the last hours of the night but sleeping."
+        },
+        {
+          "slug": "bukhari",
+          "number": 3160,
+          "hadith_number": "3295",
+          "snippet": "The Prophet said, \"If anyone of you rouses from sleep and performs the ablution, he should wash his  nose by putting water in it and then blowing it out thrice, because Satan has stayed in the upper p"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1160,
+          "hadith_number": "1198",
+          "snippet": "`Abdullah bin `Abbas said that he had passed a night in the house of Maimuna the mother of the  faithful believers , who was his aunt. He said, \"I slept across the bed, and Allah's Apostle along with "
+        },
+        {
+          "slug": "bukhari",
+          "number": 883,
+          "hadith_number": "905",
+          "snippet": "We used to offer the Jumua prayer early and then have an afternoon nap."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5088,
+          "hadith_number": "5298",
+          "snippet": "The Prophet said, \"The call (or the Adhan) of Bilal should not stop you from taking the Suhur-meals for Bilal calls (or pronounces the Adhan) so that the one who is offering the night prayer should ta"
+        },
+        {
+          "slug": "bukhari",
+          "number": 340,
+          "hadith_number": "344",
+          "snippet": "Once we were traveling with the Prophet and we carried on traveling till the last part of the night and  then we (halted at a place) and slept (deeply). There is nothing sweeter than sleep for a trave"
+        },
+        {
+          "slug": "bukhari",
+          "number": 138,
+          "hadith_number": "138",
+          "snippet": "Ibn `Abbas said, \"The Prophet slept till he snored and then prayed (or probably lay till his breath  sounds were heard and then got up and prayed).\" Ibn `Abbas added: \"I stayed overnight in the house "
+        },
+        {
+          "slug": "bukhari",
+          "number": 1110,
+          "hadith_number": "1142",
+          "snippet": "Allah's Apostle said, \"Satan puts three knots at the back of the head of any of you if he is asleep. On  every knot he reads and exhales the following words, 'The night is long, so stay asleep.' When "
+        },
+        {
+          "slug": "bukhari",
+          "number": 581,
+          "hadith_number": "595",
+          "snippet": "My father said, \"One night we were traveling with the Prophet and some people said, 'We wish that  Allah's Apostle would take a rest along with us during the last hours of the night.' He said, 'I am a"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3135,
+          "hadith_number": "3269",
+          "snippet": "Allah's Apostle said, \"During your sleep, Satan knots three knots at the back of the head of each of  you, and he breathes the following words at each knot, 'The night is, long, so keep on sleeping,' "
+        },
+        {
+          "slug": "bukhari",
+          "number": 607,
+          "hadith_number": "621",
+          "snippet": "The Prophet said, \"The Adhan pronounced by Bilal should not stop you from taking Suhur, for he  pronounces the Adhan at night, so that the one offering the late night prayer (Tahajjud) from among  you"
+        },
+        {
+          "slug": "bukhari",
+          "number": 183,
+          "hadith_number": "183",
+          "snippet": "That he stayed overnight in the house of Maimuna the wife of the Prophet, his aunt. He added : I lay  on the bed (cushion transversally) while Allah's Apostle and his wife lay in the lengthwise direct"
+        },
+        {
+          "slug": "bukhari",
+          "number": 919,
+          "hadith_number": "941",
+          "snippet": "We used to offer the Jumua prayer with the Prophet and then take the afternoon nap."
+        },
+        {
+          "slug": "bukhari",
+          "number": 285,
+          "hadith_number": "286",
+          "snippet": "I asked `Aisha \"Did the Prophet use to sleep while he was Junub?\" She replied, \"Yes, but he used to  perform ablution (before going to bed)."
+        },
+        {
+          "slug": "bukhari",
+          "number": 1896,
+          "hadith_number": "1967",
+          "snippet": "Allah's Apostle said, \"Do not fast continuously day and night (practice Al-Wisal) and if anyone of you  intends to fast continuously day and night, he should continue till the Suhur time.\" They said, "
+        },
+        {
+          "slug": "bukhari",
+          "number": 965,
+          "hadith_number": "992",
+          "snippet": "Once I passed the night in the house of Maimuna (his aunt). I slept across the bed while Allah's  Apostle and his wife slept length-wise. The Prophet slept till midnight or nearly so and woke up  rubb"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4365,
+          "hadith_number": "4571",
+          "snippet": "That once he stayed overnight (in the house) of his aunt Maimuna. the wife of the Prophet. He added:  I lay on the cushion transversely and Allah's Apostle lay along with his wife in the lengthwise  d"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6973,
+          "hadith_number": "7247",
+          "snippet": "Allah's Apostle said, \"The (call for prayer) Adhan of Bilal should not stop anyone of you from taking  his Suhur for he pronounces the Adhan in order that whoever among you is praying the night prayer"
+        },
+        {
+          "slug": "bukhari",
+          "number": 509,
+          "hadith_number": "518",
+          "snippet": "The Prophet used to pray while I used to sleep beside him during my periods (menses) and in  prostration his garment used to touch me."
+        },
+        {
+          "slug": "bukhari",
+          "number": 838,
+          "hadith_number": "859",
+          "snippet": "One night I slept at the house of my aunt Maimuna and the Prophet slept (too). He got up (for prayer)  in the last hours of the night and performed a light ablution from a hanging leather skin. (`Amr,"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3421,
+          "hadith_number": "3571",
+          "snippet": "That they were with the Prophet on a journey. They travelled the whole night, and when dawn  approached, they took a rest and sleep overwhelmed them till the sun rose high in the sky. The first to  ge"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4364,
+          "hadith_number": "4570",
+          "snippet": "(One night) I stayed overnight in the house of my aunt Maimuna, and said to myself, \"I will watch the  prayer of Allah's Apostle \" My aunt placed a cushion for Allah's Apostle and he slept on it in it"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3136,
+          "hadith_number": "3270",
+          "snippet": "It was mentioned before the Prophet that there was a man who slept the night till morning (after  sunrise). The Prophet said, \"He is a man in whose ears (or ear) Satan had urinated.\""
+        }
+      ]
+    },
+    {
+      "query": "what to say when entering the toilet",
+      "mode_hint": "concept",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 5417,
+          "hadith_number": "5630",
+          "snippet": "Allah's Apostle said, \"When you drink (water), do not breath in the vessel; and when you urinate, do  not touch your penis with your right hand. And when you cleanse yourself after defecation, do not "
+        },
+        {
+          "slug": "bukhari",
+          "number": 4635,
+          "hadith_number": "4842",
+          "snippet": "`Abdullah bin Al-Mughaffal  Al-Muzani also said: \"The Prophet also forbade urinating at the place where one takes a bath.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 856,
+          "hadith_number": "877",
+          "snippet": "Allah's Apostle (p.b.u.h) said, \"Anyone of you attending the Friday (prayers) should take a bath.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 226,
+          "hadith_number": "226",
+          "snippet": "Abu Musa Al-Ash`ari used to lay great stress on the question of urination and he used to say, \"If  anyone from Bani Israel happened to soil his clothes with urine, he used to cut that portion away.\"  "
+        },
+        {
+          "slug": "bukhari",
+          "number": 873,
+          "hadith_number": "894",
+          "snippet": "I heard Allah's Apostle saying, \"Anyone of you coming for the Jumua prayer should take a bath.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 239,
+          "hadith_number": "239",
+          "snippet": "\"You should not pass urine in stagnant water which is not flowing then (you may need to) wash in it.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 6085,
+          "hadith_number": "6322",
+          "snippet": "Whenever the Prophet went to the lavatory, he used to say: \"Allahumma inni a`udhu bika min al-khubuthi wal khaba'ith.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 6438,
+          "hadith_number": "6682",
+          "snippet": "Allah's Apostle said, \"(The following are) two words (sentences or utterances) that are very easy for the tongue to say, and very heavy in the balance (of reward), and most beloved to the Gracious Alm"
+        },
+        {
+          "slug": "bukhari",
+          "number": 292,
+          "hadith_number": "293",
+          "snippet": "I asked Allah's Apostle about a man who engages in sexual intercourse with his wife but does not  discharge. He replied, \"He should wash the parts which comes in contact with the private parts of the "
+        },
+        {
+          "slug": "bukhari",
+          "number": 859,
+          "hadith_number": "880",
+          "snippet": "I testify that Allah's Apostle said, \"The taking of a bath on Friday is compulsory for every male  Muslim who has attained the age of puberty and (also) the cleaning of his teeth with Siwak, and the  "
+        },
+        {
+          "slug": "bukhari",
+          "number": 6988,
+          "hadith_number": "7263",
+          "snippet": "I came and behold, Allah's Apostle was staying on a Mashroba (attic room) and a black slave of  Allah's Apostle was at the top if its stairs. I said to him, \"(Tell the Prophet) that here is `Umar bin "
+        },
+        {
+          "slug": "bukhari",
+          "number": 95,
+          "hadith_number": "95",
+          "snippet": "Whenever the Prophet spoke a sentence (said a thing), he used to repeat it thrice so that the people  could understand it properly from him and whenever he asked permission to enter, (he knocked the  "
+        },
+        {
+          "slug": "bukhari",
+          "number": 269,
+          "hadith_number": "269",
+          "snippet": "I used to get emotional urethral discharge frequently. Being the son-in-law of the Prophet I requested  a man to ask him about it. So the man asked the Prophet about it. The Prophet replied, \"Perform "
+        },
+        {
+          "slug": "bukhari",
+          "number": 153,
+          "hadith_number": "153",
+          "snippet": "Allah's Apostle said, \"Whenever anyone of you drinks water, he should not breathe in the drinking  utensil, and whenever anyone of you goes to a lavatory, he should neither touch his penis nor clean h"
+        },
+        {
+          "slug": "bukhari",
+          "number": 7076,
+          "hadith_number": "7357",
+          "snippet": "A woman asked the Prophet (Hadith 456).  Narrated `Aisha:  A woman asked the Prophet about the periods: How to take a bath after the periods. He said, \"Take a  perfumed piece of cloth and clean yourse"
+        },
+        {
+          "slug": "bukhari",
+          "number": 174,
+          "hadith_number": "174",
+          "snippet": "And narrated       Hamza bin 'Abdullah: My father said. \"During the lifetime of Allah's       Apostle, the dogs used to urinate, and pass through the mosques (come       and go), nevertheless they nev"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3337,
+          "hadith_number": "3483",
+          "snippet": "The Prophet said, \"One of the sayings of the prophets which the people have got, is. 'If you do not feel  ashamed, then do whatever you like.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 3338,
+          "hadith_number": "3484",
+          "snippet": "The Prophet said, \"One of the sayings of the prophets which the people have got is, 'If you do not feel  ashamed, then do whatever you like.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 897,
+          "hadith_number": "919",
+          "snippet": "My father said , \"I heard the Prophet delivering the Khutba on the pulpit and he said, 'Whoever comes  for the Jumua prayer should take a bath (before coming).' \""
+        },
+        {
+          "slug": "bukhari",
+          "number": 858,
+          "hadith_number": "879",
+          "snippet": "Allah's Apostle (p.b.u.h) said, \"The taking of a bath on Friday is compulsory for every male (Muslim)  who has attained the age of puberty.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 874,
+          "hadith_number": "895",
+          "snippet": "Allah's Apostle said, \"The taking of a bath on Friday is compulsory for every Muslim who has  attained the age of puberty.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 290,
+          "hadith_number": "291",
+          "snippet": "as the following Hadith 290.  Narrated Abu Huraira:  The Prophet said, \"When a man sits in between the four parts of a woman and did the sexual  intercourse with her, bath becomes compulsory.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 861,
+          "hadith_number": "882",
+          "snippet": "While `Umar (bin Al-Khattab) was delivering the Khutba on a Friday, a man entered (the mosque).  `Umar asked him, \"What has detained you from the prayer?\" The man said, \"It was only that when I  heard"
+        },
+        {
+          "slug": "bukhari",
+          "number": 427,
+          "hadith_number": "433",
+          "snippet": "Allah's Apostle said, \"Do not enter (the places) of these people where Allah's punishment had fallen  unless you do so weeping. If you do not weep, do not enter (the places of these people) because  A"
+        },
+        {
+          "slug": "bukhari",
+          "number": 143,
+          "hadith_number": "143",
+          "snippet": "Once the Prophet entered a lavatory and I placed water for his ablution. He asked, \"Who placed it?\"  He was informed accordingly and so he said, \"O Allah! Make him (Ibn `Abbas) a learned scholar in  r"
+        },
+        {
+          "slug": "bukhari",
+          "number": 955,
+          "hadith_number": "981",
+          "snippet": "We were ordered to go out (for `Id) and also to take along with us the menstruating women, mature  girls and virgins staying in seclusion. (Ibn `Aun said, \"Or mature virgins staying in seclusion).\" Th"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5797,
+          "hadith_number": "6025",
+          "snippet": "A bedouin urinated in the mosque and the people ran to (beat) him. Allah's Apostle said, \"Do not  interrupt his urination (i.e. let him finish).\" Then the Prophet asked for a tumbler of water and pour"
+        },
+        {
+          "slug": "bukhari",
+          "number": 7028,
+          "hadith_number": "7305",
+          "snippet": "I proceeded till I entered upon `Umar (and while I was sitting there), his gate-keeper Yarfa came to  him and said, \" `Uthman, `Abdur-Rahman, Az-Zubair and Sa`d ask your permission to come in.\"  `Umar"
+        },
+        {
+          "slug": "bukhari",
+          "number": 132,
+          "hadith_number": "132",
+          "snippet": "I used to get the emotional urethral discharge frequently so I requested Al-Miqdad to ask the Prophet \r about it. Al-Miqdad asked him and he replied, \"One has to perform ablution (after it).\" (See Had"
+        },
+        {
+          "slug": "bukhari",
+          "number": 863,
+          "hadith_number": "884",
+          "snippet": "I said to Ibn `Abbas, \"The people are narrating that the Prophet said, 'Take a bath on Friday and wash  your heads (i.e. take a thorough bath) even though you were not Junub and use perfume'.\" On that"
+        }
+      ]
+    },
+    {
+      "query": "fasting on the day of Arafah",
+      "mode_hint": "concept",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 1929,
+          "hadith_number": "2002",
+          "snippet": "Quraish used to fast on the day of 'Ashura' in the Pre-Islamic period, and Allah's Apostle too, used to  fast on that day. When he came to Medina, he fasted on that day and ordered others to fast, too"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1926,
+          "hadith_number": "1999",
+          "snippet": "Fasting for those who perform ,Hajj-at-Tamattu` (in lieu of the Hadi which they cannot afford) may be  performed up to the day of `Arafat. And if one does not get a Hadi and has not fasted (before the"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1824,
+          "hadith_number": "1892",
+          "snippet": "The Prophet observed the fast on the 10th of Muharram ('Ashura), and ordered (Muslims) to fast on  that day, but when the fasting of the month of Ramadan was prescribed, the fasting of the 'Ashura' wa"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3668,
+          "hadith_number": "3831",
+          "snippet": "'Ashura' (i.e. the tenth of Muharram) was a day on which the tribe of Quraish used to fast in the prelslamic  period of ignorance. The Prophet also used to fast on this day. So when he migrated to  Me"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4300,
+          "hadith_number": "4501",
+          "snippet": "Fasting was observed on the day of 'Ashura' (i.e. 10th of Muharram) by the people of the Pre-lslamic  Period. But when (the order of compulsory fasting) in the month of Ramadan was revealed, the  Prop"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1825,
+          "hadith_number": "1893",
+          "snippet": "(The tribe of) Quraish used to fast on the day of Ashura' in the Pre-Islamic period, and then Allah's  Apostle ordered (Muslims) to fast on it till the fasting in the month of Ramadan was prescribed; "
+        },
+        {
+          "slug": "bukhari",
+          "number": 1538,
+          "hadith_number": "1592",
+          "snippet": "The people used to fast on 'Ashura (the tenth day of the month of Muharram) before the fasting of  Ramadan was made obligatory. And on that day the Ka`ba used to be covered with a cover. When  Allah m"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4303,
+          "hadith_number": "4504",
+          "snippet": "During the Pre-lslamic Period of ignorance the Quraish used to observe fasting on the day of 'Ashura',  and the Prophet himself used to observe fasting on it too. But when he came to Medina, he fasted"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1898,
+          "hadith_number": "1969",
+          "snippet": "Allah's Apostle used to fast till one would say that he would never stop fasting, and he would abandon  fasting till one would say that he would never fast. I never saw Allah's Apostle fasting for a w"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1901,
+          "hadith_number": "1972",
+          "snippet": "Allah's Apostle used to leave fasting in a certain month till we thought that he would not fast in that  month, and he used to fast in another month till we thought he would not stop fasting at all in"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1914,
+          "hadith_number": "1985",
+          "snippet": "I heard the Prophet saying, \"None of you should fast on Friday unless he fasts a day before or after it.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 1846,
+          "hadith_number": "1914",
+          "snippet": "The Prophet said, \"None of you should fast a day or two before the month of Ramadan unless he has  the habit of fasting (Nawafil) (and if his fasting coincides with that day) then he can fast that day"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1602,
+          "hadith_number": "1661",
+          "snippet": "On the day of `Arafat, some people who were with me, differed about the fasting of the Prophet  (p.b.u.h) some said that he was fasting while others said that he was not fasting. So I sent a bowl full"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1931,
+          "hadith_number": "2004",
+          "snippet": "The Prophet came to Medina and saw the Jews fasting on the day of Ashura. He asked them about  that. They replied, \"This is a good day, the day on which Allah rescued Bani Israel from their enemy.  So"
+        },
+        {
+          "slug": "bukhari",
+          "number": 7207,
+          "hadith_number": "7492",
+          "snippet": "The Prophet said, \"Allah said: The Fast is for Me and I will give the reward for it, as he (the one who  observes the fast) leaves his sexual desire, food and drink for My Sake. Fasting is a screen (f"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4301,
+          "hadith_number": "4502",
+          "snippet": "The people used to fast on the day of 'Ashura' before fasting in Ramadan was prescribed but when (the  order of compulsory fasting in) Ramadan was revealed, it was up to one to fast on it (i.e. 'Ashur"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1928,
+          "hadith_number": "2001",
+          "snippet": "Allah's Apostle ordered (the Muslims) to fast on the day of 'Ashura', and when fasting in the month of  Ramadan was prescribed, it became optional for one to fast on that day ('Ashura') or not."
+        },
+        {
+          "slug": "bukhari",
+          "number": 4095,
+          "hadith_number": "4277",
+          "snippet": "Allah's Apostle set out towards Hunain in the month of Ramadan and some of the people were fasting  while some others were not fasting, and when the Prophet mounted his she-camel, he asked for a  tumb"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1917,
+          "hadith_number": "1988",
+          "snippet": "\"While the people were with me on the day of `Arafat they differed as to whether the Prophet was  fasting or not; some said that he was fasting while others said that he was not fasting. So, I sent to"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6461,
+          "hadith_number": "6705",
+          "snippet": "that he was asked about a man who had vowed that he would fast all the days of his life then the day  of `Id al Adha or `Id-al-Fitr came. `Abdullah bin `Umar said: You have indeed a good example in  A"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1908,
+          "hadith_number": "1979",
+          "snippet": "The Prophet said to me, \"You fast daily all the year and pray every night all the night?\" I replied in the  affirmative. The Prophet said, \"If you keep on doing this, your eyes will become weak and yo"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2834,
+          "hadith_number": "2953",
+          "snippet": "Once the Prophet set out in the month of Ramadan. He observed fasting till he reached a place called  Kadid where he broke his fast."
+        },
+        {
+          "slug": "bukhari",
+          "number": 1900,
+          "hadith_number": "1971",
+          "snippet": "The Prophet never fasted a full month except the month of Ramadan, and he used to fast till one could  say, \"By Allah, he will never stop fasting,\" and he would abandon fasting till one would say, \"By"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6462,
+          "hadith_number": "6706",
+          "snippet": "I was with Ibn `Umar when a man asked him, \"I have vowed to fast every Tuesday or Wednesday  throughout my life and if the day of my fasting coincided with the day of Nahr (the first day of `Id-al-  A"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1109,
+          "hadith_number": "1141",
+          "snippet": "Sometimes Allah's Apostle would not fast (for so many days) that we thought that he would not fast  that month and he sometimes used to fast (for so many days) that we thought he would not leave  fast"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1919,
+          "hadith_number": "1990",
+          "snippet": "(the slave of Ibn Azhar) I witnessed the `Id with `Umar bin Al-Khattab who said, Allah's Apostle has  forbidden people to fast on the day on which you break fasting (the fasts of Ramadan) and the day "
+        },
+        {
+          "slug": "bukhari",
+          "number": 1915,
+          "hadith_number": "1986",
+          "snippet": "The Prophet visited her (Juwairiya) on a Friday and she was fasting. He asked her, \"Did you fast  yesterday?\" She said, \"No.\" He said, \"Do you intend to fast tomorrow?\" She said, \"No.\" He said,  \"Then"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3257,
+          "hadith_number": "3397",
+          "snippet": "When the Prophet came to Medina, he found (the Jews) fasting on the day of 'Ashura' (i.e. 10th of  Muharram). They used to say: \"This is a great day on which Allah saved Moses and drowned the folk  of"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1888,
+          "hadith_number": "1959",
+          "snippet": "Asma bint Abi Bakr said, \"We broke our fast during the lifetime of the Prophet on a cloudy day and  then the sun appeared.\" Hisham was asked, \"Were they ordered to fast in lieu of that day?\" He replie"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1922,
+          "hadith_number": "1994",
+          "snippet": "A man went to Ibn `Umar I. and said, \"A man vowed to fast one day (the sub-narrator thinks that he  said that the day was Monday), and that day happened to be `Id day.\" Ibn `Umar said, \"Allah orders  "
+        }
+      ]
+    },
+    {
+      "query": "controlling anger",
+      "mode_hint": "concept",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 5884,
+          "hadith_number": "6116",
+          "snippet": "A man said to the Prophet , \"Advise me! \"The Prophet said, \"Do not become angry.\" The  man asked (the same) again and again, and the Prophet said in each case, \"Do not become angry.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 5882,
+          "hadith_number": "6114",
+          "snippet": "Allah's Apostle said, \"The strong is not the one who overcomes the people by his strength, but the  strong is the one who controls himself while in anger.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 3061,
+          "hadith_number": "3194",
+          "snippet": "Allah's Apostle said, \"When Allah completed the creation, He wrote in His Book which is with Him  on His Throne, \"My Mercy overpowers My Anger.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 6889,
+          "hadith_number": "7158",
+          "snippet": "Abu Bakra wrote to his son who was in Sijistan: 'Do not judge between two persons when you are  angry, for I heard the Prophet saying, \"A judge should not judge between two persons while he is in  an "
+        },
+        {
+          "slug": "bukhari",
+          "number": 7139,
+          "hadith_number": "7422",
+          "snippet": "The Prophet said, \"When Allah had finished His creation, He wrote over his Throne: 'My Mercy  preceded My Anger.'"
+        },
+        {
+          "slug": "bukhari",
+          "number": 7168,
+          "hadith_number": "7453",
+          "snippet": "Allah's Apostle said, \"When Allah created the creations, He wrote with Him on His Throne: 'My  Mercy has preceded My Anger.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 7122,
+          "hadith_number": "7404",
+          "snippet": "The Prophet said, \"When Allah created the Creation, He wrote in His Book--and He wrote (that) about  Himself, and it is placed with Him on the Throne--'Verily My Mercy overcomes My Anger.'\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 3147,
+          "hadith_number": "3282",
+          "snippet": "While I was sitting in the company of the Prophet, two men abused each other and the face of one of  them became red with anger, and his jugular veins swelled (i.e. he became furious). On that the  Pr"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5819,
+          "hadith_number": "6048",
+          "snippet": "A man from the companions of the Prophet said, \"Two men abused each other in front of the Prophet  and one of them became angry and his anger became so intense that his face became swollen and  change"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3604,
+          "hadith_number": "3767",
+          "snippet": "Allah's Apostle said, \"Fatima is a part of me, and whoever makes her angry, makes me angry.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 3555,
+          "hadith_number": "3714",
+          "snippet": "Allah's Apostle said, \"Fatima is a part of me, and he who makes her angry, makes me angry.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 2457,
+          "hadith_number": "2559",
+          "snippet": "The Prophet said, \"If somebody fights (or beats somebody) then he should avoid the face.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 5041,
+          "hadith_number": "5250",
+          "snippet": "Abu Bakr admonished me and poked me with his hands in the flank, and nothing stopped me from  moving at that time except the position of Allah's Apostle whose head was on my thigh."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5883,
+          "hadith_number": "6115",
+          "snippet": "Two men abused each other in front of the Prophet while we were sitting with him. One of the two  abused his companion furiously and his face became red. The Prophet said, \"I know a word (sentence)  t"
+        },
+        {
+          "slug": "bukhari",
+          "number": 635,
+          "hadith_number": "650",
+          "snippet": "I heard Um Ad-Darda' saying, \"Abu Ad-Darda' entered the house in an angry mood. I said to him.  'What makes you angry?' He replied, 'By Allah! I do not find the followers of Muhammad doing those  good"
+        },
+        {
+          "slug": "bukhari",
+          "number": 123,
+          "hadith_number": "123",
+          "snippet": "A man came to the Prophet and asked, \"O Allah's Apostle! What kind of fighting is in Allah's cause?  (I ask this), for some of us fight because of being enraged and angry and some for the sake of his "
+        },
+        {
+          "slug": "bukhari",
+          "number": 6600,
+          "hadith_number": "6853",
+          "snippet": "Allah's Apostle never took revenge for his own self in any matter presented to him till Allah's limits  were exceeded, in which case he would take revenge for Allah's sake."
+        },
+        {
+          "slug": "bukhari",
+          "number": 7267,
+          "hadith_number": "7553",
+          "snippet": "I heard Allah's Apostle saying, \"Before Allah created the creations, He wrote a Book (wherein He has  written): My Mercy has preceded my Anger.\" and that (Book) is written with Him over the Throne.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 6099,
+          "hadith_number": "6336",
+          "snippet": "The Prophet divided something (among the Muslims) and distributed the shares (of the booty). A man  said, \"This division has not been made to please Allah.\" When I informed the Prophet about it, he  b"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3265,
+          "hadith_number": "3405",
+          "snippet": "Once the Prophet distributed something (among his followers. A man said, \"This distribution has not  been done (with justice) seeking Allah's Countenance.\" I went to the Prophet and told him (of that)"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6436,
+          "hadith_number": "6680",
+          "snippet": "I went along with some men from the Ash-ariyin to Allah's Apostle and it happened that I met him  while he was in an angry mood. We asked him to provide us with mounts, but he swore that he would  not"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3664,
+          "hadith_number": "3827",
+          "snippet": "Narrated Ibn 'Umar: Zaid bin 'Amr bin Nufail went to Sham, inquiring about a true religion to follow. He met a Jewish religious scholar and asked him about their religion. He said, \"I intend to embrac"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6153,
+          "hadith_number": "6392",
+          "snippet": "Allah's Apostle asked for Allah's wrath upon the Ahzab (confederates), saying, \"O Allah, the Revealer  of the Holy Book, and the One swift at reckoning! Defeat the confederates; Defeat them and shake "
+        },
+        {
+          "slug": "bukhari",
+          "number": 3905,
+          "hadith_number": "4076",
+          "snippet": "Allah's Wrath gets severe on a person killed by a prophet, and Allah's Wrath became severe on him  who had caused the face of Allah's Apostle to bleed."
+        },
+        {
+          "slug": "bukhari",
+          "number": 3561,
+          "hadith_number": "3721",
+          "snippet": "On the day of the battle of Al-Yarmuk, the companions of the Prophet said to Az-Zubair, \"Will you  attack the enemy vigorously so that we may attack them along with you?\" So Az-Zubair attacked  them, "
+        },
+        {
+          "slug": "bukhari",
+          "number": 401,
+          "hadith_number": "405",
+          "snippet": "The Prophet saw some sputum in the direction of the Qibla (on the wall of the mosque) and he  disliked that and the sign of disgust was apparent from his face. So he got up and scraped it off with  hi"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3410,
+          "hadith_number": "3560",
+          "snippet": "Whenever Allah's Apostle was given the choice of one of two matters, he would choose the easier of  the two, as long as it was not sinful to do so, but if it was sinful to do so, he would not approach"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3903,
+          "hadith_number": "4074",
+          "snippet": "Allah's Wrath became severe on him whom the Prophet had killed in Allah's Cause. Allah's Wrath  became severe on the people who caused the face of Allah's Prophet to bleed."
+        },
+        {
+          "slug": "bukhari",
+          "number": 6535,
+          "hadith_number": "6781",
+          "snippet": "A drunk was brought to the Prophet and he ordered him to be beaten (lashed). Some of us beat him  with our hands, and some with their shoes, and some with their garments (twisted in the form of a  las"
+        },
+        {
+          "slug": "bukhari",
+          "number": 7268,
+          "hadith_number": "7554",
+          "snippet": "Narrated Abu Hurairah (ra): I heard Allah's Messenger (saws) saying: \"Before Allah created the creations, He wrote a Book (wherein He has written): \"My Mercy has preceded my Anger.' And that is writte"
+        }
+      ]
+    },
+    {
+      "query": "kindness to neighbours",
+      "mode_hint": "concept",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 5787,
+          "hadith_number": "6015",
+          "snippet": "Allah' Apostle said, Gabriel kept on recommending me about treating the neighbors in a kind and  polite manner, so much so that I thought that he would order (me) to make them (my) heirs.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 5789,
+          "hadith_number": "6017",
+          "snippet": "The Prophet used to say, \"O Muslim ladies! A neighbouress should not look down upon the present of  her neighbouress even it were the hooves of a sheep.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 5786,
+          "hadith_number": "6014",
+          "snippet": "The Prophet said \"Gabriel continued to recommend me about treating the neighbors Kindly and  politely so much so that I thought he would order me to make them as my heirs."
+        },
+        {
+          "slug": "bukhari",
+          "number": 2775,
+          "hadith_number": "2891",
+          "snippet": "The Prophet said, \"Charity is obligatory everyday on every joint of a human being. If one helps a  person in matters concerning his riding animal by helping him to ride it or by lifting his luggage on"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2636,
+          "hadith_number": "2748",
+          "snippet": "A man asked the Prophet, \"O Allah's Apostle! What kind of charity is the best?\" He replied. \"To give  in charity when you are healthy and greedy hoping to be wealthy and afraid of becoming poor. Don't"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4195,
+          "hadith_number": "4388",
+          "snippet": "The Prophet said, \"The people of Yemen have come to you and they are more gentle and soft-hearted.  Belief is Yemenite and Wisdom is Yemenite, while pride and haughtiness are the qualities of the  own"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2175,
+          "hadith_number": "2259",
+          "snippet": "I said, \"O Allah's Apostle! I have two neighbors and would like to know to which of them I should  give presents.\" He replied, \"To the one whose door is nearer to you.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 2492,
+          "hadith_number": "2595",
+          "snippet": "I said, \"O Allah's Apostle! I have two neighbors; which of them should I give a gift to?\" The Prophet  said, \"(Give) to the one whose door is nearer to you.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 5089,
+          "hadith_number": "5299",
+          "snippet": "Allah's Apostle said, The example of a miser and a generous person is       like that of two persons wearing iron cloaks from the breast upto the       neck When the generous person spends, the iron c"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5792,
+          "hadith_number": "6020",
+          "snippet": "I said, \"O Allah's Apostle! I have two neighbors! To whom shall I send my gifts?\" He said, \"To the  one whose gate in nearer to you.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 2661,
+          "hadith_number": "2773",
+          "snippet": "`Umar got some property in Khaibar and he came to the Prophet and informed him about it. The  Prophet said to him, \"If you wish you can give it in charity.\" So `Umar gave it in charity (i.e. as an  en"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6722,
+          "hadith_number": "6980",
+          "snippet": "The Prophet said, \"The neighbor has more right to be taken care of by his neighbor (than anyone  else).\" Some men said, \"If one wants to buy a house for 20,000 Dirhams then there is no harm to play  a"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2026,
+          "hadith_number": "2101",
+          "snippet": "Allah's Apostle said, \"The example of a good companion (who sits with you) in comparison with a  bad one, is like that of the musk seller and the blacksmith's bellows (or furnace); from the first you "
+        },
+        {
+          "slug": "bukhari",
+          "number": 2176,
+          "hadith_number": "2260",
+          "snippet": "The Prophet said, \"The honest treasurer who gives willingly what he is ordered to give, is one of the  two charitable persons, (the second being the owner)."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5395,
+          "hadith_number": "5608",
+          "snippet": "Allah's Apostle said, \"The best object of charity is a she-camel which has (newly) given birth and  gives plenty of milk, or a she-goat which gives plenty of milk; and is given to somebody to utilize "
+        },
+        {
+          "slug": "bukhari",
+          "number": 3349,
+          "hadith_number": "3498",
+          "snippet": "The Prophet said, \"From this side from the east, afflictions will appear. Rudeness and lack of mercy  are characteristics of the rural bedouins who are busy with their camels and cows (and pay no  att"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1367,
+          "hadith_number": "1415",
+          "snippet": "When the verses of charity were revealed, we used to work as porters. A man came and distributed  objects of charity in abundance. And they (the people) said, \"He is showing off.\" And another man  cam"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3384,
+          "hadith_number": "3534",
+          "snippet": "The Prophet said, \"My similitude in comparison with the other prophets is that of a man who has built  a house completely and excellently except for a place of one brick. When the people enter the hou"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3841,
+          "hadith_number": "4006",
+          "snippet": "The Prophet said, \"A man's spending on his family is a deed of charity.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 2867,
+          "hadith_number": "2989",
+          "snippet": "Allah's Apostle said, \"There is a (compulsory) Sadaqa (charity) to be given for every joint of the  human body (as a sign of gratitude to Allah) everyday the sun rises. To judge justly between two  pe"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6723,
+          "hadith_number": "6981",
+          "snippet": "Abu Rafi` sold a house to Sa`d bin Malik for four-hundred Mithqal of gold, and said, \"If I had not  heard the Prophet saying, 'The neighbor has more right to be taken care of by his neighbor (than  an"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1390,
+          "hadith_number": "1439",
+          "snippet": "Narrated 'Aishah: The Prophet (saws) said, \"If a woman gives in charity from her husband's house ...\" (See next hadith)"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5757,
+          "hadith_number": "5985",
+          "snippet": "I heard Allah's Apostle saying, \"Who ever is pleased that he be granted more wealth and that his lease  of life be pro longed, then he should keep good relations with his Kith and kin.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 2448,
+          "hadith_number": "2549",
+          "snippet": "The Prophet said, \"Goodness and comfort are for him who worships his Lord in a perfect manner and  serves his master sincerely.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 5893,
+          "hadith_number": "6125",
+          "snippet": "The Prophet said, \"Make things easy for the people, and do not make it difficult for them, and make  them calm (with glad tidings) and do not repulse (them )."
+        },
+        {
+          "slug": "bukhari",
+          "number": 1428,
+          "hadith_number": "1479",
+          "snippet": "Allah's Apostle said, \"The poor person is not the one who goes round the people and ask them for a  mouthful or two (of meals) or a date or two but the poor is that who has not enough (money) to satis"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5996,
+          "hadith_number": "6231",
+          "snippet": "The Prophet said, \"The young should greet the old, the passer by should greet the sitting one, and the  small group of persons should greet the large group of persons. \""
+        },
+        {
+          "slug": "bukhari",
+          "number": 3350,
+          "hadith_number": "3499",
+          "snippet": "I heard Allah's Apostle saying, \"Pride and arrogance are characteristics of the rural bedouins while  calmness is found among the owners of sheep. Belief is Yemenite, and wisdom is also Yemenite i.e. "
+        },
+        {
+          "slug": "bukhari",
+          "number": 2652,
+          "hadith_number": "2764",
+          "snippet": "In the lifetime of Allah's Apostle , `Umar gave in charity some of his property, a garden of date-palms  called Thamgh. `Umar said, \"O Allah's Apostle! I have some property which I prize highly and I "
+        },
+        {
+          "slug": "bukhari",
+          "number": 6310,
+          "hadith_number": "6549",
+          "snippet": "Allah's Apostle said, \"Allah will say to the people of Paradise, 'O the people of Paradise!' They will  say, 'Labbaik, O our Lord, and Sa`daik!' Allah will say, 'Are you pleased?\" They will say, 'Why "
+        }
+      ]
+    },
+    {
+      "query": "prohibition of backbiting",
+      "mode_hint": "concept",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 2199,
+          "hadith_number": "2284",
+          "snippet": "The Prophet forbade taking a price for animal copulation."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5132,
+          "hadith_number": "5346",
+          "snippet": "The Prophet prohibited taking the price of a dog, the earnings of a soothsayer and the money earned  by prostitution."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5538,
+          "hadith_number": "5761",
+          "snippet": "The Prophet forbade the utilization of the price of a dog, the earnings of prostitute and the earnings of  a foreteller."
+        },
+        {
+          "slug": "bukhari",
+          "number": 2435,
+          "hadith_number": "2535",
+          "snippet": "Allah's Apostle forbade the selling or donating the Wala' of a freed slave."
+        },
+        {
+          "slug": "bukhari",
+          "number": 2087,
+          "hadith_number": "2164",
+          "snippet": "Whoever buys an animal which has been kept unmilked for a long time, could return it, but has to pay  a Sa of dates along with it. And the Prophet forbade meeting the owners of goods on the way away  "
+        },
+        {
+          "slug": "bukhari",
+          "number": 2173,
+          "hadith_number": "2257",
+          "snippet": "Allah's Apostle gave a verdict regarding Shuf'a in every undivided joint thing (property). But if the  limits are defined (or demarcated) or the ways and streets are fixed, then there is no pre-emptio"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5717,
+          "hadith_number": "5945",
+          "snippet": "The Prophet forbade the use of the price of blood and the price of a dog, the one who takes (eats)  usury the one who gives usury, the woman who practises tattooing and the woman who gets herself  tat"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2155,
+          "hadith_number": "2237",
+          "snippet": "Allah's Apostle forbade taking the price of a dog, money earned by prostitution and the earnings of a  soothsayer."
+        },
+        {
+          "slug": "bukhari",
+          "number": 6596,
+          "hadith_number": "6849",
+          "snippet": "On the authority of others, that the Prophet said, \"No Punishment exceeds the flogging of the ten  stripes, except if one is guilty of a crime necessitating a legal punishment prescribed by Allah.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 6446,
+          "hadith_number": "6690",
+          "snippet": "In the last part of his narration about the three who remained behind (from the battle of Tabuk). (I  said) \"As a proof of my true repentance (for not joining the Holy battle of Tabuk), I shall give u"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2063,
+          "hadith_number": "2139",
+          "snippet": "Allah's Apostle said, \"Do not urge somebody to return what he has already bought (i.e. in optional  sale) from another seller so as to sell him your own goods.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 5611,
+          "hadith_number": "5838",
+          "snippet": "The Prophet forbade us to use the red Mayathir and to use Al-Qassiy."
+        },
+        {
+          "slug": "bukhari",
+          "number": 2994,
+          "hadith_number": "3122",
+          "snippet": "Allah's Apostle said, \"Booty has been made legal for me.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 5388,
+          "hadith_number": "5601",
+          "snippet": "The Prophet forbade the drinking of alcoholic drinks prepared from raisins, dates, unripe dates and  fresh ripe dates."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5371,
+          "hadith_number": "5584",
+          "snippet": "Alcoholic drinks were prohibited. At that time these drinks used to be prepared from unripe and ripe  dates."
+        },
+        {
+          "slug": "bukhari",
+          "number": 1434,
+          "hadith_number": "1486",
+          "snippet": "The Prophet had forbidden the sale of dates till they were good (ripe), and when it was asked what it  meant, the Prophet said, \"Till there is no danger of blight.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 5414,
+          "hadith_number": "5627",
+          "snippet": "Allah's Apostle forbade drinking directly from the mouth of a water skin or other leather containers.  and forbade preventing one's neighbor from fixing a peg in (the wall of) one's house."
+        },
+        {
+          "slug": "bukhari",
+          "number": 2307,
+          "hadith_number": "2402",
+          "snippet": "Allah's Apostle said, \"If a man finds his very things with a bankrupt, he has more right to take them  back than anyone else.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 6511,
+          "hadith_number": "6756",
+          "snippet": "The Prophet forbade the selling of the Wala' (of slaves) or giving it as a present."
+        },
+        {
+          "slug": "bukhari",
+          "number": 6692,
+          "hadith_number": "6949",
+          "snippet": "And Safiyya bint 'Ubaid said: \"A governmental male-slave tried to seduce a slave-girl from the Khumus of the war booty till he deflowered her by force against her will; therefore 'Umar flogged him acc"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2001,
+          "hadith_number": "2076",
+          "snippet": "Allah's Apostle said, \"May Allah's mercy be on him who is lenient in his buying, selling, and in  demanding back his money.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 5317,
+          "hadith_number": "5530",
+          "snippet": "Allah's Apostle forbade the eating of the meat of beasts having fangs."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5310,
+          "hadith_number": "5522",
+          "snippet": "The Prophet prohibited the eating of donkey's meat."
+        },
+        {
+          "slug": "bukhari",
+          "number": 2036,
+          "hadith_number": "2111",
+          "snippet": "Allah's Apostle said, \"Both the buyer and the seller have the option of canceling or confirming a  bargain unless they separate, or the sale is optional.\" (See Hadith No.320)."
+        },
+        {
+          "slug": "bukhari",
+          "number": 2616,
+          "hadith_number": "2727",
+          "snippet": "Allah's Apostle forbade (1) the meeting of the caravan (of goods) on the way, (2) and that a residing  person buys for a bedouin, (3) and that a woman stipulates the divorce of the wife of the would-b"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1384,
+          "hadith_number": "1433",
+          "snippet": "The Prophet said to me, \"Do not withhold your money, (for if you did so) Allah would withhold His  blessings from you.\"  Narrated `Abda:  The Prophet said, \"Do not withhold your money by counting it ("
+        },
+        {
+          "slug": "bukhari",
+          "number": 5134,
+          "hadith_number": "5348",
+          "snippet": "The Prophet forbade taking the earnings of a slave girl by prostitution."
+        },
+        {
+          "slug": "bukhari",
+          "number": 2197,
+          "hadith_number": "2282",
+          "snippet": "Allah's Apostle regarded illegal the price of a dog, the earnings of a prostitute, and the charges taken  by a soothsayer."
+        },
+        {
+          "slug": "bukhari",
+          "number": 4314,
+          "hadith_number": "4517",
+          "snippet": "I sat with Ka`b bin Ujra in this mosque, i.e. Kufa Mosque, and asked him about the meaning of: \"Pay  a ransom (i.e. Fidya) of either fasting or . . . . (2.196)\" He said, \"I was taken to the Prophet wh"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2378,
+          "hadith_number": "2474",
+          "snippet": "The Prophet forbade robbery (taking away what belongs to others without their permission), and also  forbade mutilation (or maiming) of bodies."
+        }
+      ]
+    },
+    {
+      "query": "seeking forgiveness from Allah",
+      "mode_hint": "concept",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 6069,
+          "hadith_number": "6306",
+          "snippet": "The Prophet said \"The most superior way of asking for forgiveness from Allah is:   O Allah, You are my Lord, there is none worthy of worship except You. You have created me, and I am Your servant, and"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6086,
+          "hadith_number": "6323",
+          "snippet": "The Prophet said, \"The most superior way of asking for forgiveness from Allah is: 'Allahumma anta  Rabbi la ilaha illa anta. Khalaqtani wa ana `Abduka, wa ana 'ala 'ahdika wa Wa'dika mastata'tu abu'u "
+        },
+        {
+          "slug": "bukhari",
+          "number": 7106,
+          "hadith_number": "7387, 7388",
+          "snippet": "Abu Bakr As-Siddiq said to the Prophet \"O Allah's Apostle! Teach me an invocation with which I  may invoke Allah in my prayers.\" The Prophet said, \"Say: O Allah! I have wronged my soul very  much (opp"
+        },
+        {
+          "slug": "bukhari",
+          "number": 41,
+          "hadith_number": "41",
+          "snippet": "Allah's Messenger (saws) said, \"If a person embraces Islam sincerely, then Allah shall forgive all his past sins, and after that starts the settlement of accounts, the reward of his good deeds will be"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6070,
+          "hadith_number": "6307",
+          "snippet": "I heard Allah's Apostle saying.\" By Allah! I ask for forgiveness from Allah and turn to Him in  repentance more than seventy times a day.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 4629,
+          "hadith_number": "4836",
+          "snippet": "The Prophet used to offer night prayers till his feet became swollen. Somebody said, to him,\" \"Allah  has forgiven you, your faults of the past and those to follow.\" On that, he said, \"Shouldn't I be "
+        },
+        {
+          "slug": "bukhari",
+          "number": 6421,
+          "hadith_number": "6664",
+          "snippet": "The Prophet said, \"Allah forgives my followers those (evil deeds) their souls may whisper or suggest  to them as long as they do not act (on it) or speak.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 35,
+          "hadith_number": "35",
+          "snippet": "Allah's Apostle said, \"Whoever establishes the prayers on the night of      Qadr out of sincere faith and hoping to attain Allah's rewards (not to      show off) then all his past sins will be forgive"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4437,
+          "hadith_number": "4643",
+          "snippet": "(The Verse) \"Hold to forgiveness; command what is right...\" was revealed by Allah except in  connection with the character of the people."
+        },
+        {
+          "slug": "bukhari",
+          "number": 387,
+          "hadith_number": "391",
+          "snippet": "Allah's Apostle said, \"Whoever prays like us and faces our Qibla and eats our slaughtered animals is a  Muslim and is under Allah's and His Apostle's protection. So do not betray Allah by betraying th"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3236,
+          "hadith_number": "3375",
+          "snippet": "The Prophet said, \"May Allah forgive Lot: He wanted to have a powerful support.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 4438,
+          "hadith_number": "4644",
+          "snippet": "`Abdullah bin Az-Zubair said:  Allah ordered His Prophet  to forgive the people their misbehavior (towards him)."
+        },
+        {
+          "slug": "bukhari",
+          "number": 516,
+          "hadith_number": "526",
+          "snippet": "A man kissed a woman (unlawfully) and then went to the Prophet and informed him. Allah revealed:  And offer prayers perfectly At the two ends of the day And in some hours of the night (i.e. the five  "
+        },
+        {
+          "slug": "bukhari",
+          "number": 4442,
+          "hadith_number": "4648",
+          "snippet": "Abu Jahl said, \"O Allah! If this (Qur'an) is indeed the Truth from You, then rain down on us a shower  of stones from the sky or bring on us a painful torment.\" So Allah revealed:-- \"But Allah would n"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1113,
+          "hadith_number": "1145",
+          "snippet": "Allah's Apostle (p.b.u.h) said, \"Our Lord, the Blessed, the Superior, comes every night down on the  nearest Heaven to us when the last third of the night remains, saying: \"Is there anyone to invoke M"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2428,
+          "hadith_number": "2528",
+          "snippet": "The Prophet said, \"Allah has accepted my invocation to forgive what whispers in the hearts of my  followers, unless they put it to action or utter it.\" (See Hadith No. 657 Vol. 8)"
+        },
+        {
+          "slug": "bukhari",
+          "number": 438,
+          "hadith_number": "445",
+          "snippet": "Allah's Apostle said, \"The angels keep on asking Allah's forgiveness for anyone of you, as long as he  is at his Musalla (praying place) and he does not pass wind (Hadath). They say, 'O Allah! Forgive"
+        },
+        {
+          "slug": "bukhari",
+          "number": 766,
+          "hadith_number": "783",
+          "snippet": "I reached the Prophet in the mosque while he was bowing in prayer and I too bowed before joining the  row mentioned it to the Prophet and he said to me, \"May Allah increase your love for the good. But"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2003,
+          "hadith_number": "2078",
+          "snippet": "The Prophet said, \"There was a merchant who used to lend the people, and whenever his debtor was in  straitened circumstances, he would say to his employees, 'Forgive him so that Allah may forgive us."
+        },
+        {
+          "slug": "bukhari",
+          "number": 7203,
+          "hadith_number": "7488",
+          "snippet": "Allah's Apostle said, \"O so-and-so, whenever you go to your bed (for sleeping) say, 'O Allah! I have  surrendered myself over to you and have turned my face towards You, and leave all my affairs to Yo"
+        },
+        {
+          "slug": "bukhari",
+          "number": 7066,
+          "hadith_number": "7346",
+          "snippet": "That he heard the Prophet, after raising his head from the bowing in morning prayer, saying, \"O Allah,  our Lord! All the praises are for you.\" And in the last (rak`a) he said, \"O Allah! Curse so-and-"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5350,
+          "hadith_number": "5563",
+          "snippet": "One day Allah's Apostle offered the `Id prayer and said, \"Whoever offers our prayer and faces our  Qibla should not slaughter the sacrifice till he finishes the `Id prayer.\" Abu Burda bin Niyar got up"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6030,
+          "hadith_number": "6265",
+          "snippet": "Allah's Apostle taught me the Tashah-hud as he taught me a Sura from the Qur'an, while my hand was  between his hands. (Tashah-hud was) all the best compliments and the prayers and the good things are"
+        },
+        {
+          "slug": "bukhari",
+          "number": 37,
+          "hadith_number": "37",
+          "snippet": "Allah's Apostle said: \"Whoever establishes prayers during the nights       of Ramadan faithfully out of sincere faith and hoping to attain       Allah's rewards (not for showing off), all his past sin"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1936,
+          "hadith_number": "2009",
+          "snippet": "Narrated Abu Huraira:   Allah's Apostle said, \"Whoever prayed at night the whole month of Ramadan out of sincere Faith and hoping for a reward from Allah, then all his previous sins will be forgiven.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 6166,
+          "hadith_number": "6405",
+          "snippet": "Allah's Apostle said, \"Whoever says, 'Subhan Allah wa bihamdihi,' one hundred times a day, will be  forgiven all his sins even if they were as much as the foam of the sea."
+        },
+        {
+          "slug": "bukhari",
+          "number": 815,
+          "hadith_number": "834",
+          "snippet": "I asked Allah's Apostle to teach me an invocation so that I may invoke Allah with it in my prayer. He  told me to say, \"Allahumma inni zalumtu nafsi zulman kathiran, Wala yaghfiru dh-dhunuba illa anta"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4558,
+          "hadith_number": "4764",
+          "snippet": "I asked Ibn `Abbas about Allah's saying:--  '.. this reward is Hell Fire.' (4.93) He said, \"No repentance is accepted from him (i.e. the murderer of a  believer).\" I asked him regarding the saying of "
+        },
+        {
+          "slug": "bukhari",
+          "number": 2001,
+          "hadith_number": "2076",
+          "snippet": "Allah's Apostle said, \"May Allah's mercy be on him who is lenient in his buying, selling, and in  demanding back his money.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 3095,
+          "hadith_number": "3228",
+          "snippet": "Allah's Apostle said, \"When the Imam, during the prayer, says, \"Allah hears him who praises Him',  say: 'O Allah! Our Lord! All the praises are for You/, for if the saying of anyone of you coincides w"
+        }
+      ]
+    },
+    {
+      "query": "the hadith of intentions",
+      "mode_hint": "concept",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 1395,
+          "hadith_number": "1444",
+          "snippet": "See previous hadith."
+        },
+        {
+          "slug": "bukhari",
+          "number": 4702,
+          "hadith_number": "4910",
+          "snippet": "See hadith 4909"
+        },
+        {
+          "slug": "bukhari",
+          "number": 118,
+          "hadith_number": "118",
+          "snippet": "People say that I have narrated many Hadiths (The Prophet's narration). Had it not been for two verses  in the Qur'an, I would not have narrated a single Hadith, and the verses are:  \"Verily those who"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2429,
+          "hadith_number": "2529",
+          "snippet": "The Prophet said, \"The (reward of) deeds depend on intentions, and every person will get the reward  according to what he intends. So, whoever migrated for Allah and His Apostle, then his migration wi"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2825,
+          "hadith_number": "2944",
+          "snippet": "as Hadith No. 193 above."
+        },
+        {
+          "slug": "bukhari",
+          "number": 1390,
+          "hadith_number": "1439",
+          "snippet": "Narrated 'Aishah: The Prophet (saws) said, \"If a woman gives in charity from her husband's house ...\" (See next hadith)"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1,
+          "hadith_number": "1",
+          "snippet": "I heard Allah's Apostle saying, \"The reward of deeds depends upon the       intentions and every person will get the reward according to what he       has intended. So whoever emigrated for worldly be"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2007,
+          "hadith_number": "2082",
+          "snippet": "The Prophet aid, \"The buyer and the seller have the option to cancel or to confirm the deal, as long as  they have not parted or till they part, and if they spoke the truth and told each other the def"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4801,
+          "hadith_number": "5008",
+          "snippet": "Narrated Abu Mas'ud: Whoever recites two verses ... (text as in the following hadith)"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4866,
+          "hadith_number": "5070",
+          "snippet": "The Prophet said, \"The rewards (of deeds) are according to the intention, and everybody will get the  reward for what he has intended. So whoever emigrated for Allah's and His Apostle's sake, his  emi"
+        },
+        {
+          "slug": "bukhari",
+          "number": 709,
+          "hadith_number": "727",
+          "snippet": "One night an orphan and I offered the prayers behind the Prophet in my house and my mother (Um  Sulaim) was standing behind us (by herself forming a row)."
+        },
+        {
+          "slug": "bukhari",
+          "number": 6729,
+          "hadith_number": "6987",
+          "snippet": "The Prophet said, \"The (good) dreams of a faithful believer is a part of the forty-six parts of  prophetism:'"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4481,
+          "hadith_number": "4687",
+          "snippet": "A man kissed a woman and then came to Allah's Apostle and told him of that, so this Divine  Inspiration was revealed to the Prophet 'And offer Prayers perfectly at the two ends of the day, and in  som"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6696,
+          "hadith_number": "6953",
+          "snippet": "The Prophet said, 'O people! The reward of deeds depends upon the intentions, and every person will  get the reward according to what he has intended. So, whoever emigrated for Allah and His Apostle, "
+        },
+        {
+          "slug": "bukhari",
+          "number": 7252,
+          "hadith_number": "7538",
+          "snippet": "The Prophet said that your Lord said, \"Every (sinful) deed can be expiated; and the fast is for Me, so I  will give the reward for it; and the smell which comes out of the mouth of a fasting person, i"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5752,
+          "hadith_number": "5980",
+          "snippet": "That Heraclius sent for him and said, \"What did he, i.e. the Prophet order you?\" I replied, \"He orders  us to offer prayers; to give alms; to be chaste; and to keep good relations with our relatives."
+        },
+        {
+          "slug": "bukhari",
+          "number": 4260,
+          "hadith_number": "4460",
+          "snippet": "I asked `Abdullah bin Abu `Aufa \"Did the Prophet make a will? ' He replied, \"No.\" I further asked,  \"How comes it that the making of a will was enjoined on the people or that they were ordered to make"
+        },
+        {
+          "slug": "bukhari",
+          "number": 135,
+          "hadith_number": "135",
+          "snippet": "Allah's Apostle said, \"The prayer of a person who does Hadath (passes urine, stool or wind) is not  accepted till he performs the ablution.\" A person from Hadaramout asked Abu Huraira, \"What is  'Hada"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2628,
+          "hadith_number": "2740",
+          "snippet": "I asked `Abdullah bin Abu `Aufa \"Did the Prophet make a will?\" He replied, \"No,\" I asked him, \"How  is it then that the making of a will has been enjoined on people, (or that they are ordered to make "
+        },
+        {
+          "slug": "bukhari",
+          "number": 54,
+          "hadith_number": "54",
+          "snippet": "Allah's Apostle said, \"The reward of deeds depends upon the intention       and every person will get the reward according to what he has       intended. So whoever emigrated for Allah and His Apostle"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4815,
+          "hadith_number": "5022",
+          "snippet": "I asked `Abdullah bin Abi `Aufa, \"Did the Prophet make a will (to appoint his successor or bequeath  wealth)?\" He replied, \"No.\" I said, \"How is it prescribed then for the people to make wills, and th"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1984,
+          "hadith_number": "2058",
+          "snippet": "While we were offering the prayer with the Prophet a caravan carrying food came from Sham. The  people looked towards the caravan (and went to it) and only twelve persons remained with the  Prophet. S"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3111,
+          "hadith_number": "3244",
+          "snippet": "Allah's Apostle said, \"Allah said, \"I have prepared for My Pious slaves things which have never been  seen by an eye, or heard by an ear, or imagined by a human being.\" If you wish, you can recite thi"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3455,
+          "hadith_number": "3607",
+          "snippet": "My companions learned (something about) good (through asking the Prophet) while I learned  (something about) evil."
+        },
+        {
+          "slug": "bukhari",
+          "number": 6754,
+          "hadith_number": "7013",
+          "snippet": "I heard Allah's Apostle saying, \"I have been sent with Jawami al-Kalim (i.e., the shortest expression carrying the widest meanings), and I was made victorious with awe (cast into the hearts of the ene"
+        },
+        {
+          "slug": "bukhari",
+          "number": 411,
+          "hadith_number": "417",
+          "snippet": "The Prophet saw expectoration (on the wall of the mosque) in the direction of the Qibla and scraped it  off with his hand. It seemed that he disliked it and the sign of disgust was apparent from his f"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3285,
+          "hadith_number": "3426, 3427",
+          "snippet": "Allah's Apostle said, \"My example and the example o the people is like that of a person who lit a fire  and let the moths, butterflies and these insects fall in it.\" He also said, \"There were two wome"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6709,
+          "hadith_number": "6967",
+          "snippet": "The Prophet said, \"I am only a human being, and you people have disputes. May be some one  amongst you can present his case in a more eloquent and convincing manner than the other, and I give  my judg"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2855,
+          "hadith_number": "2977",
+          "snippet": "Allah's Apostle said, \"I have been sent with the shortest expressions bearing the widest meanings, and I have been made victorious with awe (cast in the hearts of the enemy), and while I was sleeping,"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1504,
+          "hadith_number": "1558",
+          "snippet": "`Ali came to the Prophet (p.b.u.h) from Yemen (to Mecca). The Prophet asked `Ali, \"With what  intention have you assumed Ihram?\" `Ali replied, \"I have assumed Ihram with the same intention as  that of"
+        }
+      ]
+    },
+    {
+      "query": "patience",
+      "mode_hint": "keyword",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 1260,
+          "hadith_number": "1302",
+          "snippet": "The Prophet said, \"The real patience is at the first stroke of a calamity.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 6231,
+          "hadith_number": "6470",
+          "snippet": "\u2026ented and not in need of others; and he who remains  patient, Allah will bestow patience upon him, and he who is satisfied with what he has, Allah will  make him self-s\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2838,
+          "hadith_number": "2958",
+          "snippet": "\u2026s it for death?\" Naf'i replied \"No, but he took their pledge of  allegiance for patience.\")"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4485,
+          "hadith_number": "4691",
+          "snippet": "\u2026 of Jacob and his sons:--'Nay,  but your minds have made up a tale. So (for me) patience is most fitting. It is Allah (alone) Whose  help can be sought against that whi\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6378,
+          "hadith_number": "6619",
+          "snippet": "\u2026is disease is present, and remains there and does not leave that  town, but has patience and hopes for Allah's reward, and knows that nothing will befall him except  wh\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1243,
+          "hadith_number": "1283",
+          "snippet": "\u2026 guard. Then she said to him, \"I did not recognize you.\"  He said, \"Verily, the patience is at the first stroke of a calamity.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 1419,
+          "hadith_number": "1469",
+          "snippet": "\u2026 will make him patient. Nobody can be given a blessing better and greater than  patience.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 4447,
+          "hadith_number": "4653",
+          "snippet": "\u2026when  Allah reduced the number of enemies which Muslims should withstand, their patience and  perseverance against the enemy decreased as much as their task was lighten\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3016,
+          "hadith_number": "3145",
+          "snippet": "\u2026said, \"I give to some people, lest they should deviate from True Faith  or lose patience, while I refer other people to the goodness and contentment which Allah has put\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4484,
+          "hadith_number": "4690",
+          "snippet": "\u2026example for my case except that of Joseph's father (when he said), 'So (for me) patience is  most fitting.' \" Then Allah revealed the ten Verses:-- \"Verily those who sp\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 901,
+          "hadith_number": "923",
+          "snippet": "\u2026han the one whom I give. But  I give to some people as I feel that they have no patience and no contentment in their hearts and I  leave those who are patient and self-\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6885,
+          "hadith_number": "7154",
+          "snippet": "\u2026ah's Apostle! By Allah. I did not recognize you!' The  Prophet said, 'No doubt, patience is at the first stroke of a calamity.'\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 2617,
+          "hadith_number": "2728",
+          "snippet": "\u2026y about him.  Al-Khadir said to Moses, \"Did not I tell you that you can have no patience with me.\" (18.72). Moses  then violated the agreement for the first time becaus\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2936,
+          "hadith_number": "3062",
+          "snippet": "\u2026ne said that he was still alive but  severely wounded. When night fell, he lost patience and committed suicide. The Prophet was  informed of that, and he said, \"Allah i\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4520,
+          "hadith_number": "4725",
+          "snippet": "\u2026me of what you have been taught.  Al-Khadir said, 'You will not be able to have patience with me. (18.66) O Moses! I have some of  Allah's knowledge which He has bestow\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4360,
+          "hadith_number": "4566",
+          "snippet": "\u2026re as Allah had ordered them, and they used to put up with their mischief  with patience. Allah said: \"And you shall certainly hear much that will grieve you from those\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4525,
+          "hadith_number": "4727",
+          "snippet": "\u2026l you the interpretation of (those things)  about which you were unable to hold patience.'...(18.78)  Allah's Apostle said, 'We wished that Moses could have been more p\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4522,
+          "hadith_number": "4726",
+          "snippet": "\u2026ses said so protestingly.\") Al-Khadir said, didn't I say that you can have no \r patience with me?' (18.72) The first inquiry of Moses was done because of forgetfulness,\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4551,
+          "hadith_number": "4757",
+          "snippet": "\u2026emember Jacob's name but couldn't) Joseph's father when he \r said; So (for me) \"Patience is most fitting against that which you assert. It is Allah (alone) whose help \r\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2556,
+          "hadith_number": "2661",
+          "snippet": "\u2026xcept to the situation of Joseph's \r father (i.e. Jacob) who said, 'So (for me) patience is most fitting against that which you assert and it is \r Allah (Alone) whose h\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4544,
+          "hadith_number": "4750",
+          "snippet": "\u2026, I cannot find of you an  example except that of Joseph's father: \"So (for me) patience is most fitting against that which you  assert and it is Allah (Alone) Whose he\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3969,
+          "hadith_number": "4141",
+          "snippet": "\u2026militude for me and you except that of  Joseph's father when he said, '(For me) patience in the most fitting against that which you assert; it is  Allah (Alone) Whose H\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1883,
+          "hadith_number": "818 b",
+          "snippet": "\u2026ith this addition:\" I was about to catch hold of him in prayer, but I exercised patience till he pronounced salutation."
+        },
+        {
+          "slug": "muslim",
+          "number": 4747,
+          "hadith_number": "1849 a",
+          "snippet": "\u2026im) said: One who found in his Amir something which he disliked should hold his patience, for one who separated from the main body of the Muslims even to the extent of \u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 6996,
+          "hadith_number": "2804 a, b",
+          "snippet": "\u2026that Allah's Messenger (may peace be upon him) said: There is none to show more patience at listening to the most irksome things than Allah, the Exalted and Glorious. '\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 2423,
+          "hadith_number": "1062 b",
+          "snippet": "\u2026(the Holy Prophet) then said: Moses was tormented more than this, but he showed patience."
+        },
+        {
+          "slug": "muslim",
+          "number": 7369,
+          "hadith_number": "2979 a, b",
+          "snippet": "\u2026 I would make a mention of your case to the ruler, and if you like you can show patience also. for I have heard Allah's Messenger (may peace be upon him) as saying: The\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 7191,
+          "hadith_number": "2898 a",
+          "snippet": "\u2026said: If you say that, it is a fact for they have four qualities. They have the patience to undergo a trial and immediately restore themselves to sanity after trouble a\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1745,
+          "hadith_number": "749 g",
+          "snippet": "\u2026not asking you about it. He said: You are a bulky man, will you not show me the patience to narrate to you the hadith completely? The Messenger of Allah (may peace be u\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 2411,
+          "hadith_number": "1059 a",
+          "snippet": "\u2026 preference (in conferring of the material gifts) in future, so you should show patience till you meet Allah and His Messenger and I would he at the Haud Kauthar. They \u2026"
+        }
+      ]
+    },
+    {
+      "query": "knowledge",
+      "mode_hint": "keyword",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 6995,
+          "hadith_number": "7270",
+          "snippet": "The Prophet embraced me and said, \"O Allah! Teach him (the knowledge of) the Book (Qur'an).\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 7030,
+          "hadith_number": "7307",
+          "snippet": "I heard the Prophet saying, \"Allah will not deprive you of knowledge after he has given it to you, but  it will be taken away through the death of t\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 75,
+          "hadith_number": "75",
+          "snippet": "Once the Prophet embraced me and said, \"O Allah! Bestow on him the knowledge of the Book  (Qur'an)."
+        },
+        {
+          "slug": "bukhari",
+          "number": 7071,
+          "hadith_number": "7352",
+          "snippet": "\u2026lah's Apostle saying, \"If a judge gives a verdict according to the best of his  knowledge and his verdict is correct (i.e. agrees with Allah and His Apostle's verdict) h\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3594,
+          "hadith_number": "3756b",
+          "snippet": "\u2026, \"O Allah, teach him (Ibn Abbas) the Book (i.e. the       understanding of the knowledge of Qur'an).\"  Narrated Khalid:  As above."
+        },
+        {
+          "slug": "bukhari",
+          "number": 100,
+          "hadith_number": "100",
+          "snippet": "I heard Allah's Apostle saying, \"Allah does not take away the knowledge, by taking it away from (the  hearts of) the people, but takes it away by the d\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3593,
+          "hadith_number": "3756",
+          "snippet": "\u2026his chest) and said, \"O Allah, teach him wisdom (i.e.  the understanding of the knowledge of Qur'an)."
+        },
+        {
+          "slug": "bukhari",
+          "number": 4572,
+          "hadith_number": "4778",
+          "snippet": "\u2026het said, \"The keys of the Unseen are five.\" And then he recited:  'Verily, the knowledge of the Hour is with Allah (alone).' (31.34)"
+        },
+        {
+          "slug": "bukhari",
+          "number": 120,
+          "hadith_number": "120",
+          "snippet": "I have memorized two kinds of knowledge from Allah's Apostle . I have propagated one of them to  you and if I propagate\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 68,
+          "hadith_number": "68",
+          "snippet": "\u2026 that we might not get  bored. (He abstained from pestering us with sermons and knowledge all the time)."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5172,
+          "hadith_number": "5386",
+          "snippet": "To the best of my knowledge, the Prophet did not take his meals in a big tray at all, nor did he ever eat  \u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2922,
+          "hadith_number": "3047",
+          "snippet": "I asked `Ali, \"Do you have the knowledge of any Divine Inspiration besides what is in Allah's Book?\"  `Ali replied, \"No,\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6798,
+          "hadith_number": "7062, 7063",
+          "snippet": "\u2026t of the Hour there will be days during which Religious  ignorance will spread, knowledge will be taken away (vanish) and there will be much Al-Harj, and Al-  Harj means\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6901,
+          "hadith_number": "7170",
+          "snippet": "\u2026 The people of Hijaz said, \"A judge should not pass a judgment according to his knowledge, whether  he was a witness at the time he was the judge or before that\" And if \u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3331,
+          "hadith_number": "3477",
+          "snippet": "\u2026e blood off his face and saying, \"O Allah! Forgive my nation, for  they have no knowledge.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 6799,
+          "hadith_number": "7064",
+          "snippet": "\u2026Near the establishment of the Hour there will be days during which (religious)  knowledge will be taken away (vanish) and general ignorance will spread, and there will b\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2254,
+          "hadith_number": "2345",
+          "snippet": "\u2026 Later on Ibn `Umar was afraid that the Prophet had forbidden it, and he had no knowledge  of it, so he gave up renting his land."
+        },
+        {
+          "slug": "bukhari",
+          "number": 3523,
+          "hadith_number": "3681",
+          "snippet": "\u2026e. the  companions of the Prophet) asked, \"What do you interpret it?\" He said, \"Knowledge.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 7171,
+          "hadith_number": "7456",
+          "snippet": "\u2026spired. Then he said, \"They ask  you concerning the spirit say: The spirit, its knowledge is with My Lord. And of knowledge you (O  men!) have been given only a little.\"\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5601,
+          "hadith_number": "5828",
+          "snippet": "\u2026lk except this much, then he pointed with his index and middle  fingers. To our knowledge, by that he meant embroidery."
+        },
+        {
+          "slug": "bukhari",
+          "number": 80,
+          "hadith_number": "80",
+          "snippet": "\u2026 said, \"From among the portents of the Hour are (the following):  -1. Religious knowledge will be taken away (by the death of Religious learned men).  -2. (Religious) ig\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1361,
+          "hadith_number": "1409",
+          "snippet": "\u2026 it in the right way, and a person whom Allah has given wisdom (i.e. religious  knowledge) and he gives his decisions accordingly and teaches it to the others.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 6801,
+          "hadith_number": "7066",
+          "snippet": "\u2026stablishment of the Hour, there will be the days of Al-Harj, and the  religious knowledge will be taken away (vanish i.e. by the death of Religious scholars) and general\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6872,
+          "hadith_number": "7141",
+          "snippet": "\u2026ven wealth and he spends it righteously. (2) A man whom Allah has given wisdom (knowledge of  the Qur'an and the Hadith) and he acts according to it and teaches it to ot\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 85,
+          "hadith_number": "85",
+          "snippet": "The Prophet said, \"(Religious) knowledge will be taken away (by the death of religious scholars)  ignorance (in religion\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 7099,
+          "hadith_number": "7380",
+          "snippet": "\u2026that Muhammad has seen the Unseen, he is a  liar, for Allah says: \"None has the knowledge of the Unseen but Allah.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 7177,
+          "hadith_number": "7462",
+          "snippet": "\u2026pired. Then he said: \"They ask you concerning the Spirit, Say: The Spirit; its  knowledge is with my Lord. And of knowledge you (mankind) have been given only a little.\"\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1011,
+          "hadith_number": "1039",
+          "snippet": "Allah's Apostle (p.b.u.h) said, \"Keys of the unseen knowledge are five which nobody knows but Allah  . . . nobody knows what will happen tomo\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1008,
+          "hadith_number": "1036",
+          "snippet": "\u2026he Prophet said, \"The Hour (Last Day) will not be established until (religious) knowledge will be  taken away (by the death of religious learned men), earthquakes will b\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5150,
+          "hadith_number": "5364",
+          "snippet": "\u2026t is  sufficient for me and my children. Can I take of his property without his knowledge?\" The Prophet  said, \"Take what is sufficient for you and your children, and th\u2026"
+        }
+      ]
+    },
+    {
+      "query": "Arafah",
+      "mode_hint": "keyword",
+      "candidates": [
+        {
+          "slug": "abudawud",
+          "number": 1937,
+          "hadith_number": "1936",
+          "snippet": "Jabir reported the Prophet (saws) as saying \u201cI halted here in \u2018Arafah and the whole of \u2018Arafah is a place of halting.  I halted here in Al Muzdalifah\u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1908,
+          "hadith_number": "1907",
+          "snippet": "\u2026rificed here and the whole of Mina is the place of sacrifice\u201d. He stationed at \u2018Arafah and said \u201cI stationed here and the whole of \u2018Arafah is the place of station\u201d. H\u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1911,
+          "hadith_number": "1910",
+          "snippet": "\u2026zdalifah and they were called Al Hums and the rest of Arabs used to station at \u2018Arafah. When Islam came, Allaah the most High commanded His Prophet (saws) to go to \u2018A\u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1912,
+          "hadith_number": "1911",
+          "snippet": "\u2026ul-Hijjah (Yawm at-Tarwiyah) and dawn prayer on the 9th of Dhul-Hijjah (Yawm al-Arafah) in Mina. </p>"
+        },
+        {
+          "slug": "abudawud",
+          "number": 2420,
+          "hadith_number": "2419",
+          "snippet": "</p>  The Prophet (saws) said: The day of Arafah, the day of sacrifice, the days of tashriq are (the days of) our festival, O pe\u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 2325,
+          "hadith_number": "2324",
+          "snippet": "\u2026 the 'Id (festival) of sacrifice is on the day when you sacrifice. The whole of Arafah is the place of staying, and the whole of Mina is the place of sacrifice, and a\u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1924,
+          "hadith_number": "1923",
+          "snippet": "\u2026e of Allaah(saws) travel during the Farewell Pilgrimage when he proceeded from \u2018Arafah to Al Muzdalifah? He replied he was travelling at a quick pace and when he foun\u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1926,
+          "hadith_number": "1925",
+          "snippet": "Usamah bin Zaid said: The Apostle of Allaah(saws) returned from \u2018Arafah. When he came to the mountain path , he alighted, urinated and performed the ab\u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1921,
+          "hadith_number": "1920",
+          "snippet": "Ibn \u2018Abbas said The Apostle of Allaah(saws) returned from \u2018Arafah preserving a quiet demeanor and he took Usamah up behind him (on the Camel). He\u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1950,
+          "hadith_number": "1949",
+          "snippet": "\u2026dered a man (to reply).  He shouted loudly: The hajj, the hajj is on the day of Arafah. If anyone comes over there before the dawn prayer on the night of al-Muzdalifa\u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 2426,
+          "hadith_number": "2425",
+          "snippet": "\u2026 (equivalent to) a perpetual fast. I seek from Allah that fasting on the day of Arafah may atone for the sins of the preceding and the coming year, and I seek from Al\u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1786,
+          "hadith_number": "1785",
+          "snippet": "\u2026perfumes, put on our clothes. There remained only four days to perform Hajj at \u2018Arafah. We then raised our voice in talbiyah (wearing Ihram for Hajj) on the eighth of\u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1906,
+          "hadith_number": "1905",
+          "snippet": "\u2026 Quraish used to do in the pre Islamic period but he passed on till he came to \u2018Arafah and found that the tent had been setup at Namrah. There he dismounted and when \u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1925,
+          "hadith_number": "1924",
+          "snippet": "\u2026ehind the Prophet(saws) When the sun set Apostle of Allaah(saws) returned from \u2018Arafah (to Al Muzdalifah)."
+        },
+        {
+          "slug": "abudawud",
+          "number": 1938,
+          "hadith_number": "1937",
+          "snippet": "\u2026ir bin \u2018Abdallah reported the Apostle of Allaah (saws) as saying \u201cThe whole of \u2018Arafah is a place of halting, the whole of Mina is a place of sacrifice, the whole of \u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1914,
+          "hadith_number": "1913",
+          "snippet": "\u2026of Allaah(saws) proceeded from Mina when he offered the dawn prayer on Yaum Al \u2018Arafah (9th of Dhu Al Hijjah) in the morning till he came to \u2018Arafah and he descended \u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 2441,
+          "hadith_number": "2440",
+          "snippet": "\u2026 narrated to us: The Messenger of Allah (saws) prohibited fasting on the day of Arafah at Arafah. </p>"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1916,
+          "hadith_number": "1915",
+          "snippet": "\u2026f his father or his uncle \u201c I saw the Apostle of Allaah(saws) on the pulpit in \u2018Arafah.\u201d"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1907,
+          "hadith_number": "1906",
+          "snippet": "\u2026s) prayed the noon and the afternoon prayers with one adhan and two iqamahs at \u2018Arafah and he did not offer supererogatory prayers between them. He prayed the sunset \u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1934,
+          "hadith_number": "1933",
+          "snippet": "\u2026reported on the authority of his father \u201cI proceeded along with Ibn \u2018Umar from \u2018Arafah towards Al Muzdalifah.\u201d He was not tiring of uttering \u201cAllaah is most great\u201d an\u2026"
+        },
+        {
+          "slug": "tirmidhi",
+          "number": 750,
+          "hadith_number": "750",
+          "snippet": "\"The Prophet broke (the fast) of Arafah, Umm Fadl sent him some milk to drink.\""
+        },
+        {
+          "slug": "tirmidhi",
+          "number": 751,
+          "hadith_number": "751",
+          "snippet": "\"Ibn Umar was asked about fasting (the Day of) Arafah  (at Arafat). He said: 'I performed Hajj with the Prophet, and he did not fast \u2026"
+        },
+        {
+          "slug": "tirmidhi",
+          "number": 890,
+          "hadith_number": "889",
+          "snippet": "\u2026at. They were questioning him, so he ordered a caller to proclaim: \"The Hajj is Arafah. Whoever came to Jam during the night, before the time of Fajr, then he has att\u2026"
+        },
+        {
+          "slug": "tirmidhi",
+          "number": 773,
+          "hadith_number": "773",
+          "snippet": "The Messenger of Allah said: \"The Day of Arafah, the Day of Nahr, and the Days of Tashriq are Eid for us. The people of Islam, \u2026"
+        },
+        {
+          "slug": "tirmidhi",
+          "number": 3423,
+          "hadith_number": "3339",
+          "snippet": "\u2026the Day of Resurrection, and Al-Yawmul-Mashhud (the Attended Day) is the Day of Arafah, and Ash-Shahid (the witness) is Friday.\u201d He said: \u201cThe sun does not rise nor s\u2026"
+        },
+        {
+          "slug": "tirmidhi",
+          "number": 749,
+          "hadith_number": "749",
+          "snippet": "the Prophet said: \"Fast the Day of Arafah, for indeed I anticipate that Allah will forgive (the sins) of the year after i\u2026"
+        },
+        {
+          "slug": "tirmidhi",
+          "number": 3669,
+          "hadith_number": "3585",
+          "snippet": "\u201cThe best of supplication is the supplication of the Day of `Arafah. And the best of what I and the Prophets before me have said is: None has the r\u2026"
+        },
+        {
+          "slug": "tirmidhi",
+          "number": 886,
+          "hadith_number": "885",
+          "snippet": "\"The Messenger of Allah stopped at Arafat and said: 'This is Arafah and it is a place of standing. And all of Arafat is a place for standing.' Then\u2026"
+        },
+        {
+          "slug": "nasai",
+          "number": 3009,
+          "hadith_number": "3003",
+          "snippet": "\u2026lime, frees more of his slaves, male and female, from the fire, than the day of Arafah. He comes close, then he boasts to the angels about them and say: 'What do thes\u2026"
+        },
+        {
+          "slug": "ibnmajah",
+          "number": 1730,
+          "hadith_number": "1730",
+          "snippet": "\u2026rom Abu Qatadah that the Messenger of Allah (saw) said: \u201cFasting on the Day of \u2018Arafah, I hope from Allah, expiates for the sins of the year before and the year after\u2026"
+        }
+      ]
+    },
+    {
+      "query": "qunut",
+      "mode_hint": "term",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 780,
+          "hadith_number": "797",
+          "snippet": "Abu Hurairah said, \"No doubt, my Salat is similar to that of the Prophet (saws).\" Abu Hurairah used to recite Qunut after saying Sami' Allah\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 911,
+          "hadith_number": "933",
+          "snippet": "Once in the lifetime of the Prophet (p.b.u.h) the people were afflicted with drought (famine). While \r the Prophet was delivering the Khutba\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 974,
+          "hadith_number": "1001",
+          "snippet": "Anas was asked, \"Did the Prophet recite Qunut in the Fajr prayer?\" Anas replied in the affirmative. He  was further asked, \"Did he recite Qu\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 975,
+          "hadith_number": "1002",
+          "snippet": "I asked Anas bin Malik about the Qunut. Anas replied, \"Definitely it was (recited)\". I asked, \"Before  bowing or after it?\" Anas replied, \"B\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 976,
+          "hadith_number": "1003",
+          "snippet": "The Prophet recited Qunut for one month (in the Fajr prayer) asking Allah to punish the tribes of Ral  and Dhakwan."
+        },
+        {
+          "slug": "bukhari",
+          "number": 1005,
+          "hadith_number": "1033",
+          "snippet": "In the lifetime of Allah's Apostle (p.b.u.h) the people were afflicted with a (famine) year. While the  Prophet was delivering the Khutba (s\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1258,
+          "hadith_number": "1300",
+          "snippet": "When the reciters of Qur'an were martyred, Allah's Apostle recited Qunut for one month and I never  saw him (i.e. Allah's Apostle) so sad as\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2281,
+          "hadith_number": "2375",
+          "snippet": "`Ali bin Abi Talib said: \"I got a she-camel as my share of the war booty on the day (of the battle) of  Badr, and Allah's Apostle gave me an\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3038,
+          "hadith_number": "3170",
+          "snippet": "I asked Anas about the Qunut (i.e. invocation in the prayer). Anas said, \"It should be recited before  bowing.\" I said, \"So-and-so claims th\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3838,
+          "hadith_number": "4003",
+          "snippet": "I had a she-camel which I got in my share from the booty of the battle of Badr, and the Prophet had  given me another she camel from the Khu\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3917,
+          "hadith_number": "4089",
+          "snippet": "Allah's Apostle said Al-Qunut for one month after the posture of Bowing, invoking evil upon some  'Arab tribes."
+        },
+        {
+          "slug": "bukhari",
+          "number": 3918,
+          "hadith_number": "4090",
+          "snippet": "(The tribes of) Ril, Dhakwan, 'Usaiya and Bani Lihyan asked Allah's Apostle to provide them with  some men to support them against their ene\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3922,
+          "hadith_number": "4094",
+          "snippet": "The Prophet said Al-Qunut after Bowing (i.e. Ar-Ruku') for one month, invoking evil upon (the tribes  of) Ril and Dhakwan. He used to say, \"\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3924,
+          "hadith_number": "4096",
+          "snippet": "I asked Anas bin Malik regarding Al-Qunut during the prayer. Anas replied, \"Yes (Al-Qunut was said  by the Prophet in the prayer).\" I said, \u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4354,
+          "hadith_number": "4560",
+          "snippet": "Whenever Allah's Apostle intended to invoke evil upon somebody or invoke good upon somebody, he  used to invoke (Allah after bowing (in the \u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6154,
+          "hadith_number": "6393",
+          "snippet": "When the Prophet said, \"Sami' al-lahu liman hamidah (Allah heard him who sent his praises to Him)\"  in the last rak`a of the `Isha' prayer, \u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 7061,
+          "hadith_number": "7340, 7341",
+          "snippet": "The Prophet brought the Ansar and the Quarish people into alliance in my house at Medina, and he  invoked Allah for one month against the tr\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1528,
+          "hadith_number": "675 c",
+          "snippet": "Abu Salama reported it on the authority of Abu Huraira that the Apostle of Allah (may peace be upon him) recited Qunut after ruku' in prayer\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1530,
+          "hadith_number": "676",
+          "snippet": "Abu Salama b. 'Abd al-Rahman is reported to have said that he had heard Abu Huraira saying: I would say prayer along with you which is near \u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1532,
+          "hadith_number": "677 b",
+          "snippet": "Muhammad reported: I asked Anas whether the Messenger of Allah (may peace be upon him) observed Qunut in the dawn prayer. He said: Yes, (he \u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1533,
+          "hadith_number": "677 c",
+          "snippet": "Anas b. Malik reported: The Messenger of Allah (may peace be upon him) observed Qunut for a month in the dawn prayer after ruku' and invoked\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1534,
+          "hadith_number": "677 d",
+          "snippet": "Anas b. Malik reported that the Messenger of Allah (may peace be upon him) observed Qunut for a month in the dawn prayer after ruku' and inv\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1535,
+          "hadith_number": "677 e",
+          "snippet": "Asim reported: I asked Anas whether Qunut was observed (by the Holy prophet) before ruku' or after ruku'. He replied: Before ruku'. I said: \u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1538,
+          "hadith_number": "677 h",
+          "snippet": "Anas b. Malik reported that the Messenger of Allah (may peace be upon him) observed Qunut for one month Invoking curse upon Ri'l, Dhakwan, '\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1540,
+          "hadith_number": "677 j",
+          "snippet": "Anas reported that the Messenger of Allah (may peace be upon him) observed Qunut for one month invoking curse upon some tribes of Arabia (th\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1541,
+          "hadith_number": "678 a",
+          "snippet": "Al-Bari' b. 'Azib reported that the Messenger of Allah (may peace be upon him) observed Qunut in the morning and evening (prayers)."
+        },
+        {
+          "slug": "muslim",
+          "number": 1542,
+          "hadith_number": "678 b",
+          "snippet": "Al-Bari' reported that the Messenger of Allah (may peace be upon him) observed Qunut in the dawn and evening (prayers)."
+        },
+        {
+          "slug": "muslim",
+          "number": 2060,
+          "hadith_number": "897 b",
+          "snippet": "Anas b. Malik reported: The people were in the grip of famine during the lifetime of the Messenger of Allah (may peace be upon him), and (on\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 5081,
+          "hadith_number": "1979 a",
+          "snippet": "'Ali b. Abu Talib reported; There fell to my lot along with Allah's Messenger (may peace be upon him) an old she-camel from the spoils of Ba\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 5083,
+          "hadith_number": "1979 c",
+          "snippet": "Husain b. 'Ali reported 'Ali having said: There fell to my lot a she-camel out of the spoils of war on the Day of Badr, and Allah's Messenge\u2026"
+        }
+      ]
+    },
+    {
+      "query": "istighfar",
+      "mode_hint": "term",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 58,
+          "hadith_number": "58",
+          "snippet": "I heard Jarir bin 'Abdullah (Praising Allah). On the day when       Al-Mughira bin Shu'ba died, he (Jarir) got up (on the pulpit) and       \u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 212,
+          "hadith_number": "212",
+          "snippet": "Allah's Apostle said, \"If anyone of you feels drowsy while praying he should go to bed (sleep) till his  slumber is over because in praying \u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1230,
+          "hadith_number": "1269",
+          "snippet": "When `Abdullah bin Ubai (the chief of hypocrites) died, his son came to the Prophet and said, \"O  Allah's Apostle! Please give me your shirt\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1283,
+          "hadith_number": "1327, 1328",
+          "snippet": "Allah's Apostle informed about the news of the death of An-Najash (King of Ethiopia) on the day he  expired. He said, \"Ask Allah's forgivene\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2372,
+          "hadith_number": "2468",
+          "snippet": "I had been eager to ask `Umar about the two ladies from among the wives of the Prophet regarding  whom Allah said (in the Qur'an saying): If\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3717,
+          "hadith_number": "3880",
+          "snippet": "that Allah's Apostle informed them (i.e. his companions) of the death of Negus, the king of Ethiopia,  on the very day on which the latter d\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3721,
+          "hadith_number": "3884",
+          "snippet": "When Abu Talib was in his death bed, the Prophet went to him while Abu Jahl was sitting beside him.  The Prophet said, \"O my uncle! Say: Non\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4062,
+          "hadith_number": "4240, 4241",
+          "snippet": "Fatima the daughter of the Prophet sent someone to Abu Bakr (when he was a caliph), asking for her  inheritance of what Allah's Apostle had \u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4121,
+          "hadith_number": "4304",
+          "snippet": "A lady committed theft during the lifetime of Allah's Apostle in the Ghazwa of Al-Fath, ((i.e.  Conquest of Mecca). Her folk went to Usama b\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4137,
+          "hadith_number": "4323",
+          "snippet": "When the Prophet had finished from the battle of Hunain, he sent Abu Amir at the head of an army to  Autas He (i.e. Abu Amir) met Duraid bin\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4224,
+          "hadith_number": "4418",
+          "snippet": "Who, from among Ka`b's sons, was the guide of Ka`b when he became blind: I heard Ka`b bin Malik  narrating the story of (the Ghazwa of) Tabu\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4318,
+          "hadith_number": "4521",
+          "snippet": "A man who wants to perform the Hajj (from Mecca) can perform the Tawaf around the Ka`ba as long  as he is not in the state of Ihram till he \u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4434,
+          "hadith_number": "4640",
+          "snippet": "There was a dispute between Abu Bakr and `Umar, and Abu Bakr made `Umar angry. So `Umar left  angrily. Abu Bakr followed him, requesting him\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4464,
+          "hadith_number": "4670",
+          "snippet": "When `Abdullah bin 'Ubai died, his son `Abdullah bin `Abdullah came to Allah's Apostle and asked  him to give him his shirt in order to shro\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4466,
+          "hadith_number": "4672",
+          "snippet": "When `Abdullah bin Ubai died, his son `Abdullah bin `Abdullah came to Allah's Apostle who gave  his shirt to him and ordered him to shroud h\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4469,
+          "hadith_number": "4675",
+          "snippet": "When Abu Talib's death approached, the Prophet went to him while Abu Jahl and `Abdullah bin Abi  Umaiya were present with him. The Prophet s\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4566,
+          "hadith_number": "4772",
+          "snippet": "When Abu Talib was on his death bed, Allah's Apostle came to him and found with him, Abu Jahl and  `Abdullah bin Abi Umaiya bin Al-Mughira. \u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4983,
+          "hadith_number": "5191",
+          "snippet": "I had been eager to ask `Umar bin Al-Khattab about the two ladies from among the wives of the  Prophet regarding whom Allah said 'If you two\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5570,
+          "hadith_number": "5796",
+          "snippet": "When `Abdullah bin Ubdi (bin Salul) died, his son came to Allah's Apostle and said ' O Allah's  Apostle, give me your shirt so that I may sh\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 130,
+          "hadith_number": "24 a",
+          "snippet": "It is reported by Sa'id b. Musayyib who narrated it on the authority of his father (Musayyib b. Hazm) that when Abu Talib was about to die, \u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 276,
+          "hadith_number": "97",
+          "snippet": "It is narrated by Safwan b. Muhriz that Jundab b. 'Abdullah al-Bajali during the stormy days of Ibn Zubair sent a message to 'As'as b. Salam\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1081,
+          "hadith_number": "484 d",
+          "snippet": "'A'isha reported: The Messenger of Allah (may peace be upon him) recited often these words: Hallowed be Allah and with His praise, I seek th\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1324,
+          "hadith_number": "591",
+          "snippet": "Thauban reported: When the Messenger of Allah (may peace be upon him) finished his prayer. He begged forgiveness three times and said: O All\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1818,
+          "hadith_number": "786",
+          "snippet": "'A'isha reported Allah's Apostle (may peace be upon him) as saying: When anyone amongst you dozes in prayer, he should sleep, till sleep is \u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 2183,
+          "hadith_number": "951 b",
+          "snippet": "Abu Huraira reported: The Messenger of Allah (may peace be upon him) gave us the news of the death of Negus, the ruler of Abyssinia, on the \u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 2234,
+          "hadith_number": "976 a",
+          "snippet": "Abu Huraira reported Allah's Messenger, (may peace be upon him) as saying: I sought permission to beg forgiveness for my mother, but He did \u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 2235,
+          "hadith_number": "976 b",
+          "snippet": "Abu Huraira reported: The Apostle of Allah (may peace be upon him) visited the grave of his mother and he wept, and moved others around him \u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 2305,
+          "hadith_number": "1007 a",
+          "snippet": "'A'isha reported Allah's Messenger (may peace be upon him) as saying: Every one of the children of Adam has been created with three hundred \u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 3663,
+          "hadith_number": "1479 e, 1475 b",
+          "snippet": "Ibn 'Abbas (Allah be pleased with them) reported. I had always been anxious to ask 'Umar (Allah be pleased with him) about the two ladies am\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 4372,
+          "hadith_number": "1688 b",
+          "snippet": "`A'isha, the wife of Allah's Apostle (may peace be upon him), reported that the Quraish were concerned about the woman who had committed the\u2026"
+        }
+      ]
+    },
+    {
+      "query": "laylatul qadr",
+      "mode_hint": "term",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 49,
+          "hadith_number": "49",
+          "snippet": "\"Allah's Apostle went out to inform the people about the (date of the)      night of decree (Al-Qadr) but there happened a quarrel between t\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 195,
+          "hadith_number": "195",
+          "snippet": "It was the time for prayer, and those whose houses were near got up and went to their people (to  perform ablution), and there remained some\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 241,
+          "hadith_number": "241",
+          "snippet": "The Prophet once spat in his clothes."
+        },
+        {
+          "slug": "bukhari",
+          "number": 251,
+          "hadith_number": "251",
+          "snippet": "`Aisha's brother and I went to `Aisha and he asked her about the bath of the Prophet. She brought a  pot containing about a Sa` of water and\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 282,
+          "hadith_number": "283",
+          "snippet": "The Prophet came across me in one of the streets of Medina and at that time I was Junub. So I slipped  away from him and went to take a bath\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 284,
+          "hadith_number": "285",
+          "snippet": "Allah's Apostle came across me and I was Junub. He took my hand and I went along with him till he  sat down I slipped away, went home and to\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 322,
+          "hadith_number": "325",
+          "snippet": "Fatima bint Abi Hubaish asked the Prophet, \"I got persistent bleeding (in between the periods) and do  not become clean. Shall I give up pra\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 374,
+          "hadith_number": "378",
+          "snippet": "Once Allah's Apostle fell off a horse and his leg or shoulder got injured. He swore that he would not  go to his wives for one month and he \u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 388,
+          "hadith_number": "392",
+          "snippet": "Allah's Apostle said, \"I have been ordered to fight the people till they say: 'None has the right to be  worshipped but Allah.' And if they \u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 389,
+          "hadith_number": "393",
+          "snippet": "Narrated Maimun bin Siyah that he asked Anas bin  Malik, \"O Abu Hamza! What makes the life and property of a person sacred?\" He replied, \"Wh\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 397,
+          "hadith_number": "402",
+          "snippet": "My Lord agreed with me in three things:  -1. I said, \"O Allah's Apostle, I wish we took the station of Abraham as our praying place (for som\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 398,
+          "hadith_number": "402b",
+          "snippet": "as above (395)."
+        },
+        {
+          "slug": "bukhari",
+          "number": 401,
+          "hadith_number": "405",
+          "snippet": "The Prophet saw some sputum in the direction of the Qibla (on the wall of the mosque) and he  disliked that and the sign of disgust was appa\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 411,
+          "hadith_number": "417",
+          "snippet": "The Prophet saw expectoration (on the wall of the mosque) in the direction of the Qibla and scraped it  off with his hand. It seemed that he\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 483,
+          "hadith_number": "492",
+          "snippet": "See translation for <a href=\"/bukhari/8/131\">hadith 484</a> above"
+        },
+        {
+          "slug": "bukhari",
+          "number": 521,
+          "hadith_number": "531",
+          "snippet": "The Prophet said, \"Whenever anyone of you offers his prayer he is speaking in private to his Lord. So  he should not spit to his right but u\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 524,
+          "hadith_number": "535",
+          "snippet": "The Mu'adh-dhin (call-maker) of the Prophet pronounced the Adhan (call) for the Zuhr prayer but the  Prophet said, \"Let it be cooler, let it\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 527,
+          "hadith_number": "539",
+          "snippet": "We were with the Prophet on a journey and the Mu'adh-dhin (call maker for the prayer) wanted to  pronounce the Adhan (call) for the Zuhr pra\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 559,
+          "hadith_number": "572",
+          "snippet": "The Prophet delayed the `Isha' prayer till midnight and then he offered the prayer and said, \"The  people prayed and slept but you have been\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 562,
+          "hadith_number": "575",
+          "snippet": "Zaid bin Thabit said, \"We took the \"Suhur\" (the meal taken before dawn while fasting is observed)  with the Prophet and then stood up for th\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 563,
+          "hadith_number": "576",
+          "snippet": "Anas bin Malik said, \"The Prophet and Zaid bin Thabit took the 'Suhur' together and after finishing  the meal, the Prophet stood up and pray\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 596,
+          "hadith_number": "610",
+          "snippet": "Anas bin Malik said, \"Whenever the Prophet went out with us to fight (in Allah's cause) against any  nation, he never allowed us to attack t\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 614,
+          "hadith_number": "629",
+          "snippet": "We were in the company of the Prophet on a journey and the Mu'adh-dhin wanted to pronounce the  Adhan for the (Zuhr) prayer. The Prophet sai\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 628,
+          "hadith_number": "643",
+          "snippet": "Once Iqama was pronounced a man came to the Prophet and detained him (from the prayer)."
+        },
+        {
+          "slug": "bukhari",
+          "number": 638,
+          "hadith_number": "655, 656",
+          "snippet": "Anas said, \"The Prophet said, 'O Bani Salima! Don't you think that for every step of yours (that you  take towards the mosque) there is a re\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 643,
+          "hadith_number": "661",
+          "snippet": "Anas was asked, \"Did Allah's Apostle wear a ring?\" He said, \"Yes. Once he delayed the `Isha' prayer  till midnight and after the prayer, he \u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 663,
+          "hadith_number": "681",
+          "snippet": "The Prophet did not come out for three days. The people stood for the prayer and Abu Bakr went  ahead to lead the prayer. (In the meantime) \u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 695,
+          "hadith_number": "712",
+          "snippet": "When the Prophet, became ill in his fatal illness, Someone came to inform him about the prayer, and  the Prophet told him to tell Abu Bakr t\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 702,
+          "hadith_number": "719",
+          "snippet": "Once the Iqama was pronounced and Allah's Apostle faced us and said, \"Straighten your rows and  stand closer together, for I see you from be\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 707,
+          "hadith_number": "725",
+          "snippet": "The Prophet said, \"Straighten your rows for I see you from behind my back.\" Anas added, \"Everyone  of us used to put his shoulder with the s\u2026"
+        }
+      ]
+    },
+    {
+      "query": "dua e qunut",
+      "mode_hint": "term",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 975,
+          "hadith_number": "1002",
+          "snippet": "I asked Anas bin Malik about the Qunut. Anas replied, \"Definitely it was (recited)\". I asked, \"Before  bowing or after it?\" Anas replied, \"B\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 976,
+          "hadith_number": "1003",
+          "snippet": "The Prophet recited Qunut for one month (in the Fajr prayer) asking Allah to punish the tribes of Ral  and Dhakwan."
+        },
+        {
+          "slug": "bukhari",
+          "number": 1005,
+          "hadith_number": "1033",
+          "snippet": "In the lifetime of Allah's Apostle (p.b.u.h) the people were afflicted with a (famine) year. While the  Prophet was delivering the Khutba (s\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3038,
+          "hadith_number": "3170",
+          "snippet": "I asked Anas about the Qunut (i.e. invocation in the prayer). Anas said, \"It should be recited before  bowing.\" I said, \"So-and-so claims th\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3838,
+          "hadith_number": "4003",
+          "snippet": "I had a she-camel which I got in my share from the booty of the battle of Badr, and the Prophet had  given me another she camel from the Khu\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3917,
+          "hadith_number": "4089",
+          "snippet": "Allah's Apostle said Al-Qunut for one month after the posture of Bowing, invoking evil upon some  'Arab tribes."
+        },
+        {
+          "slug": "bukhari",
+          "number": 3918,
+          "hadith_number": "4090",
+          "snippet": "(The tribes of) Ril, Dhakwan, 'Usaiya and Bani Lihyan asked Allah's Apostle to provide them with  some men to support them against their ene\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3922,
+          "hadith_number": "4094",
+          "snippet": "The Prophet said Al-Qunut after Bowing (i.e. Ar-Ruku') for one month, invoking evil upon (the tribes  of) Ril and Dhakwan. He used to say, \"\u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3924,
+          "hadith_number": "4096",
+          "snippet": "I asked Anas bin Malik regarding Al-Qunut during the prayer. Anas replied, \"Yes (Al-Qunut was said  by the Prophet in the prayer).\" I said, \u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4354,
+          "hadith_number": "4560",
+          "snippet": "Whenever Allah's Apostle intended to invoke evil upon somebody or invoke good upon somebody, he  used to invoke (Allah after bowing (in the \u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6154,
+          "hadith_number": "6393",
+          "snippet": "When the Prophet said, \"Sami' al-lahu liman hamidah (Allah heard him who sent his praises to Him)\"  in the last rak`a of the `Isha' prayer, \u2026"
+        },
+        {
+          "slug": "bukhari",
+          "number": 7061,
+          "hadith_number": "7340, 7341",
+          "snippet": "The Prophet brought the Ansar and the Quarish people into alliance in my house at Medina, and he  invoked Allah for one month against the tr\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1528,
+          "hadith_number": "675 c",
+          "snippet": "Abu Salama reported it on the authority of Abu Huraira that the Apostle of Allah (may peace be upon him) recited Qunut after ruku' in prayer\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1530,
+          "hadith_number": "676",
+          "snippet": "Abu Salama b. 'Abd al-Rahman is reported to have said that he had heard Abu Huraira saying: I would say prayer along with you which is near \u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1533,
+          "hadith_number": "677 c",
+          "snippet": "Anas b. Malik reported: The Messenger of Allah (may peace be upon him) observed Qunut for a month in the dawn prayer after ruku' and invoked\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1534,
+          "hadith_number": "677 d",
+          "snippet": "Anas b. Malik reported that the Messenger of Allah (may peace be upon him) observed Qunut for a month in the dawn prayer after ruku' and inv\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1535,
+          "hadith_number": "677 e",
+          "snippet": "Asim reported: I asked Anas whether Qunut was observed (by the Holy prophet) before ruku' or after ruku'. He replied: Before ruku'. I said: \u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 1540,
+          "hadith_number": "677 j",
+          "snippet": "Anas reported that the Messenger of Allah (may peace be upon him) observed Qunut for one month invoking curse upon some tribes of Arabia (th\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 2060,
+          "hadith_number": "897 b",
+          "snippet": "Anas b. Malik reported: The people were in the grip of famine during the lifetime of the Messenger of Allah (may peace be upon him), and (on\u2026"
+        },
+        {
+          "slug": "muslim",
+          "number": 5083,
+          "hadith_number": "1979 c",
+          "snippet": "Husain b. 'Ali reported 'Ali having said: There fell to my lot a she-camel out of the spoils of war on the Day of Badr, and Allah's Messenge\u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1428,
+          "hadith_number": "1427",
+          "snippet": "</p>  The Messenger of Allah (saws) used to say at the end of his witr: \"O Allah, I seek refuge in Thy good pleasure from Thy anger, and in \u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1441,
+          "hadith_number": "1440",
+          "snippet": "Abu Hurairah said: By Allah, I shall offer prayer like that of the Messenger of Allah (saws). The narrator said: Abu Hurairah used to recite\u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 2987,
+          "hadith_number": "2986",
+          "snippet": "\u2018Ali bin Abi Talib said \u201cI had an old she Camel that I got as my share from the booty on the day of Badr. The Apostle of Allaah(saws) also g\u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 4107,
+          "hadith_number": "4106",
+          "snippet": "</p>  The Prophet (saws) brought Fatimah a slave which he donated to her. Fatimah wore a garment which, when she covered her head, did not r\u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1444,
+          "hadith_number": "1443",
+          "snippet": "</p>  The Messenger of Allah (saws) recited the supplication (Qunut) daily for a month at the noon, afternoon, sunset, night and morning pra\u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1430,
+          "hadith_number": "1429",
+          "snippet": "</p>  Al-Hasan reported: Umar ibn al-Khattab gathered the people (in tarawih prayer) behind Ubayy ibn Ka'b (who led them). He used to lead t\u2026"
+        },
+        {
+          "slug": "abudawud",
+          "number": 1443,
+          "hadith_number": "1442",
+          "snippet": "Abu Hurairah said: The Messenger of Allah (saws) recited the supplication in the night prayer for a month. He said (in his supplication): O \u2026"
+        },
+        {
+          "slug": "tirmidhi",
+          "number": 402,
+          "hadith_number": "401",
+          "snippet": "\"The Prophet (S) would perform the Qunut in the Subh and Maghrib prayers.\""
+        },
+        {
+          "slug": "nasai",
+          "number": 1079,
+          "hadith_number": "1077",
+          "snippet": "\"The Messenger of Allah (SAW) said the Qunut for a month.\"- (One of the narrators) Shu'bah said: \"He cursed some men.\" Hisham said: \"He supp\u2026"
+        },
+        {
+          "slug": "nasai",
+          "number": 1081,
+          "hadith_number": "1079",
+          "snippet": "The Messenger of Allah (SAW) said the Qunut for one month, supplicating against one of the 'Arab tribes, then he stopped doing that.\""
+        }
+      ]
+    },
+    {
+      "query": "what is the dua before sleep?",
+      "mode_hint": "natural",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 1849,
+          "hadith_number": "1917",
+          "snippet": "When the following verses were revealed: 'Eat and drink until the white thread appears to you, distinct  from the black thread' and of dawn was not revealed, some people who intended to fast, tied bla"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6059,
+          "hadith_number": "6296",
+          "snippet": "Allah s Apostle said, \"When you intend going to bed at night, put out the lights, close the doors, tie  the mouths of the water skins, and cover your food and drinks.\" Hamrnam said, \"I think he (the o"
+        },
+        {
+          "slug": "bukhari",
+          "number": 918,
+          "hadith_number": "940",
+          "snippet": "We used to offer the Jumua prayer early and then have the afternoon nap."
+        },
+        {
+          "slug": "bukhari",
+          "number": 1110,
+          "hadith_number": "1142",
+          "snippet": "Allah's Apostle said, \"Satan puts three knots at the back of the head of any of you if he is asleep. On  every knot he reads and exhales the following words, 'The night is long, so stay asleep.' When "
+        },
+        {
+          "slug": "bukhari",
+          "number": 883,
+          "hadith_number": "905",
+          "snippet": "We used to offer the Jumua prayer early and then have an afternoon nap."
+        },
+        {
+          "slug": "bukhari",
+          "number": 1105,
+          "hadith_number": "1137",
+          "snippet": "A man said, \"O Allah's Apostle! How is the prayer of the night?\" He said, \"Two rak`at followed by  two rak`at and so on, and when you apprehend the approaching dawn, offer one rak`a as witr.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 4308,
+          "hadith_number": "4509",
+          "snippet": "`Adi took a white rope (or thread) and a black one, and when some part of the night had passed, he  looked at them but he could not distinguish one from the other. The next morning he said, \"O Allah's"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3135,
+          "hadith_number": "3269",
+          "snippet": "Allah's Apostle said, \"During your sleep, Satan knots three knots at the back of the head of each of  you, and he breathes the following words at each knot, 'The night is, long, so keep on sleeping,' "
+        },
+        {
+          "slug": "bukhari",
+          "number": 340,
+          "hadith_number": "344",
+          "snippet": "Once we were traveling with the Prophet and we carried on traveling till the last part of the night and  then we (halted at a place) and slept (deeply). There is nothing sweeter than sleep for a trave"
+        },
+        {
+          "slug": "bukhari",
+          "number": 917,
+          "hadith_number": "939",
+          "snippet": "As above with the addition: We never had an afternoon nap nor meals except after offering the Jumua  prayer."
+        },
+        {
+          "slug": "bukhari",
+          "number": 1848,
+          "hadith_number": "1916",
+          "snippet": "When the above verses were revealed: 'Until the white thread appears to you, distinct from the black  thread,' I took two (hair) strings, one black and the other white, and kept them under my pillow a"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4366,
+          "hadith_number": "4572",
+          "snippet": "That once he stayed overnight in the house of his aunt, the wife of the Prophet. He added: I lay on the  cushion transversely while Allah's Apostle lay along with his wife in the lengthwise direction "
+        },
+        {
+          "slug": "bukhari",
+          "number": 3136,
+          "hadith_number": "3270",
+          "snippet": "It was mentioned before the Prophet that there was a man who slept the night till morning (after  sunrise). The Prophet said, \"He is a man in whose ears (or ear) Satan had urinated.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 183,
+          "hadith_number": "183",
+          "snippet": "That he stayed overnight in the house of Maimuna the wife of the Prophet, his aunt. He added : I lay  on the bed (cushion transversally) while Allah's Apostle and his wife lay in the lengthwise direct"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1160,
+          "hadith_number": "1198",
+          "snippet": "`Abdullah bin `Abbas said that he had passed a night in the house of Maimuna the mother of the  faithful believers , who was his aunt. He said, \"I slept across the bed, and Allah's Apostle along with "
+        },
+        {
+          "slug": "bukhari",
+          "number": 6044,
+          "hadith_number": "6279",
+          "snippet": "We used to have a midday nap and take our meals after the Jumua (prayer)."
+        },
+        {
+          "slug": "bukhari",
+          "number": 285,
+          "hadith_number": "286",
+          "snippet": "I asked `Aisha \"Did the Prophet use to sleep while he was Junub?\" She replied, \"Yes, but he used to  perform ablution (before going to bed)."
+        },
+        {
+          "slug": "bukhari",
+          "number": 574,
+          "hadith_number": "588",
+          "snippet": "Allah's Apostle forbade the offering of two prayers:  -1. after the morning prayer till the sunrises.  -2. after the `Asr prayer till the sun sets."
+        },
+        {
+          "slug": "bukhari",
+          "number": 7113,
+          "hadith_number": "7395",
+          "snippet": "When the Prophet went to bed at night, he used to say: \"Bismika namutu wa nahya.\" And when he got  up in the morning, he used to say, \"Al hamdu li l-lahi al-ladhi ahyana ba'da ma amatana, wa ilaihi-nn"
+        },
+        {
+          "slug": "bukhari",
+          "number": 286,
+          "hadith_number": "287",
+          "snippet": "I asked Allah's Apostle \"Can any one of us sleep while he is Junub?\" He replied, \"Yes, if he performs  ablution, he can sleep while he is Junub.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 611,
+          "hadith_number": "626",
+          "snippet": "Allah's Apostle used to pray two light rak`at before the morning (compulsory) prayer after the day  dawned and the Mu'adh-dhin had finished his Adhan. He then would lie on his right side till the  Mu'"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6083,
+          "hadith_number": "6320",
+          "snippet": "The Prophet said, \"When anyone of you go to bed, he should shake out his bed with the inside of his  waist sheet, for he does not know what has come on to it after him, and then he should say: 'Bismik"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5592,
+          "hadith_number": "5819",
+          "snippet": "The Prophet had forbidden: (A) the Mulamasa and Munabadha (bargains), (B) the offering of two  prayers, one after the morning compulsory prayer till the sun rises, and the others, after the `Asr  pray"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3216,
+          "hadith_number": "3354",
+          "snippet": "Allah's Apostle said, \"Two persons came to me at night (in dream) (and took me along with them).  We passed by a tall man who was so tall that I was not able to see his head and that person was  Abrah"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5411,
+          "hadith_number": "5624",
+          "snippet": "Allah's Apostle said, \"Extinguish the lamps when you go to bed; close your doors; tie the mouths of  your water skins, and cover the food and drinks.\" I think he added, \". . . even with a stick you pl"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4365,
+          "hadith_number": "4571",
+          "snippet": "That once he stayed overnight (in the house) of his aunt Maimuna. the wife of the Prophet. He added:  I lay on the cushion transversely and Allah's Apostle lay along with his wife in the lengthwise  d"
+        },
+        {
+          "slug": "bukhari",
+          "number": 138,
+          "hadith_number": "138",
+          "snippet": "Ibn `Abbas said, \"The Prophet slept till he snored and then prayed (or probably lay till his breath  sounds were heard and then got up and prayed).\" Ibn `Abbas added: \"I stayed overnight in the house "
+        },
+        {
+          "slug": "bukhari",
+          "number": 5630,
+          "hadith_number": "5857",
+          "snippet": "The sandal of the Prophet had two straps."
+        },
+        {
+          "slug": "bukhari",
+          "number": 7112,
+          "hadith_number": "7394",
+          "snippet": "When the Prophet went to bed, he used to say, \"Allahumma bismika ahya wa amut.\" And when he woke up in the mornings he used to say, \"Al-hamdu li l-lahi al-ladhi ahyana ba'da ma amatana wa ilaihi-nnush"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4310,
+          "hadith_number": "4511",
+          "snippet": "from the black thread.\" was revealed, but: '... of dawn' was not revealed (along with it) so some men,  when intending to fast, used to tie their legs, one with white thread and the other with black t"
+        }
+      ]
+    },
+    {
+      "query": "is fasting on Arafat recommended?",
+      "mode_hint": "natural",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 1926,
+          "hadith_number": "1999",
+          "snippet": "Fasting for those who perform ,Hajj-at-Tamattu` (in lieu of the Hadi which they cannot afford) may be  performed up to the day of `Arafat. And if one does not get a Hadi and has not fasted (before the"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4301,
+          "hadith_number": "4502",
+          "snippet": "The people used to fast on the day of 'Ashura' before fasting in Ramadan was prescribed but when (the  order of compulsory fasting in) Ramadan was revealed, it was up to one to fast on it (i.e. 'Ashur"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1824,
+          "hadith_number": "1892",
+          "snippet": "The Prophet observed the fast on the 10th of Muharram ('Ashura), and ordered (Muslims) to fast on  that day, but when the fasting of the month of Ramadan was prescribed, the fasting of the 'Ashura' wa"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1825,
+          "hadith_number": "1893",
+          "snippet": "(The tribe of) Quraish used to fast on the day of Ashura' in the Pre-Islamic period, and then Allah's  Apostle ordered (Muslims) to fast on it till the fasting in the month of Ramadan was prescribed; "
+        },
+        {
+          "slug": "bukhari",
+          "number": 1898,
+          "hadith_number": "1969",
+          "snippet": "Allah's Apostle used to fast till one would say that he would never stop fasting, and he would abandon  fasting till one would say that he would never fast. I never saw Allah's Apostle fasting for a w"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1846,
+          "hadith_number": "1914",
+          "snippet": "The Prophet said, \"None of you should fast a day or two before the month of Ramadan unless he has  the habit of fasting (Nawafil) (and if his fasting coincides with that day) then he can fast that day"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1836,
+          "hadith_number": "1904",
+          "snippet": "Allah's Apostle said, \"Allah said, 'All the deeds of Adam's sons (people) are for them, except fasting  which is for Me, and I will give the reward for it.' Fasting is a shield or protection from the "
+        },
+        {
+          "slug": "bukhari",
+          "number": 1602,
+          "hadith_number": "1661",
+          "snippet": "On the day of `Arafat, some people who were with me, differed about the fasting of the Prophet  (p.b.u.h) some said that he was fasting while others said that he was not fasting. So I sent a bowl full"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1918,
+          "hadith_number": "1989",
+          "snippet": "The people doubted whether the Prophet was fasting on the day of `Arafat or not, so I sent milk while  he was standing at `Arafat, he drank it and the people were looking at him."
+        },
+        {
+          "slug": "bukhari",
+          "number": 1900,
+          "hadith_number": "1971",
+          "snippet": "The Prophet never fasted a full month except the month of Ramadan, and he used to fast till one could  say, \"By Allah, he will never stop fasting,\" and he would abandon fasting till one would say, \"By"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1929,
+          "hadith_number": "2002",
+          "snippet": "Quraish used to fast on the day of 'Ashura' in the Pre-Islamic period, and Allah's Apostle too, used to  fast on that day. When he came to Medina, he fasted on that day and ordered others to fast, too"
+        },
+        {
+          "slug": "bukhari",
+          "number": 7207,
+          "hadith_number": "7492",
+          "snippet": "The Prophet said, \"Allah said: The Fast is for Me and I will give the reward for it, as he (the one who  observes the fast) leaves his sexual desire, food and drink for My Sake. Fasting is a screen (f"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1901,
+          "hadith_number": "1972",
+          "snippet": "Allah's Apostle used to leave fasting in a certain month till we thought that he would not fast in that  month, and he used to fast in another month till we thought he would not stop fasting at all in"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1928,
+          "hadith_number": "2001",
+          "snippet": "Allah's Apostle ordered (the Muslims) to fast on the day of 'Ashura', and when fasting in the month of  Ramadan was prescribed, it became optional for one to fast on that day ('Ashura') or not."
+        },
+        {
+          "slug": "bukhari",
+          "number": 4300,
+          "hadith_number": "4501",
+          "snippet": "Fasting was observed on the day of 'Ashura' (i.e. 10th of Muharram) by the people of the Pre-lslamic  Period. But when (the order of compulsory fasting) in the month of Ramadan was revealed, the  Prop"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1914,
+          "hadith_number": "1985",
+          "snippet": "I heard the Prophet saying, \"None of you should fast on Friday unless he fasts a day before or after it.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 4303,
+          "hadith_number": "4504",
+          "snippet": "During the Pre-lslamic Period of ignorance the Quraish used to observe fasting on the day of 'Ashura',  and the Prophet himself used to observe fasting on it too. But when he came to Medina, he fasted"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1917,
+          "hadith_number": "1988",
+          "snippet": "\"While the people were with me on the day of `Arafat they differed as to whether the Prophet was  fasting or not; some said that he was fasting while others said that he was not fasting. So, I sent to"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1538,
+          "hadith_number": "1592",
+          "snippet": "The people used to fast on 'Ashura (the tenth day of the month of Muharram) before the fasting of  Ramadan was made obligatory. And on that day the Ka`ba used to be covered with a cover. When  Allah m"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1881,
+          "hadith_number": "1952",
+          "snippet": "Allah's Apostle said, \"Whoever died and he ought to have fasted (the missed days of Ramadan) then  his guardians must fast on his behalf.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 3668,
+          "hadith_number": "3831",
+          "snippet": "'Ashura' (i.e. the tenth of Muharram) was a day on which the tribe of Quraish used to fast in the prelslamic  period of ignorance. The Prophet also used to fast on this day. So when he migrated to  Me"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1876,
+          "hadith_number": "1947",
+          "snippet": "We used to travel with the Prophet and neither did the fasting persons criticize those who were not  fasting, nor did those who were not fasting criticize the fasting ones."
+        },
+        {
+          "slug": "bukhari",
+          "number": 6042,
+          "hadith_number": "6277",
+          "snippet": "The news of my fasting was mentioned to the Prophet . So he entered upon me and I put for him a  leather cushion stuffed with palm-fibres. The Prophet sat on the floor and the cushion was between me  "
+        },
+        {
+          "slug": "bukhari",
+          "number": 1109,
+          "hadith_number": "1141",
+          "snippet": "Sometimes Allah's Apostle would not fast (for so many days) that we thought that he would not fast  that month and he sometimes used to fast (for so many days) that we thought he would not leave  fast"
+        },
+        {
+          "slug": "bukhari",
+          "number": 4095,
+          "hadith_number": "4277",
+          "snippet": "Allah's Apostle set out towards Hunain in the month of Ramadan and some of the people were fasting  while some others were not fasting, and when the Prophet mounted his she-camel, he asked for a  tumb"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1909,
+          "hadith_number": "1980",
+          "snippet": "Allah's Apostle was informed about my fasts, and he came to me and I spread for him a leather  cushion stuffed with palm fires, but he sat on the ground and the cushion remained between me and  him, a"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1919,
+          "hadith_number": "1990",
+          "snippet": "(the slave of Ibn Azhar) I witnessed the `Id with `Umar bin Al-Khattab who said, Allah's Apostle has  forbidden people to fast on the day on which you break fasting (the fasts of Ramadan) and the day "
+        },
+        {
+          "slug": "bukhari",
+          "number": 1915,
+          "hadith_number": "1986",
+          "snippet": "The Prophet visited her (Juwairiya) on a Friday and she was fasting. He asked her, \"Did you fast  yesterday?\" She said, \"No.\" He said, \"Do you intend to fast tomorrow?\" She said, \"No.\" He said,  \"Then"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6461,
+          "hadith_number": "6705",
+          "snippet": "that he was asked about a man who had vowed that he would fast all the days of his life then the day  of `Id al Adha or `Id-al-Fitr came. `Abdullah bin `Umar said: You have indeed a good example in  A"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5391,
+          "hadith_number": "5604",
+          "snippet": "The people doubted whether Allah's Apostle was fasting or the Day of `Arafat or not. So I sent a cup  containing milk to him and he drank it."
+        }
+      ]
+    },
+    {
+      "query": "is qunut required in witr?",
+      "mode_hint": "natural",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 781,
+          "hadith_number": "798",
+          "snippet": "The qunut [supplication before going down for prostration] used to be recited in the Maghrib and the  Fajr prayers."
+        },
+        {
+          "slug": "bukhari",
+          "number": 977,
+          "hadith_number": "1004",
+          "snippet": "The Qunut used to be recited in the Maghrib and the Fajr prayers."
+        },
+        {
+          "slug": "bukhari",
+          "number": 974,
+          "hadith_number": "1001",
+          "snippet": "Anas was asked, \"Did the Prophet recite Qunut in the Fajr prayer?\" Anas replied in the affirmative. He  was further asked, \"Did he recite Qunut before bowing?\" Anas replied, \"He recited Qunut after  b"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5389,
+          "hadith_number": "5602",
+          "snippet": "The Prophet forbade the mixing of ripe and unripe dates and also the mixing of dates and raisins (for  preparing a syrup) but the syrup of each kind of fruit should be prepared separately. ( One may h"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3038,
+          "hadith_number": "3170",
+          "snippet": "I asked Anas about the Qunut (i.e. invocation in the prayer). Anas said, \"It should be recited before  bowing.\" I said, \"So-and-so claims that you say that it should be recited after bowing.\" He repli"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5485,
+          "hadith_number": "5702",
+          "snippet": "I heard the Prophet saying, \"If there is any good in your medicines, then it is in a gulp of honey, a  cupping operation, or branding (cauterization), but I do not like to be (cauterized) branded."
+        },
+        {
+          "slug": "bukhari",
+          "number": 976,
+          "hadith_number": "1003",
+          "snippet": "The Prophet recited Qunut for one month (in the Fajr prayer) asking Allah to punish the tribes of Ral  and Dhakwan."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5401,
+          "hadith_number": "5614",
+          "snippet": "The Prophet used to like sweet edible things (syrup, etc.) and honey."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5129,
+          "hadith_number": "5343",
+          "snippet": "Um 'Atiyya  added: The Prophet said, \"She should not use perfume except when she becomes clean from her  menses whereupon she can use Qust, and Azfar (two kinds of incense)."
+        },
+        {
+          "slug": "bukhari",
+          "number": 2476,
+          "hadith_number": "2578",
+          "snippet": "I intended to buy Barirah but her masters stipulated that her Wala should be for them. When the \r Prophet was told about it, he said to me, \"Buy and manumit her, as the Wala' is for the liberator.\" \r "
+        },
+        {
+          "slug": "bukhari",
+          "number": 2257,
+          "hadith_number": "2349",
+          "snippet": "We used to be very happy on Friday as an old lady used to cut some roots of the Silq, which we used  to plant on the banks of our small water streams, and cook them in a pot of her's, adding to them, "
+        },
+        {
+          "slug": "bukhari",
+          "number": 5386,
+          "hadith_number": "5599",
+          "snippet": "The Prophet used to like sweet edible things and honey."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5468,
+          "hadith_number": "5682",
+          "snippet": "The Prophet used to like sweet edible things and honey."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5379,
+          "hadith_number": "5592",
+          "snippet": "Allah's Apostle forbade the use of (certain) containers, but the Ansar said, \"We cannot dispense with  them.\" The Prophet then said, \"If so, then use them.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 2112,
+          "hadith_number": "2193",
+          "snippet": "Zaid bin Thabit (ra) said, \"In the lifetime of Allah's Messenger (saws), the people used to trade with fruits. When they cut their date-fruits and the purchasers came to recieve their rights, the sell"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5612,
+          "hadith_number": "5839",
+          "snippet": "The Prophet allowed Az-Zubair and `Abdur-Rahman to wear silk because they were suffering from an  itch."
+        },
+        {
+          "slug": "bukhari",
+          "number": 975,
+          "hadith_number": "1002",
+          "snippet": "I asked Anas bin Malik about the Qunut. Anas replied, \"Definitely it was (recited)\". I asked, \"Before  bowing or after it?\" Anas replied, \"Before bowing.\" I added, \"So and so has told me that you had "
+        },
+        {
+          "slug": "bukhari",
+          "number": 5469,
+          "hadith_number": "5683",
+          "snippet": "I heard the Prophet saying, \"If there is any healing in your medicines, then it is in cupping, a gulp of  honey or branding with fire (cauterization) that suits the ailment, but I don't like to be (ca"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1458,
+          "hadith_number": "1510",
+          "snippet": "In the lifetime of Allah's Apostle , we used to give one Sa' of food (edible things) as Sadaqat-ul-Fitr  (to the poor). Our food used to be either of barley, raisins (dried grapes), cottage cheese or "
+        },
+        {
+          "slug": "bukhari",
+          "number": 5323,
+          "hadith_number": "5536",
+          "snippet": "The Prophet said, \"I do not eat mastigure, but I do not prohibit its eating.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 2057,
+          "hadith_number": "2133",
+          "snippet": "The Prophet said, \"He who buys foodstuff should not sell it till he has received it.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 3411,
+          "hadith_number": "3561",
+          "snippet": "I have never touched silk or Dibaj (i.e. thick silk) softer than the palm of the Prophet nor have I smelt  a perfume nicer than the sweat of the Prophet."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5388,
+          "hadith_number": "5601",
+          "snippet": "The Prophet forbade the drinking of alcoholic drinks prepared from raisins, dates, unripe dates and  fresh ripe dates."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5217,
+          "hadith_number": "5431",
+          "snippet": "Allah's Apostle used to love sweet edible things and honey."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5189,
+          "hadith_number": "5403",
+          "snippet": "We used to be happy on Fridays, for there was an old lady who used to pull out the roots of Silq and  put it in a cooking pot with some barley. When we had finished the prayer, we would visit her and "
+        },
+        {
+          "slug": "bukhari",
+          "number": 2801,
+          "hadith_number": "2919",
+          "snippet": "The Prophet allowed `Abdur-Rahman bin `Auf and Az-Zubair to wear silken shirts because they had a  skin disease causing itching."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5606,
+          "hadith_number": "5833",
+          "snippet": "I heard Ibn Az-Zubair delivering a sermon, saying, \"Muhammad said, 'Whoever wears silk in this  world, shall not wear it in the Hereafter.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 5380,
+          "hadith_number": "5593",
+          "snippet": "When the Prophet forbade the use of certain containers (that were used for preparing alcoholic drinks),  somebody said to the Prophet . \"But not all the people can find skins.\" So he allowed them to u"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2048,
+          "hadith_number": "2123, 2124",
+          "snippet": "Ibn `Umar told us that the people used to buy food from the caravans in the lifetime of the Prophet.  The Prophet used to forbid them to sell it at the very place where they had purchased it (but they"
+        },
+        {
+          "slug": "bukhari",
+          "number": 2108,
+          "hadith_number": "2189",
+          "snippet": "The Prophet forbade the selling of fruits unless they get ripe, and none of them should be sold except  for Dinar or Dirham (i.e. money), except the 'Araya trees (the dates of which could be sold for "
+        }
+      ]
+    },
+    {
+      "query": "what did the Prophet say about controlling anger?",
+      "mode_hint": "natural",
+      "candidates": [
+        {
+          "slug": "bukhari",
+          "number": 5884,
+          "hadith_number": "6116",
+          "snippet": "A man said to the Prophet , \"Advise me! \"The Prophet said, \"Do not become angry.\" The  man asked (the same) again and again, and the Prophet said in each case, \"Do not become angry.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 7139,
+          "hadith_number": "7422",
+          "snippet": "The Prophet said, \"When Allah had finished His creation, He wrote over his Throne: 'My Mercy  preceded My Anger.'"
+        },
+        {
+          "slug": "bukhari",
+          "number": 7122,
+          "hadith_number": "7404",
+          "snippet": "The Prophet said, \"When Allah created the Creation, He wrote in His Book--and He wrote (that) about  Himself, and it is placed with Him on the Throne--'Verily My Mercy overcomes My Anger.'\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 3061,
+          "hadith_number": "3194",
+          "snippet": "Allah's Apostle said, \"When Allah completed the creation, He wrote in His Book which is with Him  on His Throne, \"My Mercy overpowers My Anger.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 3265,
+          "hadith_number": "3405",
+          "snippet": "Once the Prophet distributed something (among his followers. A man said, \"This distribution has not  been done (with justice) seeking Allah's Countenance.\" I went to the Prophet and told him (of that)"
+        },
+        {
+          "slug": "bukhari",
+          "number": 3147,
+          "hadith_number": "3282",
+          "snippet": "While I was sitting in the company of the Prophet, two men abused each other and the face of one of  them became red with anger, and his jugular veins swelled (i.e. he became furious). On that the  Pr"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5819,
+          "hadith_number": "6048",
+          "snippet": "A man from the companions of the Prophet said, \"Two men abused each other in front of the Prophet  and one of them became angry and his anger became so intense that his face became swollen and  change"
+        },
+        {
+          "slug": "bukhari",
+          "number": 7168,
+          "hadith_number": "7453",
+          "snippet": "Allah's Apostle said, \"When Allah created the creations, He wrote with Him on His Throne: 'My  Mercy has preceded My Anger.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 6099,
+          "hadith_number": "6336",
+          "snippet": "The Prophet divided something (among the Muslims) and distributed the shares (of the booty). A man  said, \"This division has not been made to please Allah.\" When I informed the Prophet about it, he  b"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5883,
+          "hadith_number": "6115",
+          "snippet": "Two men abused each other in front of the Prophet while we were sitting with him. One of the two  abused his companion furiously and his face became red. The Prophet said, \"I know a word (sentence)  t"
+        },
+        {
+          "slug": "bukhari",
+          "number": 7268,
+          "hadith_number": "7554",
+          "snippet": "Narrated Abu Hurairah (ra): I heard Allah's Messenger (saws) saying: \"Before Allah created the creations, He wrote a Book (wherein He has written): \"My Mercy has preceded my Anger.' And that is writte"
+        },
+        {
+          "slug": "bukhari",
+          "number": 401,
+          "hadith_number": "405",
+          "snippet": "The Prophet saw some sputum in the direction of the Qibla (on the wall of the mosque) and he  disliked that and the sign of disgust was apparent from his face. So he got up and scraped it off with  hi"
+        },
+        {
+          "slug": "bukhari",
+          "number": 7267,
+          "hadith_number": "7553",
+          "snippet": "I heard Allah's Apostle saying, \"Before Allah created the creations, He wrote a Book (wherein He has  written): My Mercy has preceded my Anger.\" and that (Book) is written with Him over the Throne.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 411,
+          "hadith_number": "417",
+          "snippet": "The Prophet saw expectoration (on the wall of the mosque) in the direction of the Qibla and scraped it  off with his hand. It seemed that he disliked it and the sign of disgust was apparent from his f"
+        },
+        {
+          "slug": "bukhari",
+          "number": 5882,
+          "hadith_number": "6114",
+          "snippet": "Allah's Apostle said, \"The strong is not the one who overcomes the people by his strength, but the  strong is the one who controls himself while in anger.\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 6672,
+          "hadith_number": "6929",
+          "snippet": "As if I am looking at the Prophet while he was speaking about one of the prophets whose people have  beaten and wounded him, and he was wiping the blood off his face and saying, \"O Lord! Forgive my,  "
+        },
+        {
+          "slug": "bukhari",
+          "number": 2306,
+          "hadith_number": "2401",
+          "snippet": "A man came to the Prophet and demanded his debts and used harsh words. The companions of the  Prophet wanted to harm him, but the Prophet said, \"Leave him, as the creditor (owner of the right) has  th"
+        },
+        {
+          "slug": "bukhari",
+          "number": 635,
+          "hadith_number": "650",
+          "snippet": "I heard Um Ad-Darda' saying, \"Abu Ad-Darda' entered the house in an angry mood. I said to him.  'What makes you angry?' He replied, 'By Allah! I do not find the followers of Muhammad doing those  good"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1611,
+          "hadith_number": "1671",
+          "snippet": "I proceeded along with the Prophet on the day of `Arafat (9th Dhul-Hijja). The Prophet heard a great  hue and cry and the beating of camels behind him. So he beckoned to the people with his lash, \"O  "
+        },
+        {
+          "slug": "bukhari",
+          "number": 6529,
+          "hadith_number": "6775",
+          "snippet": "An-Nu`man or the son of An-Nu`man was brought to the Prophet in a state of intoxication. The  Prophet felt it hard (was angry) and ordered all those who were present in the house, to beat him. And  th"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6007,
+          "hadith_number": "6242",
+          "snippet": "A man peeped into a room of the Prophet. The Prophet stood up, holding an arrow head. It is as if I  am just looking at him, trying to stab the man."
+        },
+        {
+          "slug": "bukhari",
+          "number": 522,
+          "hadith_number": "532",
+          "snippet": "The Prophet said, \"Do the prostration properly and do not put your forearms flat with elbows touching  the ground like a dog. And if you want to spit, do not spit in front, nor to the right for the pe"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6530,
+          "hadith_number": "6776",
+          "snippet": "The Prophet lashed a drunk with dateleaf stalks and shoes. And Abu Bakr gave a drunk forty lashes."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5802,
+          "hadith_number": "6031",
+          "snippet": "The Prophet was not one who would abuse (others) or say obscene words, or curse (others), and if he  wanted to admonish anyone of us, he used to say: \"What is wrong with him, his forehead be dusted!\""
+        },
+        {
+          "slug": "bukhari",
+          "number": 990,
+          "hadith_number": "1018",
+          "snippet": "I p man complained to the Prophet about the destruction of livestock and property and the hunger of  the offspring. So he invoked (Allah for rain. The narrator (Anas) did not mention that the Prophet "
+        },
+        {
+          "slug": "bukhari",
+          "number": 241,
+          "hadith_number": "241",
+          "snippet": "The Prophet once spat in his clothes."
+        },
+        {
+          "slug": "bukhari",
+          "number": 5894,
+          "hadith_number": "6126",
+          "snippet": "Whenever Allah's Apostle was given the choice of one of two matters he would choose the easier of  the two as long as it was not sinful to do so, but if it was sinful, he would not approach it. Allah'"
+        },
+        {
+          "slug": "bukhari",
+          "number": 1753,
+          "hadith_number": "1821",
+          "snippet": "My father set out (for Mecca) in the year of Al-Hudaibiya, and his companions assumed Ihram, but he  did not. At that time the Prophet was informed that an enemy wanted to attack him, so the Prophet  "
+        },
+        {
+          "slug": "bukhari",
+          "number": 6039,
+          "hadith_number": "6274",
+          "snippet": "as above (No. 290) adding: The Prophet was reclining (leaning) and then he sat up saying, \"And I  warn you against giving a false statement.\" And he kept on saying that warning so much so that we  sai"
+        },
+        {
+          "slug": "bukhari",
+          "number": 6054,
+          "hadith_number": "6291",
+          "snippet": "One day the Prophet divided and distributed something amongst the people whereupon an Ansari man  said, \"In this division Allah's Countenance has not been sought.\" I said, \"By Allah! I will go (and  i"
+        }
+      ]
+    }
+  ]
+}

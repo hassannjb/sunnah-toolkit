@@ -1,0 +1,262 @@
+{
+  "reranker": "jina-v2-base",
+  "n_queries": 25,
+  "macro": {
+    "p@10": 0.252,
+    "ndcg@10": 0.2795,
+    "recall@100": 0.1175,
+    "mean_latency_ms": 1026.4
+  },
+  "per_query": [
+    {
+      "query": "dua",
+      "mode_hint": "term",
+      "n_relevant": 873,
+      "n_retrieved": 201,
+      "p@10": 0.3,
+      "ndcg@10": 0.3647,
+      "recall@100": 0.0034,
+      "latency_ms": 17409.4
+    },
+    {
+      "query": "supplication before sleep",
+      "mode_hint": "concept",
+      "n_relevant": 309,
+      "n_retrieved": 191,
+      "p@10": 0.0,
+      "ndcg@10": 0.0,
+      "recall@100": 0.0097,
+      "latency_ms": 438.5
+    },
+    {
+      "query": "dua for entering the toilet",
+      "mode_hint": "concept",
+      "n_relevant": 100,
+      "n_retrieved": 198,
+      "p@10": 0.4,
+      "ndcg@10": 0.4748,
+      "recall@100": 0.15,
+      "latency_ms": 555.2
+    },
+    {
+      "query": "dua after prayer",
+      "mode_hint": "concept",
+      "n_relevant": 72,
+      "n_retrieved": 285,
+      "p@10": 0.0,
+      "ndcg@10": 0.0,
+      "recall@100": 0.0,
+      "latency_ms": 466.4
+    },
+    {
+      "query": "qunut",
+      "mode_hint": "term",
+      "n_relevant": 307,
+      "n_retrieved": 171,
+      "p@10": 0.5,
+      "ndcg@10": 0.6489,
+      "recall@100": 0.1205,
+      "latency_ms": 406.6
+    },
+    {
+      "query": "witr prayer",
+      "mode_hint": "concept",
+      "n_relevant": 290,
+      "n_retrieved": 270,
+      "p@10": 0.2,
+      "ndcg@10": 0.2083,
+      "recall@100": 0.0724,
+      "latency_ms": 275.1
+    },
+    {
+      "query": "tahajjud night prayer",
+      "mode_hint": "concept",
+      "n_relevant": 221,
+      "n_retrieved": 179,
+      "p@10": 0.0,
+      "ndcg@10": 0.0,
+      "recall@100": 0.086,
+      "latency_ms": 376.6
+    },
+    {
+      "query": "friday prayer",
+      "mode_hint": "concept",
+      "n_relevant": 376,
+      "n_retrieved": 281,
+      "p@10": 0.5,
+      "ndcg@10": 0.611,
+      "recall@100": 0.0532,
+      "latency_ms": 397.8
+    },
+    {
+      "query": "eclipse prayer",
+      "mode_hint": "concept",
+      "n_relevant": 108,
+      "n_retrieved": 139,
+      "p@10": 0.3,
+      "ndcg@10": 0.2305,
+      "recall@100": 0.5,
+      "latency_ms": 273.0
+    },
+    {
+      "query": "ramadan fasting",
+      "mode_hint": "concept",
+      "n_relevant": 859,
+      "n_retrieved": 220,
+      "p@10": 0.8,
+      "ndcg@10": 0.8454,
+      "recall@100": 0.0698,
+      "latency_ms": 320.3
+    },
+    {
+      "query": "breaking the fast",
+      "mode_hint": "concept",
+      "n_relevant": 54,
+      "n_retrieved": 231,
+      "p@10": 0.1,
+      "ndcg@10": 0.0784,
+      "recall@100": 0.1111,
+      "latency_ms": 367.9
+    },
+    {
+      "query": "laylat al-qadr",
+      "mode_hint": "term",
+      "n_relevant": 80,
+      "n_retrieved": 213,
+      "p@10": 0.0,
+      "ndcg@10": 0.0,
+      "recall@100": 0.2,
+      "latency_ms": 280.4
+    },
+    {
+      "query": "kindness to neighbors",
+      "mode_hint": "concept",
+      "n_relevant": 87,
+      "n_retrieved": 276,
+      "p@10": 0.3,
+      "ndcg@10": 0.2399,
+      "recall@100": 0.2989,
+      "latency_ms": 328.4
+    },
+    {
+      "query": "controlling anger",
+      "mode_hint": "concept",
+      "n_relevant": 52,
+      "n_retrieved": 169,
+      "p@10": 0.3,
+      "ndcg@10": 0.3964,
+      "recall@100": 0.1923,
+      "latency_ms": 267.0
+    },
+    {
+      "query": "patience",
+      "mode_hint": "concept",
+      "n_relevant": 78,
+      "n_retrieved": 183,
+      "p@10": 0.4,
+      "ndcg@10": 0.5424,
+      "recall@100": 0.2179,
+      "latency_ms": 324.4
+    },
+    {
+      "query": "truthfulness",
+      "mode_hint": "concept",
+      "n_relevant": 281,
+      "n_retrieved": 106,
+      "p@10": 0.4,
+      "ndcg@10": 0.4695,
+      "recall@100": 0.0356,
+      "latency_ms": 364.0
+    },
+    {
+      "query": "backbiting",
+      "mode_hint": "concept",
+      "n_relevant": 57,
+      "n_retrieved": 103,
+      "p@10": 0.3,
+      "ndcg@10": 0.3437,
+      "recall@100": 0.0702,
+      "latency_ms": 252.1
+    },
+    {
+      "query": "hajj pilgrimage",
+      "mode_hint": "concept",
+      "n_relevant": 587,
+      "n_retrieved": 267,
+      "p@10": 0.2,
+      "ndcg@10": 0.1584,
+      "recall@100": 0.0358,
+      "latency_ms": 347.5
+    },
+    {
+      "query": "zakat charity",
+      "mode_hint": "concept",
+      "n_relevant": 311,
+      "n_retrieved": 254,
+      "p@10": 0.4,
+      "ndcg@10": 0.4663,
+      "recall@100": 0.0707,
+      "latency_ms": 267.6
+    },
+    {
+      "query": "seeking knowledge",
+      "mode_hint": "concept",
+      "n_relevant": 199,
+      "n_retrieved": 173,
+      "p@10": 0.3,
+      "ndcg@10": 0.2906,
+      "recall@100": 0.1206,
+      "latency_ms": 340.3
+    },
+    {
+      "query": "seven sins major",
+      "mode_hint": "concept",
+      "n_relevant": 30,
+      "n_retrieved": 183,
+      "p@10": 0.3,
+      "ndcg@10": 0.2494,
+      "recall@100": 0.4,
+      "latency_ms": 365.9
+    },
+    {
+      "query": "azan",
+      "mode_hint": "term",
+      "n_relevant": 256,
+      "n_retrieved": 201,
+      "p@10": 0.0,
+      "ndcg@10": 0.0,
+      "recall@100": 0.0,
+      "latency_ms": 268.2
+    },
+    {
+      "query": "ramazan",
+      "mode_hint": "term",
+      "n_relevant": 294,
+      "n_retrieved": 196,
+      "p@10": 0.2,
+      "ndcg@10": 0.1488,
+      "recall@100": 0.0782,
+      "latency_ms": 339.4
+    },
+    {
+      "query": "zikr",
+      "mode_hint": "term",
+      "n_relevant": 225,
+      "n_retrieved": 199,
+      "p@10": 0.1,
+      "ndcg@10": 0.2201,
+      "recall@100": 0.0044,
+      "latency_ms": 266.0
+    },
+    {
+      "query": "the Prophet's farewell sermon",
+      "mode_hint": "concept",
+      "n_relevant": 56,
+      "n_retrieved": 290,
+      "p@10": 0.0,
+      "ndcg@10": 0.0,
+      "recall@100": 0.0357,
+      "latency_ms": 362.5
+    }
+  ]
+}
