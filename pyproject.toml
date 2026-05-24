@@ -20,10 +20,6 @@ dependencies = [
     "fastapi>=0.110",
     "uvicorn[standard]>=0.27",
     "PyYAML>=6.0",
-    # Used for INT8/ONNX fallback of cross-encoder rerankers when the FP16
-    # weights blow the Docker image size budget (Issue #2 Phase E).
-    "optimum>=1.20",
-    "onnxruntime>=1.18",
     # Issue #4: optional natural-language router uses Anthropic's Claude
     # Haiku for query rewriting. The router fails soft (returns None) when
     # the dependency is missing OR when ANTHROPIC_API_KEY is unset, so this
@@ -33,6 +29,13 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
+# LO-003: INT8/ONNX fallback of cross-encoder rerankers (Issue #2 Phase E).
+# Gated behind an optional extra until Phase E actually wires it in — the
+# runtime container is ~250 MB lighter without these wheels.
+onnx = [
+    "optimum>=1.20",
+    "onnxruntime>=1.18",
+]
 
 [tool.setuptools.packages.find]
 include = ["sunnah_toolkit*"]

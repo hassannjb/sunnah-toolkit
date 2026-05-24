@@ -15,12 +15,15 @@ import os
 import statistics
 import time
 
+import pytest
+
 
 # Must run before sunnah_toolkit.core.semantic imports SentenceTransformer.
 os.environ.setdefault("HF_HUB_OFFLINE", "1")
 os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
 
 from sunnah_toolkit.core.retrieval import retrieve_union  # noqa: E402
+from sunnah_toolkit.core.semantic import EMBEDDINGS_PATH  # noqa: E402
 
 
 CANONICAL_QUERIES = [
@@ -34,6 +37,14 @@ CANONICAL_QUERIES = [
 WARMUP_QUERIES = ["prayer", "charity"]
 
 
+# LO-011: CI without the embeddings file would otherwise crash with
+# FileNotFoundError on the first semantic-leg call. Skip the budget check
+# in that case — the latency contract is meaningful only when all three
+# retriever legs are available.
+@pytest.mark.skipif(
+    not EMBEDDINGS_PATH.exists(),
+    reason=f"embeddings not built at {EMBEDDINGS_PATH}; run scripts/build_embeddings",
+)
 def test_union_latency_under_300ms():
     for q in WARMUP_QUERIES:
         retrieve_union(q, k_per_retriever=100)
