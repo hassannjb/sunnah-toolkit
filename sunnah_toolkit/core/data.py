@@ -465,8 +465,11 @@ class Library:
         tokens = _tokenize(query)
         if not tokens or self.bm25 is None:
             return 0, []
-        # We still need the total count across all positive scores.
         scores = self.bm25.get_scores(tokens)
+        # ME-001: COLLECTION_TIER.get fallback so a future collection added
+        # to COLLECTIONS_METADATA without a tier entry sorts last instead
+        # of KeyError-ing at the first search query.
+        last_tier = len(COLLECTION_TIER)
         ranked = sorted(
             (
                 (score, h)
@@ -474,7 +477,7 @@ class Library:
                 if score > 0 and (collection is None or h.collection == collection)
             ),
             key=lambda pair: (
-                COLLECTION_TIER[pair[1].collection],
+                COLLECTION_TIER.get(pair[1].collection, last_tier),
                 pair[1].grade_tier,
                 -pair[0],
             ),
@@ -510,8 +513,9 @@ class Library:
         rows: list[tuple[Hadith, set[str]]] = [
             (self.bm25_corpus[idx], matched) for idx, _score, matched in full
         ]
+        last_tier = len(COLLECTION_TIER)
         rows.sort(key=lambda pair: (
-            COLLECTION_TIER[pair[0].collection],
+            COLLECTION_TIER.get(pair[0].collection, last_tier),
             pair[0].grade_tier,
             pair[0].id_in_book,
         ))
@@ -567,6 +571,20 @@ def load() -> Library:
         raise FileNotFoundError(
             f"SQLite dataset not found at {DB_PATH}. "
             "Run: python -m scripts.build_sqlite"
+        )
+
+    # ME-001: catch the "added a collection but forgot a tier entry" drift
+    # at startup, not at the first user search query. Sort still tolerates
+    # missing keys via COLLECTION_TIER.get(...) but we want loud feedback.
+    missing_tier = sorted(set(COLLECTIONS_METADATA) - set(COLLECTION_TIER))
+    if missing_tier:
+        import warnings
+
+        warnings.warn(
+            f"COLLECTIONS_METADATA contains slugs missing from COLLECTION_TIER: "
+            f"{missing_tier}. These will sort last in search results.",
+            RuntimeWarning,
+            stacklevel=2,
         )
 
     lib = Library()

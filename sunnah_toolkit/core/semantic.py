@@ -128,8 +128,9 @@ def search(
     corpus = library.bm25_corpus
     pool = max(limit * 20, 200)
     candidates = [(corpus[idx], score) for idx, score in retrieve(query, collection, pool)]
+    last_tier = len(COLLECTION_TIER)
     candidates.sort(key=lambda pair: (
-        COLLECTION_TIER[pair[0].collection],
+        COLLECTION_TIER.get(pair[0].collection, last_tier),
         pair[0].grade_tier,
         -pair[1],
     ))
