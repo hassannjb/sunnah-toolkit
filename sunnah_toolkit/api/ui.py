@@ -335,6 +335,11 @@ INDEX_HTML = r"""<!doctype html>
           <span class="lbl">Reference</span>
           <span class="hint">exact lookup, e.g. <em>Bukhari 1</em>, <em>Sahih Muslim 5</em></span>
         </label>
+        <label>
+          <input type="radio" name="m" value="natural">
+          <span class="lbl">Natural language</span>
+          <span class="hint">free-form, e.g. <em>what did the Prophet say about anger?</em></span>
+        </label>
       </fieldset>
 
       <details id="coll-filter">
@@ -401,6 +406,7 @@ INDEX_HTML = r"""<!doctype html>
     let lastMatchedWords = [];               // term mode only
     let selectedWords = new Set();           // Arabic strings (term mode)
     let selectedResultCollections = new Set(); // slugs present in current results
+    let lastFallback = null;                 // "llm_unavailable" | "router_failed" | null
 
     // Six canonical books listed first in the filter, then the rest A→Z.
     const CANONICAL_ORDER = ["bukhari", "muslim", "abudawud", "tirmidhi", "nasai", "ibnmajah"];
@@ -514,6 +520,7 @@ INDEX_HTML = r"""<!doctype html>
       lastMatchedWords = [];
       selectedWords = new Set();
       selectedResultCollections = new Set();
+      lastFallback = null;
       currentPage = 1;
     }
 
@@ -615,6 +622,7 @@ INDEX_HTML = r"""<!doctype html>
       if (mode === "semantic") return "/v1/search/semantic?query=" + q + "&limit=" + limit + c;
       if (mode === "keyword")  return "/v1/search?query=" + q + "&limit=" + limit + c;
       if (mode === "term")     return "/v1/search/term?term=" + q + "&limit=" + limit + c;
+      if (mode === "natural")  return "/v1/search/natural?query=" + q + "&limit=" + limit + c;
       throw new Error("unknown mode: " + mode);
     }
 
@@ -778,8 +786,11 @@ INDEX_HTML = r"""<!doctype html>
         });
       }
 
+      const fallbackPrefix = lastFallback
+        ? "LLM router unavailable — showing concept-mode results. "
+        : "";
       if (visibleTotal === 0) {
-        setStatus("Nothing matches the current filters. Tick more chips to see hadiths.");
+        setStatus(fallbackPrefix + "Nothing matches the current filters. Tick more chips to see hadiths.");
       } else {
         const endIdx = Math.min(start + PAGE_SIZE, visibleTotal);
         const filteredFromTotal = weakVisible ? (totalStrong + totalWeak) : totalStrong;
@@ -791,6 +802,7 @@ INDEX_HTML = r"""<!doctype html>
           ? " (+ " + totalWeak + " weak hidden)"
           : "";
         setStatus(
+          fallbackPrefix +
           "Showing " + (start + 1).toLocaleString() + "–" + endIdx.toLocaleString() +
           " of " + visibleTotal.toLocaleString() + filteredNote + weakHint + pageNote +
           ". Tap a row to read the full hadith."
@@ -922,11 +934,15 @@ INDEX_HTML = r"""<!doctype html>
         }
 
         const filtering = isCollectionFilterActive();
-        const showScore = (mode === "semantic");
+        const showScore = (mode === "semantic" || mode === "natural");
 
         const j = await searchAcrossCollections(mode, q);
         const items = j.results || [];
         const weakItems = j.results_weak || [];
+        // Issue #4 AC #8: NL mode falls back to concept search when the LLM
+        // router is unavailable. Stash the warning on the cached state so
+        // renderResultsView can prepend it to the result-count line.
+        lastFallback = j.fallback || null;
 
         if (!items.length && !weakItems.length) {
           if (filtering) {

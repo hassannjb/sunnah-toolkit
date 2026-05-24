@@ -24,6 +24,11 @@ dependencies = [
     # weights blow the Docker image size budget (Issue #2 Phase E).
     "optimum>=1.20",
     "onnxruntime>=1.18",
+    # Issue #4: optional natural-language router uses Anthropic's Claude
+    # Haiku for query rewriting. The router fails soft (returns None) when
+    # the dependency is missing OR when ANTHROPIC_API_KEY is unset, so this
+    # is a runtime-soft dep rather than a hard import requirement.
+    "anthropic>=0.40",
 ]
 
 [project.optional-dependencies]

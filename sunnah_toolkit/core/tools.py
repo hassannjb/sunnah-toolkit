@@ -19,10 +19,11 @@ import logging
 import random
 from typing import Any
 
+from . import llm_router
 from . import reranker as reranker_mod
 from . import semantic
 from .data import Hadith, Library, load, parse_narrators
-from .retrieval import Candidate, retrieve_union
+from .retrieval import Candidate, retrieve_union, retrieve_union_multi
 
 logger = logging.getLogger(__name__)
 
@@ -150,13 +151,37 @@ def _search_with_rerank(
 ) -> dict[str, Any]:
     """Run the union retriever + cross-encoder reranker, split by threshold.
 
+    Thin wrapper: builds the candidate pool with `retrieve_union(query)` and
+    delegates the rerank/threshold logic to `_rerank_and_split` so the NL
+    search path can reuse it with a pool built by `retrieve_union_multi`.
+    """
+    library = load()
+    candidates = retrieve_union(query, collection=collection, k_per_retriever=k_per_retriever)
+    return _rerank_and_split(
+        library=library,
+        query=query,
+        candidates=candidates,
+        mode_hint=mode_hint,
+        collection=collection,
+        limit=limit,
+    )
+
+
+def _rerank_and_split(
+    library: Library,
+    query: str,
+    candidates: list[Candidate],
+    mode_hint: str,
+    collection: str | None,
+    limit: int,
+) -> dict[str, Any]:
+    """Rerank a candidate pool and split into strong/weak by threshold.
+
     Returns a dict shaped:
       {
         "query", "collection", "mode_hint", "limit",
-        "pool_size",       # len(union retriever output) — the universe we ranked
-        "total",           # strong + weak count (== pool_size minus any
-                           #   strong-bucket truncation; this is the post-union
-                           #   split count, NOT the BM25-positive universe)
+        "pool_size",       # len(candidates) — the universe we ranked
+        "total",           # strong + weak count
         "reranker",        # model name (or "none")
         "threshold",       # float used for the split
         "results":      [...]  # strong matches, len ≤ limit
@@ -168,10 +193,6 @@ def _search_with_rerank(
     than the union pool no longer pretend to honour the value. See review
     finding CR-003.
     """
-    library = load()
-
-    candidates = retrieve_union(query, collection=collection, k_per_retriever=k_per_retriever)
-
     # Issue #7: surface AND/OR-fallback flag for term-mode queries only.
     # Other modes don't tokenise this way, so the field is omitted.
     term_match_logic = (
@@ -417,6 +438,56 @@ def search_hadith_semantic(
             for h, score in results
         ],
     }
+
+
+def search_hadith_natural(
+    query: str,
+    collection: str | None = None,
+    limit: int = 10,
+) -> dict[str, Any]:
+    """Natural-language search: LLM-routed variants → RRF-merged retrieval → rerank.
+
+    Fallback semantics (per Issue #4 AC #8): if the LLM router is unavailable
+    or returns None, behave like /v1/search/semantic but annotate the response
+    with a `fallback` field so the UI can surface a soft warning.
+    """
+    library = load()
+    limit = max(1, min(limit, 50000))
+
+    if collection and collection not in library.collections:
+        return {"error": f"Unknown collection: {collection!r}", "kind": "unknown_collection"}
+
+    router = llm_router.get_router()
+    if router is None:
+        fallback = search_hadith_semantic(query, collection=collection, limit=limit)
+        if "error" not in fallback:
+            fallback["fallback"] = "llm_unavailable"
+            fallback["variants"] = []
+        return fallback
+
+    routed = router.route(query)
+    if routed is None:
+        fallback = search_hadith_semantic(query, collection=collection, limit=limit)
+        if "error" not in fallback:
+            fallback["fallback"] = "router_failed"
+            fallback["variants"] = []
+        return fallback
+
+    try:
+        candidates = retrieve_union_multi(routed.variants, collection=collection)
+    except FileNotFoundError as e:
+        return {"error": f"Semantic search unavailable: {e}", "kind": "unavailable"}
+
+    response = _rerank_and_split(
+        library=library,
+        query=query,
+        candidates=candidates,
+        mode_hint=routed.mode_hint,
+        collection=collection,
+        limit=limit,
+    )
+    response["variants"] = list(routed.variants)
+    return response
 
 
 def random_hadith(collection: str | None = None) -> dict[str, Any]:

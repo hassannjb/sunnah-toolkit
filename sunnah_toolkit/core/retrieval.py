@@ -142,3 +142,81 @@ def retrieve_union(
         len(merged), total_ms, len(bm25_hits), len(sem_hits), len(term_hits),
     )
     return list(merged.values())
+
+
+def retrieve_union_multi(
+    variants: list[str],
+    collection: str | None = None,
+    k_per_retriever: int = 100,
+    rrf_k: int = 60,
+) -> list[Candidate]:
+    """Run `retrieve_union` per variant and merge with Reciprocal Rank Fusion.
+
+    For each variant's candidate list (already an unranked union of three
+    retrievers), we assign a rank starting at 1 in the order returned. The
+    RRF score per (variant, corpus_idx) is `1 / (rrf_k + rank)`. Scores are
+    summed across variants and the final list is sorted descending.
+
+    The returned `Candidate` for each corpus_idx carries the union of the
+    per-variant `sources` and `matched_words`, plus the maximum per-signal
+    score and normalised score observed across variants. The downstream
+    cross-encoder is the source of the final ordering signal — RRF here
+    just builds the candidate pool for the reranker.
+
+    `rrf_k=60` is the canonical TREC default; small enough that high-ranked
+    items dominate, large enough that mid-ranked items still contribute.
+    """
+    if not variants:
+        return []
+
+    per_variant_lists: list[list[Candidate]] = []
+    for v in variants:
+        per_variant_lists.append(
+            retrieve_union(v, collection=collection, k_per_retriever=k_per_retriever)
+        )
+
+    rrf_scores: dict[int, float] = {}
+    merged: dict[int, Candidate] = {}
+
+    for cands in per_variant_lists:
+        for rank, cand in enumerate(cands, start=1):
+            idx = cand.corpus_idx
+            rrf_scores[idx] = rrf_scores.get(idx, 0.0) + 1.0 / (rrf_k + rank)
+            existing = merged.get(idx)
+            if existing is None:
+                merged[idx] = Candidate(
+                    corpus_idx=idx,
+                    hadith=cand.hadith,
+                    sources=set(cand.sources),
+                    bm25=cand.bm25,
+                    semantic=cand.semantic,
+                    term=cand.term,
+                    bm25_norm=cand.bm25_norm,
+                    semantic_norm=cand.semantic_norm,
+                    term_norm=cand.term_norm,
+                    matched_words=set(cand.matched_words),
+                )
+            else:
+                existing.sources |= cand.sources
+                existing.matched_words |= cand.matched_words
+                # Per-variant retrieve_union already min-max-normalises within
+                # that variant's hit list, so taking the max across variants
+                # is the best per-signal aggregate available without re-running
+                # the normaliser over the merged universe.
+                existing.bm25 = max(existing.bm25, cand.bm25)
+                existing.semantic = max(existing.semantic, cand.semantic)
+                existing.term = max(existing.term, cand.term)
+                existing.bm25_norm = max(existing.bm25_norm, cand.bm25_norm)
+                existing.semantic_norm = max(existing.semantic_norm, cand.semantic_norm)
+                existing.term_norm = max(existing.term_norm, cand.term_norm)
+
+    ordered = sorted(
+        merged.values(),
+        key=lambda c: rrf_scores.get(c.corpus_idx, 0.0),
+        reverse=True,
+    )
+    logger.debug(
+        "retrieve_union_multi: %d variants -> %d unique candidates",
+        len(variants), len(ordered),
+    )
+    return ordered

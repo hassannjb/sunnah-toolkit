@@ -79,6 +79,16 @@ def search_hadith_semantic(
     return _unwrap(tools.search_hadith_semantic(query, collection=collection, limit=limit))
 
 
+@router.get("/search/natural")
+def search_hadith_natural(
+    _: Auth,
+    query: str = Query(..., description="Free-form natural-language query"),
+    collection: str | None = None,
+    limit: int = Query(10, ge=1, le=50000),
+) -> dict:
+    return _unwrap(tools.search_hadith_natural(query, collection=collection, limit=limit))
+
+
 @router.get("/random")
 def random_hadith(_: Auth, collection: str | None = None) -> dict:
     return _unwrap(tools.random_hadith(collection))
