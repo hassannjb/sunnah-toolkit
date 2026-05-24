@@ -272,7 +272,7 @@ def search_hadith(
     rerank: bool = True,
 ) -> dict[str, Any]:
     library = load()
-    limit = max(1, min(limit, 50))
+    limit = max(1, min(limit, 50000))
 
     if collection and collection not in library.collections:
         return {"error": f"Unknown collection: {collection!r}", "kind": "unknown_collection"}
@@ -304,7 +304,7 @@ def search_hadith_term(
     rerank: bool = True,
 ) -> dict[str, Any]:
     library = load()
-    limit = max(1, min(limit, 100))
+    limit = max(1, min(limit, 50000))
 
     if collection and collection not in library.collections:
         return {"error": f"Unknown collection: {collection!r}", "kind": "unknown_collection"}
@@ -342,7 +342,7 @@ def search_hadith_semantic(
     rerank: bool = True,
 ) -> dict[str, Any]:
     library = load()
-    limit = max(1, min(limit, 50))
+    limit = max(1, min(limit, 50000))
 
     if collection and collection not in library.collections:
         return {"error": f"Unknown collection: {collection!r}", "kind": "unknown_collection"}

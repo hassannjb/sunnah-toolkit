@@ -54,7 +54,7 @@ def search_hadith(
     _: Auth,
     query: str = Query(..., description="English keyword(s)"),
     collection: str | None = None,
-    limit: int = Query(10, ge=1, le=50),
+    limit: int = Query(10, ge=1, le=50000),
 ) -> dict:
     return _unwrap(tools.search_hadith(query, collection=collection, limit=limit))
 
@@ -64,7 +64,7 @@ def search_hadith_term(
     _: Auth,
     term: str = Query(..., description="English transliteration of an Arabic term"),
     collection: str | None = None,
-    limit: int = Query(20, ge=1, le=100),
+    limit: int = Query(20, ge=1, le=50000),
 ) -> dict:
     return _unwrap(tools.search_hadith_term(term, collection=collection, limit=limit))
 
@@ -74,7 +74,7 @@ def search_hadith_semantic(
     _: Auth,
     query: str = Query(..., description="Natural-language query (concept or keyword)"),
     collection: str | None = None,
-    limit: int = Query(10, ge=1, le=50),
+    limit: int = Query(10, ge=1, le=50000),
 ) -> dict:
     return _unwrap(tools.search_hadith_semantic(query, collection=collection, limit=limit))
 
