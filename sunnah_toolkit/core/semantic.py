@@ -14,6 +14,7 @@ from threading import Lock
 
 import numpy as np
 
+from ._device import pick_device as _pick_device
 from .data import COLLECTION_TIER, Hadith, load
 
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
@@ -31,16 +32,12 @@ class _Engine:
 
 _engine = _Engine()
 _lock = Lock()
-
-
-def _pick_device() -> str:
-    import torch
-
-    if torch.backends.mps.is_available():
-        return "mps"
-    if torch.cuda.is_available():
-        return "cuda"
-    return "cpu"
+# HI-004: serialise calls into SentenceTransformer.encode. The bi-encoder
+# tokenises and builds tensors against shared module state; concurrent
+# requests on /v1/search/semantic (each in its own thread inside
+# retrieve_union) can otherwise race. Encode is short, so a lock has
+# negligible throughput cost.
+_encode_lock = Lock()
 
 
 def _ensure_loaded() -> None:
@@ -95,11 +92,12 @@ def retrieve(
     library = load()
     corpus = library.bm25_corpus
 
-    q = _engine.model.encode(
-        [query],
-        normalize_embeddings=True,
-        convert_to_numpy=True,
-    )[0].astype(np.float32)
+    with _encode_lock:
+        q = _engine.model.encode(
+            [query],
+            normalize_embeddings=True,
+            convert_to_numpy=True,
+        )[0].astype(np.float32)
 
     scores = _engine.vectors @ q
     scores = np.where(_engine.content_mask, scores, -np.inf)

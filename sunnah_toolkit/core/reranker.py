@@ -8,8 +8,16 @@ auto-seeded eval set:
   - jinaai/jina-reranker-v2-base-multilingual
 
 Each implementation lazy-loads its model on the first .score() call. Only
-one reranker is loaded into the process at a time (lru_cache(maxsize=1))
-because the host RAM budget is 16 GB and these models are large in FP16.
+one reranker is loaded into the process at a time (single-slot cache;
+see `get_reranker` below) because the host RAM budget is 16 GB and these
+models are large in FP16.
+
+Note (LO-005, HI-001): switching `RERANKER_NAME` mid-process drops the
+previous model from the cache and best-effort calls torch's device-cache
+empty hook before constructing the replacement. Python GC ultimately
+decides when device weights are reclaimed, so a swap that races with an
+outstanding `.score()` call may still hold device memory until that call
+completes.
 
 Default reranker is read from $RERANKER_NAME (fallback: bge-v2-m3, the
 safe MIT-licensed multilingual baseline). $RERANKER_DISABLED=1 short-
@@ -19,10 +27,11 @@ eval harness for the `--reranker none` baseline).
 
 from __future__ import annotations
 
-import functools
 import logging
 import os
 from typing import Protocol
+
+from ._device import pick_device as _pick_device
 
 logger = logging.getLogger(__name__)
 
@@ -35,14 +44,15 @@ REGISTRY: dict[str, str] = {
 }
 
 
-def _pick_device() -> str:
-    import torch
-
-    if torch.backends.mps.is_available():
-        return "mps"
-    if torch.cuda.is_available():
-        return "cuda"
-    return "cpu"
+# HI-002: bound the cross-encoder forward batch. CrossEncoder pads to the
+# longest pair in the batch, so one 8 K-token doc forces every other pair
+# to pad to 8 K. Smaller batches keep worst-case latency bounded; override
+# via $RERANKER_BATCH_SIZE for experiments.
+def _batch_size() -> int:
+    try:
+        return max(1, int(os.environ.get("RERANKER_BATCH_SIZE", "8")))
+    except ValueError:
+        return 8
 
 
 class Reranker(Protocol):
@@ -85,10 +95,23 @@ class _CrossEncoderBase:
         if not docs:
             return []
         model = self._load()
-        pairs = [(query, d) for d in docs]
+        # HI-002: length-bucket pairs before predict so each padded batch is
+        # roughly uniform — a single 8 K-token doc otherwise forces every
+        # other pair in its batch to pad up. We sort by doc length, score in
+        # the sorted order, then scatter back to the original order.
+        order = sorted(range(len(docs)), key=lambda i: len(docs[i]))
+        sorted_pairs = [(query, docs[i]) for i in order]
         # show_progress_bar=False keeps the API/eval logs clean.
-        scores = model.predict(pairs, show_progress_bar=False, convert_to_numpy=True)
-        return [float(s) for s in scores]
+        sorted_scores = model.predict(
+            sorted_pairs,
+            batch_size=_batch_size(),
+            show_progress_bar=False,
+            convert_to_numpy=True,
+        )
+        scores = [0.0] * len(docs)
+        for pos, original_idx in enumerate(order):
+            scores[original_idx] = float(sorted_scores[pos])
+        return scores
 
 
 class BGEV2M3Reranker(_CrossEncoderBase):
@@ -190,13 +213,72 @@ _BUILDERS: dict[str, type] = {
 }
 
 
-@functools.lru_cache(maxsize=1)
+# HI-001: explicit single-slot cache. Switching `name` evicts the previous
+# instance and best-effort frees the device cache before constructing the
+# replacement. `lru_cache(maxsize=1)` would only drop the *reference*; the
+# evicted torch model would linger on GPU/MPS until Python GC ran.
+_current_reranker: tuple[str, "Reranker"] | None = None
+
+
+def _free_device_cache(device: str) -> None:
+    """Best-effort: free cached allocations on the prior reranker's device.
+
+    Safe to call when the import or attribute is missing — the empty-cache
+    hook is purely an optimisation, never a correctness requirement.
+    """
+    try:
+        import torch
+    except ImportError:  # pragma: no cover — torch is a hard dep at runtime
+        return
+    try:
+        if device == "cuda" and torch.cuda.is_available():
+            torch.cuda.empty_cache()
+        elif device == "mps" and torch.backends.mps.is_available():
+            mps = getattr(torch, "mps", None)
+            if mps is not None and hasattr(mps, "empty_cache"):
+                mps.empty_cache()
+    except Exception as e:  # pragma: no cover — backend-specific quirks
+        logger.debug("empty_cache(%s) failed: %s", device, e)
+
+
+def _evict_current() -> None:
+    """Drop the current single-slot reranker and best-effort free device memory."""
+    global _current_reranker
+    if _current_reranker is None:
+        return
+    prior_name, prior = _current_reranker
+    prior_device = getattr(prior, "_device", "cpu")
+    if hasattr(prior, "_model"):
+        prior._model = None
+    if hasattr(prior, "_tokenizer"):
+        prior._tokenizer = None
+    _current_reranker = None
+    del prior
+    _free_device_cache(prior_device)
+    logger.info("evicted reranker %s", prior_name)
+
+
 def get_reranker(name: str) -> Reranker:
-    """Returns the singleton reranker instance for `name`. lru_cache size 1
-    means switching name evicts the old model — protecting RAM."""
+    """Returns the singleton reranker instance for `name`.
+
+    Single-slot cache: switching name disposes the prior instance and frees
+    its device cache before building the replacement.
+    """
+    global _current_reranker
     if name not in _BUILDERS:
         raise ValueError(f"Unknown reranker {name!r}. Choices: {sorted(_BUILDERS)}")
-    return _BUILDERS[name]()
+    if _current_reranker is not None and _current_reranker[0] == name:
+        return _current_reranker[1]
+    if _current_reranker is not None:
+        _evict_current()
+    instance = _BUILDERS[name]()
+    _current_reranker = (name, instance)
+    return instance
+
+
+# Back-compat shim for tests that previously called `get_reranker.cache_clear()`
+# on the lru_cache. The new explicit cache exposes the same affordance.
+get_reranker.cache_clear = _evict_current  # type: ignore[attr-defined]
 
 
 def default_reranker_name() -> str:
