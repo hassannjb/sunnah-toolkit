@@ -10,6 +10,7 @@ Phase C, supersedes these as the final ordering signal).
 
 from __future__ import annotations
 
+import atexit
 import logging
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -19,6 +20,15 @@ from . import semantic
 from .data import Hadith, load
 
 logger = logging.getLogger(__name__)
+
+# ME-005: module-level pool so we don't pay ~1-3 ms of thread-create
+# overhead per query. Three workers — one per retriever (bm25, semantic,
+# term). The retrievers release the GIL inside numpy/torch kernels so a
+# tiny shared pool is sufficient.
+_POOL = ThreadPoolExecutor(max_workers=3, thread_name_prefix="retrieval")
+# Graceful shutdown on interpreter exit — avoids the "ThreadPoolExecutor
+# is still running" RuntimeWarning during pytest teardown.
+atexit.register(_POOL.shutdown, wait=False)
 
 
 @dataclass
@@ -36,12 +46,20 @@ class Candidate:
 
 
 def _minmax(values: list[float]) -> list[float]:
+    """Min-max normalise to [0, 1].
+
+    LO-002: when every value is tied (hi == lo) we return 1.0 across the
+    board so a tied-but-valid signal still contributes to the heuristic
+    weighted sum. The prior `1.0 if v > 0 else 0.0` branch silently zeroed
+    legitimate scores in edge cases where every retrieved score happened to
+    be the same positive number.
+    """
     if not values:
         return values
     lo = min(values)
     hi = max(values)
     if hi - lo < 1e-12:
-        return [1.0 if v > 0 else 0.0 for v in values]
+        return [1.0] * len(values)
     return [(v - lo) / (hi - lo) for v in values]
 
 
@@ -85,17 +103,16 @@ def retrieve_union(
         return out
 
     t_total = time.perf_counter()
-    # max_workers=3 — one per retriever. The bi-encoder is the slow leg; BM25
-    # and term are CPU-cheap. ThreadPoolExecutor is fine here: the bi-encoder
-    # releases the GIL inside torch ops, and BM25 / term spend most time in
-    # numpy / dict ops which also release.
-    with ThreadPoolExecutor(max_workers=3) as pool:
-        f_bm25 = pool.submit(_bm25)
-        f_sem = pool.submit(_sem)
-        f_term = pool.submit(_term)
-        bm25_hits = f_bm25.result()
-        sem_hits = f_sem.result()
-        term_hits = f_term.result()
+    # ME-005: use the module-level _POOL. The bi-encoder is the slow leg;
+    # BM25 and term are CPU-cheap. ThreadPoolExecutor is fine here: the
+    # bi-encoder releases the GIL inside torch ops, and BM25 / term spend
+    # most time in numpy / dict ops which also release.
+    f_bm25 = _POOL.submit(_bm25)
+    f_sem = _POOL.submit(_sem)
+    f_term = _POOL.submit(_term)
+    bm25_hits = f_bm25.result()
+    sem_hits = f_sem.result()
+    term_hits = f_term.result()
 
     bm25_norms = dict(zip(
         [idx for idx, _ in bm25_hits],
