@@ -70,11 +70,14 @@ class _CrossEncoderBase:
         from sentence_transformers import CrossEncoder
 
         logger.info("loading reranker %s on device=%s", self.model_id, self._device)
+        # NOTE(security CR-001): None of the CrossEncoder-shaped rerankers
+        # (bge-v2-m3, jina-v2-base, mxbai-v2-base) require trust_remote_code —
+        # they ship plain AutoModelForSequenceClassification configs. Flag
+        # deliberately omitted to avoid arbitrary HF code execution.
         self._model = CrossEncoder(
             self.model_id,
             device=self._device,
             max_length=self.max_length,
-            trust_remote_code=True,
         )
         return self._model
 
@@ -106,11 +109,25 @@ class MxbaiV2BaseReranker(_CrossEncoderBase):
     max_length = 8192  # mxbai-v2 supports long context; truncation falls to model.
 
 
+# NOTE(security CR-001): jina-reranker-v3 ships a custom modeling.py
+# (Qwen3-based listwise pipeline) so trust_remote_code=True is unavoidable —
+# the HF auto-classes need to import that file to construct the model. The
+# supply-chain risk (an attacker pushing malicious code to the same repo
+# path) is mitigated by pinning the revision to a known-good commit SHA.
+# If you need to update, audit the diff on huggingface.co/jinaai/jina-
+# reranker-v3/commits and bump JINA_V3_REVISION below.
+JINA_V3_REVISION = "10fb694fc21f7a710a563ff1eb977a460f3868e4"  # 2026-03-27
+
+
 class JinaV3Reranker:
     """jina-reranker-v3 ships a listwise head that isn't CrossEncoder-shaped.
     Falls back to AutoModelForSequenceClassification with mean-pooled logits
     if the listwise path isn't reachable, so the user can still run the
-    comparison even if the listwise interface changes upstream."""
+    comparison even if the listwise interface changes upstream.
+
+    Revision is pinned (see JINA_V3_REVISION) because we pass
+    trust_remote_code=True for this model.
+    """
 
     name = "jina-v3"
     model_id = "jinaai/jina-reranker-v3"
@@ -126,11 +143,19 @@ class JinaV3Reranker:
             return
         from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-        logger.info("loading reranker %s on device=%s", self.model_id, self._device)
-        self._tokenizer = AutoTokenizer.from_pretrained(self.model_id, trust_remote_code=True)
+        logger.info(
+            "loading reranker %s @ %s on device=%s",
+            self.model_id, JINA_V3_REVISION[:8], self._device,
+        )
+        self._tokenizer = AutoTokenizer.from_pretrained(
+            self.model_id,
+            trust_remote_code=True,
+            revision=JINA_V3_REVISION,
+        )
         self._model = AutoModelForSequenceClassification.from_pretrained(
             self.model_id,
             trust_remote_code=True,
+            revision=JINA_V3_REVISION,
         ).to(self._device).eval()
 
     def score(self, query: str, docs: list[str]) -> list[float]:
