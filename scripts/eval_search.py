@@ -94,10 +94,13 @@ def run_eval(reranker: str, limit: int = 100) -> dict[str, Any]:
     for q in queries:
         relevant = _relevant_keys(q["relevant"])
         t0 = time.perf_counter()
-        # _search_with_rerank is the unified pipeline introduced in Phase C.
-        # If it's not present yet (Phase A run), fall back to search_hadith.
-        if hasattr(tools, "_search_with_rerank"):
-            res = tools._search_with_rerank(
+        # search_with_rerank is the unified pipeline introduced in Phase C.
+        # Falls back to search_hadith for Phase-A runs that predate it.
+        pipeline = getattr(tools, "search_with_rerank", None) or getattr(
+            tools, "_search_with_rerank", None
+        )
+        if pipeline is not None:
+            res = pipeline(
                 q["query"],
                 mode_hint=q.get("mode_hint", "concept"),
                 collection=None,

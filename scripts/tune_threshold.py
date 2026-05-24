@@ -41,7 +41,7 @@ def main() -> None:
 
     os.environ["RERANKER_NAME"] = args.reranker
     os.environ.pop("RERANKER_DISABLED", None)
-    # Set threshold to -inf so _search_with_rerank returns every candidate
+    # Set threshold to -inf so search_with_rerank returns every candidate
     # in `results_weak`. We do the F1 calculation here over the union.
     os.environ["RERANKER_THRESHOLD"] = "-1e9"
 
@@ -53,7 +53,7 @@ def main() -> None:
     per_query_scores: list[list[tuple[float, bool]]] = []
     for q in queries:
         relevant = {(r["collection"], _norm_num(r["hadith_number"])) for r in q["relevant"]}
-        res = tools._search_with_rerank(
+        res = tools.search_with_rerank(
             q["query"],
             mode_hint=q.get("mode_hint", "concept"),
             collection=None,

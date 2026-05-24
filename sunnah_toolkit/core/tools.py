@@ -6,26 +6,56 @@ them as JSON directly.
 
 Error shape: {"error": str, "kind": "unknown_collection" | "not_found" | "unavailable"}.
 
-Issue #2: search functions now route through `_search_with_rerank` by
+Issue #2: search functions now route through `search_with_rerank` by
 default. The response is additive — it gains `results_weak`, `threshold`,
-and `reranker` alongside the existing `results` / `total` fields. Setting
-`rerank=False` (or env $RERANKER_DISABLED=1) falls back to the legacy
-single-retriever path so the eval harness can baseline.
+`reranker`, and `reranker_status` alongside the existing `results` /
+`total` fields. Setting `rerank=False` (or env $RERANKER_DISABLED=1)
+falls back to the legacy single-retriever path so the eval harness can
+baseline.
 """
 
 from __future__ import annotations
 
 import logging
+import math
 import random
-from typing import Any
+from functools import lru_cache
+from typing import Any, Literal
 
 from . import llm_router
 from . import reranker as reranker_mod
 from . import semantic
-from .data import Hadith, Library, load, parse_narrators
+from .data import Hadith, Library, load, parse_narrators, strip_narrator_markup
 from .retrieval import Candidate, retrieve_union, retrieve_union_multi
 
 logger = logging.getLogger(__name__)
+
+
+# HI-005: explicit literal type + module-level weights table so unknown
+# mode_hint values fail loudly instead of falling through to neutral.
+Mode = Literal["concept", "keyword", "term"]
+
+_MODE_WEIGHTS: dict[Mode, tuple[float, float, float]] = {
+    # (bm25_weight, semantic_weight, term_weight)
+    "concept": (0.2, 1.0, 0.4),
+    "keyword": (1.0, 0.4, 0.4),
+    "term": (0.2, 0.4, 1.0),
+}
+
+
+def _assert_mode(mode_hint: str) -> Mode:
+    if mode_hint not in _MODE_WEIGHTS:
+        raise ValueError(
+            f"Unknown mode_hint {mode_hint!r}. Choices: {sorted(_MODE_WEIGHTS)}"
+        )
+    return mode_hint  # type: ignore[return-value]
+
+
+# ME-009 (and HI-003): narrow exception classes that we accept as a
+# "reranker failed; fall back to heuristic" signal. Anything else
+# (KeyboardInterrupt, SystemExit, AssertionError, etc.) propagates as a
+# genuine bug rather than being silently demoted to a warning.
+_RERANKER_FALLBACK_EXC = (RuntimeError, OSError, ValueError, AttributeError)
 
 
 def _collection_meta(library: Library, slug: str) -> dict[str, Any]:
@@ -122,6 +152,32 @@ def get_hadith(collection: str, number: int) -> dict[str, Any]:
     return _hadith_dict(library, h)
 
 
+@lru_cache(maxsize=8192)
+def _doc_text_by_urn(urn: int, collection: str, english_title: str) -> str:
+    """ME-003 helper: cached cross-encoder doc template keyed by hadith URN.
+
+    The Arabic strip-markup pass and the title lookup are otherwise repeated
+    per query for the same hadith. Cache size 8 192 comfortably covers
+    realistic working sets (300 candidates × a few concurrent sessions).
+    """
+    library = load()
+    # `urn` is globally unique. Scan the collection's list once per cache
+    # miss; subsequent same-urn queries are O(1) lookups against the lru.
+    target: Hadith | None = None
+    for cand in library.hadiths.get(collection, ()):
+        if cand.urn_arabic == urn:
+            target = cand
+            break
+    if target is None:
+        return ""
+    return (
+        f"{english_title}\n"
+        f"{target.english_narrator}\n"
+        f"{target.english_text}\n"
+        f"{strip_narrator_markup(target.arabic)}"
+    )
+
+
 def _doc_text(library: Library, c: Candidate) -> str:
     """Per-candidate document template for the cross-encoder.
 
@@ -129,20 +185,114 @@ def _doc_text(library: Library, c: Candidate) -> str:
     the matn — important for Arabic-term queries where the English text
     may not contain the user's transliterated word at all.
     """
-    from .data import strip_narrator_markup
-
     h = c.hadith
     col = library.get_collection(h.collection)
     title = col.english_title if col else h.collection
-    return (
-        f"{title}\n"
-        f"{h.english_narrator}\n"
-        f"{h.english_text}\n"
-        f"{strip_narrator_markup(h.arabic)}"
-    )
+    return _doc_text_by_urn(h.urn_arabic, h.collection, title)
 
 
-def _search_with_rerank(
+def _heuristic_scores(
+    candidates: list[Candidate],
+    mode_hint: Mode,
+) -> list[tuple[Candidate, float]]:
+    """Fallback first-stage scorer when the reranker is off or failed.
+
+    Returns (candidate, score) pairs sorted descending by the per-mode
+    weighted sum of the three normalised retriever signals.
+    """
+    wb, ws, wt = _MODE_WEIGHTS[mode_hint]
+    scored = [
+        (c, wb * c.bm25_norm + ws * c.semantic_norm + wt * c.term_norm)
+        for c in candidates
+    ]
+    scored.sort(key=lambda p: p[1], reverse=True)
+    return scored
+
+
+def _score_candidates(
+    library: Library,
+    query: str,
+    candidates: list[Candidate],
+    mode_hint: Mode,
+) -> tuple[list[tuple[Candidate, float]], str, str, float]:
+    """Score `candidates` with the active reranker, falling back on error.
+
+    Returns (scored, reranker_name, reranker_status, threshold).
+    `reranker_status` is one of "ok", "disabled", "fell_back: <ExcClass>".
+    When the reranker is off (disabled or fell back) the threshold is
+    `-inf` so every candidate lands in the strong bucket.
+    """
+    if not reranker_mod.reranker_enabled():
+        return _heuristic_scores(candidates, mode_hint), "none", "disabled", -math.inf
+
+    name = reranker_mod.default_reranker_name()
+    threshold = reranker_mod.default_threshold()
+    try:
+        r = reranker_mod.get_reranker(name)
+        docs = [_doc_text(library, c) for c in candidates]
+        scores = r.score(query, docs)
+        scored = list(zip(candidates, scores))
+        scored.sort(key=lambda p: p[1], reverse=True)
+        return scored, name, "ok", threshold
+    except _RERANKER_FALLBACK_EXC as e:
+        # HI-003 / ME-009: surface the failure class in the response so
+        # the caller (UI, eval harness, /healthz) can distinguish
+        # "disabled by config" from "the reranker exploded".
+        logger.warning(
+            "reranker %s failed (%s: %s); falling back to first-stage order",
+            name, type(e).__name__, e,
+        )
+        status = f"fell_back: {type(e).__name__}"
+        return _heuristic_scores(candidates, mode_hint), "none", status, -math.inf
+
+
+def _split_strong_weak(
+    scored: list[tuple[Candidate, float]],
+    threshold: float,
+    limit: int,
+) -> tuple[
+    list[tuple[Candidate, float]],
+    list[tuple[Candidate, float]],
+]:
+    """Partition `scored` into strong (≥ threshold, capped at `limit`) and weak."""
+    strong: list[tuple[Candidate, float]] = []
+    weak: list[tuple[Candidate, float]] = []
+    for cand, score in scored:
+        if score >= threshold and len(strong) < limit:
+            strong.append((cand, score))
+        else:
+            weak.append((cand, score))
+    return strong, weak
+
+
+def _row_from_candidate(
+    library: Library,
+    cand: Candidate,
+    score: float,
+    query: str,
+) -> dict[str, Any]:
+    h = cand.hadith
+    row: dict[str, Any] = {
+        **_collection_meta(library, h.collection),
+        "number": h.id_in_book,
+        "hadith_number": h.hadith_number,
+        "english_grade": h.english_grade,
+        "snippet": _snippet(h.english_text, query),
+        "score": float(score),
+        "sources": sorted(cand.sources),
+    }
+    if cand.matched_words:
+        row["matched_words"] = sorted(cand.matched_words)
+    # LO-007: `similarity` is the raw bi-encoder dot product when semantic
+    # retrieval contributed. Present iff the bi-encoder fired — documented
+    # as a per-retriever signal, not a top-level rank score. The frontend
+    # and eval harness key off `score` (the cross-encoder logit) instead.
+    if "semantic" in cand.sources:
+        row["similarity"] = cand.semantic
+    return row
+
+
+def search_with_rerank(
     query: str,
     mode_hint: str = "concept",
     collection: str | None = None,
@@ -150,6 +300,10 @@ def _search_with_rerank(
     k_per_retriever: int = 100,
 ) -> dict[str, Any]:
     """Run the union retriever + cross-encoder reranker, split by threshold.
+
+    LO-004: renamed from `_search_with_rerank` (which is kept below as a
+    back-compat alias) since this is the canonical pipeline called by
+    every public search wrapper plus the eval and threshold-tuning scripts.
 
     Thin wrapper: builds the candidate pool with `retrieve_union(query)` and
     delegates the rerank/threshold logic to `_rerank_and_split` so the NL
@@ -165,6 +319,10 @@ def _search_with_rerank(
         collection=collection,
         limit=limit,
     )
+
+
+# Back-compat alias for callers that imported the underscore-prefixed name.
+_search_with_rerank = search_with_rerank
 
 
 def _rerank_and_split(
@@ -183,21 +341,23 @@ def _rerank_and_split(
         "pool_size",       # len(candidates) — the universe we ranked
         "total",           # strong + weak count
         "reranker",        # model name (or "none")
-        "threshold",       # float used for the split
+        "reranker_active", # bool — True iff a cross-encoder actually scored
+        "reranker_status", # "ok" | "disabled" | "fell_back: <ExcClass>"
+        "threshold",       # float used for the split (None when reranker off)
         "results":      [...]  # strong matches, len ≤ limit
         "results_weak": [...]  # weak matches (below threshold), reranker order
         "matched_words": [...] # only present if `term` retriever fired
       }
 
     `limit` is clamped at `pool_size` server-side so callers requesting more
-    than the union pool no longer pretend to honour the value. See review
-    finding CR-003.
+    than the union pool no longer pretend to honour the value (CR-003).
     """
+    mode = _assert_mode(mode_hint)
     # Issue #7: surface AND/OR-fallback flag for term-mode queries only.
     # Other modes don't tokenise this way, so the field is omitted.
     term_match_logic = (
         library.term_match_logic(query, collection=collection)
-        if mode_hint == "term"
+        if mode == "term"
         else None
     )
 
@@ -205,125 +365,75 @@ def _rerank_and_split(
         empty: dict[str, Any] = {
             "query": query,
             "collection": collection,
-            "mode_hint": mode_hint,
+            "mode_hint": mode,
             "total": 0,
             "limit": limit,
             "pool_size": 0,
             "reranker": "none",
-            "threshold": 0.0,
+            "reranker_active": False,
+            "reranker_status": "disabled" if not reranker_mod.reranker_enabled() else "ok",
+            "threshold": None,
             "results": [],
             "results_weak": [],
             "matched_words": [],
         }
-        if mode_hint == "term":
+        if mode == "term":
             empty["match_logic"] = term_match_logic
         return empty
 
-    rerank_on = reranker_mod.reranker_enabled()
-    name = reranker_mod.default_reranker_name()
-    threshold = reranker_mod.default_threshold()
-
-    scored: list[tuple[Candidate, float]]
-    if rerank_on:
-        try:
-            r = reranker_mod.get_reranker(name)
-            docs = [_doc_text(library, c) for c in candidates]
-            scores = r.score(query, docs)
-            scored = list(zip(candidates, scores))
-            scored.sort(key=lambda p: p[1], reverse=True)
-        except Exception as e:
-            logger.warning("reranker %s failed (%s); falling back to first-stage order", name, e)
-            rerank_on = False
-            name = "none"
-
-    if not rerank_on:
-        # Fallback ordering: max of normalised first-stage signals weighted
-        # by mode_hint. Concept favours semantic, keyword favours bm25,
-        # term favours the Arabic-skeleton score.
-        weights = {
-            "concept": (0.2, 1.0, 0.4),
-            "keyword": (1.0, 0.4, 0.4),
-            "term": (0.2, 0.4, 1.0),
-        }.get(mode_hint, (0.5, 0.5, 0.5))
-        wb, ws, wt = weights
-
-        def _heuristic(c: Candidate) -> float:
-            return wb * c.bm25_norm + ws * c.semantic_norm + wt * c.term_norm
-
-        scored = [(c, _heuristic(c)) for c in candidates]
-        scored.sort(key=lambda p: p[1], reverse=True)
-        # When the reranker is off, threshold doesn't carry calibrated
-        # meaning — push everything into the strong bucket so the API stays
-        # backward-compatible with prior expectations.
-        threshold = -float("inf")
+    scored, name, status, threshold = _score_candidates(library, query, candidates, mode)
+    reranker_active = status == "ok"
 
     # CR-003: clamp limit at the actual union pool size — a caller asking
     # for limit=1000 when only 173 candidates exist should not pretend.
     pool_size = len(scored)
     limit = min(limit, pool_size)
 
-    strong: list[dict[str, Any]] = []
-    weak: list[dict[str, Any]] = []
+    strong_pairs, weak_pairs = _split_strong_weak(scored, threshold, limit)
+    strong = [_row_from_candidate(library, c, s, query) for c, s in strong_pairs]
+    weak = [_row_from_candidate(library, c, s, query) for c, s in weak_pairs]
+
     # Issue #3: aggregate matched_words from the STRONG result set only so
-    # the chip strip reflects what the user actually sees. Fall back to weak
-    # if strong is empty (rare — only when no above-threshold hits exist).
-    strong_word_freq: dict[str, int] = {}
-    weak_word_freq: dict[str, int] = {}
+    # the chip strip reflects what the user actually sees. Fall back to
+    # weak ONLY when the strong list is literally empty — not merely when
+    # strong rows have no matched_words.
+    def _count_words(rows: list[dict[str, Any]]) -> dict[str, int]:
+        freq: dict[str, int] = {}
+        for r in rows:
+            for w in r.get("matched_words", ()) or ():
+                freq[w] = freq.get(w, 0) + 1
+        return freq
 
-    for cand, score in scored:
-        h = cand.hadith
-        row: dict[str, Any] = {
-            **_collection_meta(library, h.collection),
-            "number": h.id_in_book,
-            "hadith_number": h.hadith_number,
-            "english_grade": h.english_grade,
-            "snippet": _snippet(h.english_text, query),
-            "score": float(score),
-            "sources": sorted(cand.sources),
-        }
-        if cand.matched_words:
-            row["matched_words"] = sorted(cand.matched_words)
-        # Per-mode legacy field preservation: keep `similarity` when semantic
-        # contributed, so existing API consumers don't break.
-        if "semantic" in cand.sources:
-            row["similarity"] = cand.semantic
-
-        if score >= threshold and len(strong) < limit:
-            strong.append(row)
-            if cand.matched_words:
-                for w in cand.matched_words:
-                    strong_word_freq[w] = strong_word_freq.get(w, 0) + 1
-        else:
-            weak.append(row)
-            if cand.matched_words:
-                for w in cand.matched_words:
-                    weak_word_freq[w] = weak_word_freq.get(w, 0) + 1
-
-    # Issue #3: aggregate matched_words from the STRONG result set only.
-    # Fallback to weak ONLY when the strong list is literally empty — not
-    # merely when strong rows have no matched_words. A strong bucket with
-    # non-term hits (semantic/BM25 only, no matched_words) should still
-    # suppress the chip strip because there's nothing for the user to filter.
+    strong_word_freq = _count_words(strong)
+    weak_word_freq = _count_words(weak) if not strong else {}
     chip_source = strong_word_freq if strong else weak_word_freq
     matched_words = sorted(
         ({"word": w, "count": n} for w, n in chip_source.items()),
         key=lambda x: (-x["count"], x["word"]),
     )
 
+    # LO-012 / ME-007: keep the legacy `threshold: null` shape when the
+    # reranker isn't active (UI + eval depend on it), but add an explicit
+    # `reranker_active` boolean so consumers don't have to disambiguate
+    # "calibrated threshold" from "no threshold applied" by reading null.
+    threshold_field: float | None = float(threshold) if math.isfinite(threshold) else None
+
     response: dict[str, Any] = {
         "query": query,
         "collection": collection,
-        "mode_hint": mode_hint,
+        "mode_hint": mode,
         "total": len(strong) + len(weak),
         "limit": limit,
         "pool_size": pool_size,
         "reranker": name,
-        "threshold": float(threshold) if threshold != -float("inf") else None,
+        "reranker_active": reranker_active,
+        "reranker_status": status,
+        "threshold": threshold_field,
         "results": strong,
         "results_weak": weak,
         "matched_words": matched_words,
     }
-    if mode_hint == "term":
+    if mode == "term":
         response["match_logic"] = term_match_logic
     return response
 
@@ -341,7 +451,7 @@ def search_hadith(
         return {"error": f"Unknown collection: {collection!r}", "kind": "unknown_collection"}
 
     if rerank:
-        return _search_with_rerank(query, mode_hint="keyword", collection=collection, limit=limit)
+        return search_with_rerank(query, mode_hint="keyword", collection=collection, limit=limit)
 
     total, hits = library.search(query, collection=collection, limit=limit)
     return {
@@ -373,7 +483,7 @@ def search_hadith_term(
         return {"error": f"Unknown collection: {collection!r}", "kind": "unknown_collection"}
 
     if rerank:
-        return _search_with_rerank(term, mode_hint="term", collection=collection, limit=limit)
+        return search_with_rerank(term, mode_hint="term", collection=collection, limit=limit)
 
     total, word_freq, hits, match_logic = library.search_term(
         term, collection=collection, limit=limit
@@ -415,7 +525,7 @@ def search_hadith_semantic(
 
     if rerank:
         try:
-            return _search_with_rerank(query, mode_hint="concept", collection=collection, limit=limit)
+            return search_with_rerank(query, mode_hint="concept", collection=collection, limit=limit)
         except FileNotFoundError as e:
             return {"error": f"Semantic search unavailable: {e}", "kind": "unavailable"}
 
