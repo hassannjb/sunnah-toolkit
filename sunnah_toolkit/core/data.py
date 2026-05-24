@@ -20,7 +20,7 @@ from typing import Iterable
 
 from rank_bm25 import BM25Okapi
 
-from .translit import arabic_words, fold_index, fold_query
+from .translit import arabic_words, fold_index, fold_query, tokenize_query
 
 DB_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "hadith.sqlite"
 
@@ -337,6 +337,66 @@ class Library:
         candidates.sort(key=lambda p: p[1], reverse=True)
         return candidates[:limit]
 
+    def _per_token_hits(
+        self, query: str
+    ) -> tuple[list[dict[int, set[str]]], list[str]]:
+        """Issue #7 helper: per-query-token map of corpus_idx -> matched Arabic
+        words. Tokens that hit nothing are dropped from the returned list (so
+        an AND intersection isn't degraded by an unknown token). Also returns
+        the surviving tokens for diagnostics.
+        """
+        tokens = tokenize_query(query)
+        # Whole-string fallback when the tokenizer drops everything (e.g. the
+        # input is a single connective word like "al"). Preserves single-word
+        # behaviour for inputs the tokenizer wouldn't otherwise touch.
+        if not tokens:
+            tokens = [query.lower().strip()] if query and query.strip() else []
+        per_token_hits: list[dict[int, set[str]]] = []
+        kept_tokens: list[str] = []
+        for tok in tokens:
+            skels = fold_query(tok)
+            if not skels:
+                continue
+            token_hits: dict[int, set[str]] = {}
+            for skel in skels:
+                for corpus_idx, arabic_word in self.arabic_index.get(skel, ()):
+                    token_hits.setdefault(corpus_idx, set()).add(arabic_word)
+            if token_hits:
+                per_token_hits.append(token_hits)
+                kept_tokens.append(tok)
+        return per_token_hits, kept_tokens
+
+    def term_match_logic(
+        self, query: str, collection: str | None = None
+    ) -> str | None:
+        """Compute only the AND/OR-fallback flag for the current term query.
+
+        Returns one of: "and", "and_fallback_to_or", or None when there is no
+        usable token. Single-token queries return "and" (vacuously satisfied).
+        Used by `_search_with_rerank` so the term-mode response can surface
+        which logic was applied without re-running the heavy retrieve_union.
+        """
+        per_token_hits, _kept = self._per_token_hits(query)
+        if not per_token_hits:
+            return None
+        # Restrict each per-token corpus_idx set to the collection filter so
+        # the AND check honours the same scope the user sees.
+        if collection is not None:
+            filtered: list[set[int]] = []
+            for t in per_token_hits:
+                f = {i for i in t.keys() if self.bm25_corpus[i].collection == collection}
+                if f:
+                    filtered.append(f)
+            keysets = filtered
+        else:
+            keysets = [set(t.keys()) for t in per_token_hits]
+        if not keysets:
+            return None
+        intersect = keysets[0].copy()
+        for ks in keysets[1:]:
+            intersect &= ks
+        return "and" if intersect else "and_fallback_to_or"
+
     def retrieve_term(
         self,
         query: str,
@@ -346,25 +406,43 @@ class Library:
         """Arabic-skeleton match. Returns
         (list of (corpus_idx, score, matched_words) top-N, {word: freq}).
 
+        Issue #7: multi-token queries are intersected (AND) across tokens —
+        a hadith must contain at least one Arabic word matching every token.
+        If AND yields zero hits the function falls back to OR (union),
+        preserving previous single-word behaviour automatically.
+
         Per-hadith score is sum(1 / log(1 + global_word_doc_freq[w])) over
-        matched words. Rarer words contribute more; common skeletons (which
-        collide widely) contribute very little. Score is 0 only when no
-        matched words have a known frequency (all unknown).
+        matched words (union across query tokens). Rarer words contribute
+        more; common skeletons (which collide widely) contribute very little.
         """
-        query_skeletons = fold_query(query)
-        if not query_skeletons:
+        per_token_hits, _kept = self._per_token_hits(query)
+        if not per_token_hits:
             return [], {}
 
-        matched_by_hadith: dict[int, set[str]] = {}
-        for skel in query_skeletons:
-            for corpus_idx, arabic_word in self.arabic_index.get(skel, ()):
-                matched_by_hadith.setdefault(corpus_idx, set()).add(arabic_word)
+        # AND: intersection of corpus_idx sets across all (kept) tokens.
+        intersect: set[int] = set(per_token_hits[0].keys())
+        for t in per_token_hits[1:]:
+            intersect &= t.keys()
+
+        if intersect:
+            target_keys = intersect
+        else:
+            # OR fallback: union of corpus_idx across all tokens.
+            target_keys = set().union(*[set(t.keys()) for t in per_token_hits])
+
+        if not target_keys:
+            return [], {}
 
         results: list[tuple[int, float, set[str]]] = []
         word_freq: dict[str, int] = {}
-        for corpus_idx, matched_words in matched_by_hadith.items():
+        for corpus_idx in target_keys:
             h = self.bm25_corpus[corpus_idx]
             if collection is not None and h.collection != collection:
+                continue
+            matched_words: set[str] = set()
+            for t in per_token_hits:
+                matched_words |= t.get(corpus_idx, set())
+            if not matched_words:
                 continue
             score = 0.0
             for w in matched_words:
@@ -408,19 +486,27 @@ class Library:
         query: str,
         collection: str | None = None,
         limit: int = 20,
-    ) -> tuple[int, dict[str, int], list[tuple[Hadith, set[str]]]]:
+    ) -> tuple[int, dict[str, int], list[tuple[Hadith, set[str]]], str | None]:
         """Find hadiths whose Arabic text contains a word matching the query's
         consonant skeleton. Returns
-        (total_match_count, {arabic_word: frequency}, top-N (hadith, matched_words)).
+        (total_match_count, {arabic_word: frequency},
+         top-N (hadith, matched_words), match_logic).
+
+        match_logic: "and" | "and_fallback_to_or" | None (no usable tokens).
 
         Backward-compat wrapper around retrieve_term: collects ALL matches,
         sorts by (collection, id_in_book) as before, then trims to `limit`.
+
+        Issue #7: tuple grew from 3 to 4 elements. All in-tree callers
+        (sunnah_toolkit.core.tools.search_hadith_term) are updated in the
+        same change.
         """
+        match_logic = self.term_match_logic(query, collection=collection)
         # Pull the full match set (limit = large) so we can produce the
         # legacy total/order.
         full, word_freq = self.retrieve_term(query, collection=collection, limit=10**9)
         if not full:
-            return 0, {}, []
+            return 0, {}, [], match_logic
         rows: list[tuple[Hadith, set[str]]] = [
             (self.bm25_corpus[idx], matched) for idx, _score, matched in full
         ]
@@ -429,7 +515,7 @@ class Library:
             pair[0].grade_tier,
             pair[0].id_in_book,
         ))
-        return len(rows), word_freq, rows[:limit]
+        return len(rows), word_freq, rows[:limit], match_logic
 
 
 _MULTI_BLANK_LINES = re.compile(r"\n{3,}")

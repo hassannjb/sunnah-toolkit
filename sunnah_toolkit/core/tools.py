@@ -172,8 +172,16 @@ def _search_with_rerank(
 
     candidates = retrieve_union(query, collection=collection, k_per_retriever=k_per_retriever)
 
+    # Issue #7: surface AND/OR-fallback flag for term-mode queries only.
+    # Other modes don't tokenise this way, so the field is omitted.
+    term_match_logic = (
+        library.term_match_logic(query, collection=collection)
+        if mode_hint == "term"
+        else None
+    )
+
     if not candidates:
-        return {
+        empty: dict[str, Any] = {
             "query": query,
             "collection": collection,
             "mode_hint": mode_hint,
@@ -186,6 +194,9 @@ def _search_with_rerank(
             "results_weak": [],
             "matched_words": [],
         }
+        if mode_hint == "term":
+            empty["match_logic"] = term_match_logic
+        return empty
 
     rerank_on = reranker_mod.reranker_enabled()
     name = reranker_mod.default_reranker_name()
@@ -278,7 +289,7 @@ def _search_with_rerank(
         key=lambda x: (-x["count"], x["word"]),
     )
 
-    return {
+    response: dict[str, Any] = {
         "query": query,
         "collection": collection,
         "mode_hint": mode_hint,
@@ -291,6 +302,9 @@ def _search_with_rerank(
         "results_weak": weak,
         "matched_words": matched_words,
     }
+    if mode_hint == "term":
+        response["match_logic"] = term_match_logic
+    return response
 
 
 def search_hadith(
@@ -340,7 +354,9 @@ def search_hadith_term(
     if rerank:
         return _search_with_rerank(term, mode_hint="term", collection=collection, limit=limit)
 
-    total, word_freq, hits = library.search_term(term, collection=collection, limit=limit)
+    total, word_freq, hits, match_logic = library.search_term(
+        term, collection=collection, limit=limit
+    )
     matched_words = sorted(
         ({"word": w, "count": n} for w, n in word_freq.items()),
         key=lambda x: (-x["count"], x["word"]),
@@ -350,6 +366,7 @@ def search_hadith_term(
         "collection": collection,
         "total": total,
         "limit": limit,
+        "match_logic": match_logic,
         "matched_words": matched_words,
         "results": [
             {**_collection_meta(library, h.collection),

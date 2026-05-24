@@ -58,3 +58,27 @@ def fold_query(text: str) -> set[str]:
 def arabic_words(text: str) -> list[str]:
     """Extract clean Arabic words from a hadith's Arabic text."""
     return _ARABIC_WORD.findall(_ARABIC_DIACRITICS.sub("", text))
+
+
+# Issue #7: connectives we drop when tokenising multi-word term queries.
+# Covers Persian "e" (izafat) and Arabic definite article "al" with its
+# sun-letter assimilations. Conservative list — tune later if needed.
+_QUERY_CONNECTIVES: frozenset[str] = frozenset({
+    "e",                                         # Persian izafat ("dua e qunut")
+    "ul",                                        # Arabic article enclitic ("laylatul")
+    "al",                                        # Arabic definite article
+    "ush", "ash",                                # sun-letter forms
+    "an", "ar", "as", "at", "az", "ad",          # more sun-letter assimilations
+})
+
+
+def tokenize_query(query: str) -> list[str]:
+    """Whitespace-split + lowercase + drop connectives.
+
+    Issue #7. Returns the list of meaningful tokens for term-mode AND-logic.
+    Single-word inputs remain a single-element list — single-word callers
+    see no behavioural change.
+    """
+    if not query:
+        return []
+    return [t for t in query.lower().split() if t and t not in _QUERY_CONNECTIVES]
