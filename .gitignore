@@ -11,5 +11,9 @@ venv/
 .eggs/
 
 # Downloaded hadith dataset (fetched via scripts/fetch_data.py)
-data/
+data/*
+# The sunnah.com SQL dump is the build input and must travel with the repo
+# so CI (GitHub Actions → GHCR) can build the image. It's already public via
+# sunnah.com's official dump release.
+!data/HadithTable.sql.gz
 
