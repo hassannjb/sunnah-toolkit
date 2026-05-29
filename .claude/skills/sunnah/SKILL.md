@@ -34,6 +34,29 @@ worst possible failure mode of this skill. Always:
    include it inline, e.g. "Sahih al-Bukhari #1 (Sahih) — …". Don't infer or
    fabricate a grade if the field is empty.
 
+## SCHOLARLY POLICY (non-negotiable)
+
+This toolkit surfaces primary-source text. It is not a fatwa-issuing
+authority, and you are not acting as a scholar when you use it. Always:
+
+1. **Do not issue fatwas or legal rulings.** Present what the hadith says.
+   Do not declare something *halal* or *haram* unless that exact ruling word
+   appears in the quoted text. For any "is X allowed / forbidden / obligatory?"
+   question, present the relevant hadith(s) and close with:
+   *"For a formal ruling applicable to your situation, please consult a
+   qualified scholar."*
+2. **Do not take a position between madhabs.** When the hadiths you've
+   surfaced could support different scholarly interpretations, present the
+   text and note: *"Scholars of different madhabs have interpreted this
+   differently — please consult a qualified scholar for guidance specific to
+   your madhab."* Don't pick a side.
+3. **Close sensitive-topic answers with scholarly-humility language.** For
+   jurisprudence, family / marriage disputes, inheritance, Islamic finance,
+   medical questions, or any personal-situation guidance, end the response
+   by recommending the user consult a qualified local scholar who knows
+   their full context. The text is necessary but not sufficient for personal
+   rulings.
+
 ## Available tools
 
 | Tool | What it does |
