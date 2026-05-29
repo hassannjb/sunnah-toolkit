@@ -553,12 +553,19 @@ INDEX_HTML = r"""<!doctype html>
     }
 
     function refLabel(slug, hadithNumber, number) {
-      const display = hadithNumber || number;
+      // Match sunnah.com's display convention: squash internal whitespace
+      // ("375 a" → "375a") and drop the trailing part of a paired range.
+      const raw = String(hadithNumber || number);
+      const display = raw.split(",", 1)[0].replace(/\s+/g, "");
       return titleFor(slug) + " #" + display;
     }
 
     function referenceUrl(slug, hadithNumber, number) {
-      const id = hadithNumber || number;
+      // Sunnah.com URLs squash whitespace from suffixed numbers — the dump
+      // stores "375 a" but the canonical URL is /muslim:375a. Strip spaces
+      // and take the first part of a paired range like "272, 273".
+      const raw = String(hadithNumber || number);
+      const id = raw.split(",", 1)[0].replace(/\s+/g, "");
       return "https://sunnah.com/" + encodeURIComponent(slug) + ":" + encodeURIComponent(id);
     }
 
@@ -584,8 +591,11 @@ INDEX_HTML = r"""<!doctype html>
 
     function renderResultRow(item, showScore, isWeak) {
       const slug = item.slug;
-      const num = item.number;
-      const label = refLabel(slug, item.hadith_number, num);
+      // Click-fetch must use hadith_number (sunnah.com URL key) so the
+      // backend resolves to the same hadith the row's label points at.
+      // Falls back to id_in_book for hadiths without a sunnah.com number.
+      const fetchNum = item.hadith_number || item.number;
+      const label = refLabel(slug, item.hadith_number, item.number);
       const snippet = cleanSnippet(item.snippet);
       let score = "";
       if (showScore && typeof item.similarity === "number") {
@@ -595,7 +605,7 @@ INDEX_HTML = r"""<!doctype html>
       }
       const cls = isWeak ? "result-row weak" : "result-row";
       return (
-        '<div class="' + cls + '" data-slug="' + escapeHtml(slug) + '" data-num="' + num + '">' +
+        '<div class="' + cls + '" data-slug="' + escapeHtml(slug) + '" data-num="' + escapeHtml(String(fetchNum)) + '">' +
           '<div class="ref">' + score + escapeHtml(label) + '</div>' +
           '<div class="snippet">' + escapeHtml(snippet) + '</div>' +
         '</div>'
@@ -906,12 +916,14 @@ INDEX_HTML = r"""<!doctype html>
       }
     }
 
-    // "<one or more words> [#] <number>"  → {slug, number}
+    // "<one or more words> [#] <number-or-suffixed-ref>"  → {slug, number}
+    // `number` stays a string so sunnah.com letter-suffix refs like "402b"
+    // or "1134b" pass through to the backend verbatim.
     function parseReference(text) {
-      const m = text.trim().match(/^(.+?)\s*#?\s*(\d+)\s*$/);
+      const m = text.trim().match(/^(.+?)\s*#?\s*([0-9][0-9a-zA-Z,\s]*?)\s*$/);
       if (!m) return null;
       const slug = slugByAlias[norm(m[1])];
-      return slug ? { slug, number: parseInt(m[2], 10) } : null;
+      return slug ? { slug, number: m[2].trim() } : null;
     }
 
     async function doSearch(mode, q) {

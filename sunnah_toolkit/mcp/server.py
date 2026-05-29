@@ -41,7 +41,7 @@ def list_books(collection: str) -> str:
 
 
 @mcp.tool()
-def get_hadith(collection: str, number: int) -> str:
+def get_hadith(collection: str, number: int | str) -> str:
     """Fetch a single hadith by its collection and number.
 
     Returns the narrator, English translation, Arabic text, and a
@@ -55,7 +55,12 @@ def get_hadith(collection: str, number: int) -> str:
 
     Args:
         collection: slug of the collection, e.g. `bukhari`.
-        number: the hadith number within that collection (1-indexed).
+        number: the sunnah.com hadith number, as shown in URLs like
+            `sunnah.com/bukhari:6312`. Pass as int ("6312") or string —
+            letter-suffix references like `"402b"` or `"1134b"` are accepted
+            verbatim. The lookup matches `hadith_number` first and falls
+            back to the internal `id_in_book` ordinal for hadiths whose
+            sunnah.com number is unavailable.
     """
     return text_format.hadith(tools.get_hadith(collection, number))
 

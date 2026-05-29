@@ -295,16 +295,78 @@ class Library:
     def get_collection(self, slug: str) -> Collection | None:
         return self.collections.get(slug)
 
-    def get_hadith(self, slug: str, id_in_book: int) -> Hadith | None:
+    def get_hadith(self, slug: str, number: int | str) -> Hadith | None:
+        """Look up a hadith by its public sunnah.com number (preferred) or
+        internal `id_in_book` (fallback).
+
+        `number` accepts a string ("402b", "1134b", "272") or int. We match
+        `hadith_number` first because that is the only number users see —
+        sunnah.com URLs (sunnah.com/<slug>:<n>), search-result citations,
+        and the reference URL field all use it. The internal `id_in_book`
+        ordinal frequently diverges from `hadith_number` (chapter intros,
+        paired-range numbering on sunnah.com); falling through to it keeps
+        legacy int callers working when hadith_number is empty.
+
+        Paired-range `hadith_number` values like "272, 273" are matched if
+        the input equals either part.
+        """
         hadiths = self.hadiths.get(slug)
         if not hadiths:
             return None
-        if 1 <= id_in_book <= len(hadiths):
-            candidate = hadiths[id_in_book - 1]
-            if candidate.id_in_book == id_in_book:
+
+        key = str(number).strip()
+        if not key:
+            return None
+
+        # Sunnah.com URLs strip whitespace from suffixed numbers ("1134b"),
+        # but the upstream dump stores them with a space ("1134 a", "1134 b").
+        # Normalise both sides before comparing so either form resolves.
+        def _squash(s: str) -> str:
+            return s.replace(" ", "").lower()
+
+        key_squashed = _squash(key)
+
+        # Primary: exact hadith_number match (sunnah.com URL key).
+        for h in hadiths:
+            if _squash(h.hadith_number) == key_squashed:
+                return h
+        # Also accept paired ranges like "272, 273" where the user typed
+        # one of the parts (sunnah.com URLs use the first part).
+        for h in hadiths:
+            if "," in h.hadith_number:
+                parts = [_squash(p) for p in h.hadith_number.split(",")]
+                if key_squashed in parts:
+                    return h
+
+        # Sunnah.com URLs like `/muslim:375` resolve to a hadith stored as
+        # "375 a" or "375 b" (the dump paginates a single matn into lettered
+        # variants). If the input is a plain integer and we haven't matched
+        # exactly, accept any `<key><letter>` hadith_number and return the
+        # alphabetically first one — that's the variant the sunnah.com URL
+        # actually lands on.
+        if key_squashed.isdigit():
+            lettered = [
+                h for h in hadiths
+                if (sq := _squash(h.hadith_number)).startswith(key_squashed)
+                and len(sq) > len(key_squashed)
+                and sq[len(key_squashed):].isalpha()
+            ]
+            if lettered:
+                lettered.sort(key=lambda h: _squash(h.hadith_number))
+                return lettered[0]
+
+        # Fallback: id_in_book lookup so int-only callers and hadiths with
+        # an empty hadith_number remain reachable.
+        try:
+            idx = int(key)
+        except ValueError:
+            return None
+        if 1 <= idx <= len(hadiths):
+            candidate = hadiths[idx - 1]
+            if candidate.id_in_book == idx:
                 return candidate
         for h in hadiths:
-            if h.id_in_book == id_in_book:
+            if h.id_in_book == idx:
                 return h
         return None
 

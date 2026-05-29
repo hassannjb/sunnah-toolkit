@@ -45,7 +45,11 @@ def list_books(collection: str, _: Auth) -> dict:
 
 
 @router.get("/hadith/{collection}/{number}")
-def get_hadith(collection: str, number: int, _: Auth) -> dict:
+def get_hadith(collection: str, number: str, _: Auth) -> dict:
+    # `number` is a string so sunnah.com hadith_numbers with letter suffixes
+    # ("402b", "1134b") resolve correctly. tools.get_hadith → library.get_hadith
+    # tries hadith_number first and falls back to id_in_book if the input is
+    # a plain integer.
     return _unwrap(tools.get_hadith(collection, number))
 
 

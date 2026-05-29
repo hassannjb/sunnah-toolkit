@@ -71,9 +71,11 @@ def _hadith_dict(library: Library, h: Hadith) -> dict[str, Any]:
     col = library.get_collection(h.collection)
     # Reference URL uses the canonical citation number sunnah.com serves on.
     # For paired/range hadithNumbers like "272, 273", use the first number —
-    # sunnah.com serves the row under that primary URL.
+    # sunnah.com serves the row under that primary URL. Sunnah.com URLs also
+    # strip whitespace from letter-suffixed numbers (the dump stores "375 a"
+    # but the URL is `/muslim:375a`), so squash any internal whitespace.
     raw_num = h.hadith_number or str(h.id_in_book)
-    cite_id = raw_num.split(",", 1)[0].strip()
+    cite_id = "".join(raw_num.split(",", 1)[0].split())
     return {
         "collection": h.collection,
         "number": h.id_in_book,
@@ -137,7 +139,7 @@ def list_books(collection: str) -> dict[str, Any]:
     }
 
 
-def get_hadith(collection: str, number: int) -> dict[str, Any]:
+def get_hadith(collection: str, number: int | str) -> dict[str, Any]:
     library = load()
     if collection not in library.collections:
         return {"error": f"Unknown collection: {collection!r}", "kind": "unknown_collection"}
@@ -146,7 +148,8 @@ def get_hadith(collection: str, number: int) -> dict[str, Any]:
     if not h:
         total = len(library.hadiths[collection])
         return {
-            "error": f"No hadith #{number} in {collection}. Valid range: 1..{total}.",
+            "error": f"No hadith #{number} in {collection}. Try a sunnah.com number "
+                     f"(e.g. '6312', '402b'); id_in_book range is 1..{total}.",
             "kind": "not_found",
         }
     return _hadith_dict(library, h)
