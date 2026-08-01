@@ -29,6 +29,20 @@ IDs — enough to filter by authenticity tier or analyse isnad relationships.
 Every result includes a `sunnah.com/<collection>:<number>` reference URL so
 the model can cite accurately.
 
+## Try it live
+
+A public instance runs on Hugging Face Spaces:
+
+- UI + REST: <https://hassannjb-sunnah-toolkit.hf.space>
+- Example: <https://hassannjb-sunnah-toolkit.hf.space/v1/search?query=mercy&limit=3>
+
+It runs the GHCR image `ghcr.io/hassannjb/sunnah-toolkit` on HF's free CPU
+tier (2 vCPU). The cross-encoder reranker is **disabled** there
+(`RERANKER_DISABLED=1`) because the free tier can't carry it at interactive
+latency — ranking falls back to BM25 / cosine. Warm queries land in
+~0.3 s; cold starts (after ~48 h of idle) take 30–60 s while the image
+is restored.
+
 ## Architecture
 
 ### Network topology
