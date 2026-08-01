@@ -1,11 +1,29 @@
 # Eval-set curation — interactive state
 
+> **SUPERSEDED 2026-08-01.** The one-query-at-a-time interactive workflow
+> below is no longer how this gets done — it stalled at 1 of 25 queries.
+> Replaced by an **offline expert-review workbook**: 20 queries × 15 pooled
+> candidates, graded 0–3 by hadith scholars in a shared Google Sheet.
+>
+> - Query set: `docs/eval/queries-20.json` (20 queries + hand-authored
+>   retrieval variants + the seeds vetted below)
+> - Pool builder: `scripts/build_eval_sheet.py`
+> - Candidate pool of record: `docs/eval/pool-20260801.json`
+> - Workbook handed to experts: `docs/eval/expert-sheet-20260801.xlsx`
+>
+> Five queries were cut to fit the 20 × 15 budget (toilet dua, kindness to
+> neighbours, backbiting, seeking forgiveness, dua e qunut) — rationale in
+> `queries-20.json`. All four concept↔natural twin pairs survive.
+>
+> **Everything below is kept for provenance**, and because the Q1/Q3/Q4 refs
+> the user vetted by hand are carried into the new pool as `seeds` (green
+> rows in the workbook). Experts re-judge them — several earlier picks were
+> wrong, so they get no free pass.
+
 **Last updated:** 2026-06-01 (session paused for system restart)
 **Curator:** user (hassan.najeeb)
 **Workflow:** I present one query at a time with verified sunnah.com links; user
 removes by number or pastes sunnah.com links to add; when locked we move on.
-
-Resume by saying "continue eval curation" or "start Q2".
 
 ---
 

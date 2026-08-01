@@ -1,0 +1,3168 @@
+{
+  "_generated": "2026-08-01 17:36",
+  "_reranker": "bge-v2-m3",
+  "_per_query": 15,
+  "_pool_k": 30,
+  "queries": [
+    {
+      "id": "Q01",
+      "query": "supplication when going to sleep",
+      "mode_hint": "concept",
+      "tab": "Q01_sleep_dua",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "bukhari",
+          "hadith_number": "6312",
+          "urn": 154170,
+          "grade": "Sahih",
+          "found_by": "seed, bm25, semantic",
+          "rank": 47,
+          "is_seed": true
+        },
+        {
+          "n": 2,
+          "collection": "bukhari",
+          "hadith_number": "6313",
+          "urn": 154180,
+          "grade": "Sahih",
+          "found_by": "seed, semantic",
+          "rank": 20,
+          "is_seed": true
+        },
+        {
+          "n": 3,
+          "collection": "bukhari",
+          "hadith_number": "6314",
+          "urn": 154190,
+          "grade": "Sahih",
+          "found_by": "seed, bm25, term",
+          "rank": 43,
+          "is_seed": true
+        },
+        {
+          "n": 4,
+          "collection": "bukhari",
+          "hadith_number": "6315",
+          "urn": 154200,
+          "grade": "Sahih",
+          "found_by": "seed, bm25",
+          "rank": 26,
+          "is_seed": true
+        },
+        {
+          "n": 5,
+          "collection": "bukhari",
+          "hadith_number": "6320",
+          "urn": 154250,
+          "grade": "Sahih",
+          "found_by": "seed, bm25",
+          "rank": 25,
+          "is_seed": true
+        },
+        {
+          "n": 6,
+          "collection": "bukhari",
+          "hadith_number": "6324",
+          "urn": 154290,
+          "grade": "Sahih",
+          "found_by": "seed, bm25, term",
+          "rank": 18,
+          "is_seed": true
+        },
+        {
+          "n": 7,
+          "collection": "bukhari",
+          "hadith_number": "6296",
+          "urn": 154000,
+          "grade": "Sahih",
+          "found_by": "seed, semantic",
+          "rank": 23,
+          "is_seed": true
+        },
+        {
+          "n": 8,
+          "collection": "bukhari",
+          "hadith_number": "7393",
+          "urn": 175690,
+          "grade": "Sahih",
+          "found_by": "seed, bm25",
+          "rank": 14,
+          "is_seed": true
+        },
+        {
+          "n": 9,
+          "collection": "bukhari",
+          "hadith_number": "1142",
+          "urn": 110280,
+          "grade": "Sahih",
+          "found_by": "seed",
+          "rank": "",
+          "is_seed": true
+        },
+        {
+          "n": 10,
+          "collection": "muslim",
+          "hadith_number": "2710a",
+          "urn": 370950,
+          "grade": "Sahih",
+          "found_by": "seed",
+          "rank": "",
+          "is_seed": true
+        },
+        {
+          "n": 11,
+          "collection": "riyadussalihin",
+          "hadith_number": "1464",
+          "urn": 1714540,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "riyadussalihin",
+          "hadith_number": "1458",
+          "urn": 1714480,
+          "grade": "",
+          "found_by": "bm25, term",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "bukhari",
+          "hadith_number": "798",
+          "urn": 186020,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "riyadussalihin",
+          "hadith_number": "816",
+          "urn": 1708100,
+          "grade": "",
+          "found_by": "bm25, term",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "abudawud",
+          "hadith_number": "5057",
+          "urn": 950600,
+          "grade": "Da'if",
+          "found_by": "bm25",
+          "rank": 5,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q03",
+      "query": "fasting on the day of Arafah",
+      "mode_hint": "concept",
+      "tab": "Q03_arafah_fast",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "muslim",
+          "hadith_number": "1133a",
+          "urn": 327200,
+          "grade": "Sahih",
+          "found_by": "seed",
+          "rank": "",
+          "is_seed": true
+        },
+        {
+          "n": 2,
+          "collection": "muslim",
+          "hadith_number": "1134b",
+          "urn": 327230,
+          "grade": "Sahih",
+          "found_by": "seed",
+          "rank": "",
+          "is_seed": true
+        },
+        {
+          "n": 3,
+          "collection": "muslim",
+          "hadith_number": "1162a",
+          "urn": 328010,
+          "grade": "Sahih",
+          "found_by": "seed, bm25",
+          "rank": 12,
+          "is_seed": true
+        },
+        {
+          "n": 4,
+          "collection": "bukhari",
+          "hadith_number": "1988",
+          "urn": 119030,
+          "grade": "Sahih",
+          "found_by": "seed, bm25, semantic",
+          "rank": 15,
+          "is_seed": true
+        },
+        {
+          "n": 5,
+          "collection": "bukhari",
+          "hadith_number": "1989",
+          "urn": 119040,
+          "grade": "Sahih",
+          "found_by": "seed, bm25, semantic",
+          "rank": 14,
+          "is_seed": true
+        },
+        {
+          "n": 6,
+          "collection": "abudawud",
+          "hadith_number": "2425",
+          "urn": 924280,
+          "grade": "Sahih",
+          "found_by": "seed",
+          "rank": "",
+          "is_seed": true
+        },
+        {
+          "n": 7,
+          "collection": "ibnmajah",
+          "hadith_number": "1730",
+          "urn": 1318030,
+          "grade": "Sahih",
+          "found_by": "seed, bm25",
+          "rank": 1,
+          "is_seed": true
+        },
+        {
+          "n": 8,
+          "collection": "ibnmajah",
+          "hadith_number": "1732",
+          "urn": 1318050,
+          "grade": "Hasan",
+          "found_by": "bm25, semantic",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "muslim",
+          "hadith_number": "1123a",
+          "urn": 326880,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "riyadussalihin",
+          "hadith_number": "1250",
+          "urn": 1712400,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "abudawud",
+          "hadith_number": "2440",
+          "urn": 924430,
+          "grade": "Da'if",
+          "found_by": "bm25",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "bukhari",
+          "hadith_number": "1999",
+          "urn": 119140,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "muslim",
+          "hadith_number": "1162b",
+          "urn": 328020,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "ibnmajah",
+          "hadith_number": "1731",
+          "urn": 1318040,
+          "grade": "Da’if",
+          "found_by": "bm25",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "tirmidhi",
+          "hadith_number": "751",
+          "urn": 707550,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 9,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q04",
+      "query": "controlling anger",
+      "mode_hint": "concept",
+      "tab": "Q04_anger",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "bukhari",
+          "hadith_number": "6114",
+          "urn": 174290,
+          "grade": "Sahih",
+          "found_by": "seed, bm25, semantic",
+          "rank": 2,
+          "is_seed": true
+        },
+        {
+          "n": 2,
+          "collection": "bukhari",
+          "hadith_number": "6116",
+          "urn": 174310,
+          "grade": "Sahih",
+          "found_by": "seed, bm25, semantic",
+          "rank": 18,
+          "is_seed": true
+        },
+        {
+          "n": 3,
+          "collection": "muslim",
+          "hadith_number": "2609a",
+          "urn": 368470,
+          "grade": "Sahih",
+          "found_by": "seed, bm25, semantic",
+          "rank": 5,
+          "is_seed": true
+        },
+        {
+          "n": 4,
+          "collection": "muslim",
+          "hadith_number": "2609b",
+          "urn": 368480,
+          "grade": "Sahih",
+          "found_by": "seed, semantic",
+          "rank": 1,
+          "is_seed": true
+        },
+        {
+          "n": 5,
+          "collection": "abudawud",
+          "hadith_number": "4779",
+          "urn": 947820,
+          "grade": "Sahih",
+          "found_by": "seed, bm25, semantic",
+          "rank": 9,
+          "is_seed": true
+        },
+        {
+          "n": 6,
+          "collection": "abudawud",
+          "hadith_number": "4782",
+          "urn": 947850,
+          "grade": "Sahih",
+          "found_by": "seed, bm25, semantic",
+          "rank": 12,
+          "is_seed": true
+        },
+        {
+          "n": 7,
+          "collection": "bukhari",
+          "hadith_number": "3282",
+          "urn": 129980,
+          "grade": "Sahih",
+          "found_by": "seed, bm25, semantic",
+          "rank": 11,
+          "is_seed": true
+        },
+        {
+          "n": 8,
+          "collection": "bukhari",
+          "hadith_number": "6048",
+          "urn": 173550,
+          "grade": "Sahih",
+          "found_by": "seed, bm25, semantic",
+          "rank": 29,
+          "is_seed": true
+        },
+        {
+          "n": 9,
+          "collection": "tirmidhi",
+          "hadith_number": "2020",
+          "urn": 721470,
+          "grade": "Sahih",
+          "found_by": "seed, bm25, semantic",
+          "rank": 21,
+          "is_seed": true
+        },
+        {
+          "n": 10,
+          "collection": "forty",
+          "hadith_number": "16",
+          "urn": 1500160,
+          "grade": "",
+          "found_by": "seed, bm25, semantic",
+          "rank": 10,
+          "is_seed": true
+        },
+        {
+          "n": 11,
+          "collection": "adab",
+          "hadith_number": "1317",
+          "urn": 2313140,
+          "grade": "Sahih",
+          "found_by": "seed, bm25, semantic",
+          "rank": 6,
+          "is_seed": true
+        },
+        {
+          "n": 12,
+          "collection": "riyadussalihin",
+          "hadith_number": "646",
+          "urn": 1706420,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "riyadussalihin",
+          "hadith_number": "45",
+          "urn": 1700450,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "riyadussalihin",
+          "hadith_number": "48",
+          "urn": 1700480,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "riyadussalihin",
+          "hadith_number": "638",
+          "urn": 1706340,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 8,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q08",
+      "query": "the hadith of intentions",
+      "mode_hint": "concept",
+      "tab": "Q08_intentions",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "tirmidhi",
+          "hadith_number": "1647",
+          "urn": 717430,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic, term",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 2,
+          "collection": "bukhari",
+          "hadith_number": "2825",
+          "urn": 168430,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 3,
+          "collection": "bukhari",
+          "hadith_number": "2529",
+          "urn": 124460,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 4,
+          "collection": "forty",
+          "hadith_number": "33",
+          "urn": 1530330,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 5,
+          "collection": "bukhari",
+          "hadith_number": "4312",
+          "urn": 139430,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 6,
+          "collection": "bukhari",
+          "hadith_number": "1",
+          "urn": 100010,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic, term",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 7,
+          "collection": "bukhari",
+          "hadith_number": "3900",
+          "urn": 135350,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 8,
+          "collection": "ibnmajah",
+          "hadith_number": "4229",
+          "urn": 1343690,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "bukhari",
+          "hadith_number": "6689",
+          "urn": 158030,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic, term",
+          "rank": 9,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "bukhari",
+          "hadith_number": "5070",
+          "urn": 142720,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic, term",
+          "rank": 10,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "bukhari",
+          "hadith_number": "3898",
+          "urn": 135330,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 11,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "bukhari",
+          "hadith_number": "6953",
+          "urn": 160700,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic, term",
+          "rank": 12,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "nasai",
+          "hadith_number": "3437",
+          "urn": 1134480,
+          "grade": "sahih",
+          "found_by": "bm25, semantic, term",
+          "rank": 13,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "ibnmajah",
+          "hadith_number": "4230",
+          "urn": 1343700,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 14,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "bukhari",
+          "hadith_number": "1834",
+          "urn": 117430,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 15,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q09",
+      "query": "divorce in Islam",
+      "mode_hint": "concept",
+      "tab": "Q09_divorce",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "muslim",
+          "hadith_number": "1471a",
+          "urn": 337480,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 2,
+          "collection": "ibnmajah",
+          "hadith_number": "2021",
+          "urn": 1321000,
+          "grade": "Hasan",
+          "found_by": "bm25, semantic",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 3,
+          "collection": "muslim",
+          "hadith_number": "1471i",
+          "urn": 337560,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 4,
+          "collection": "muslim",
+          "hadith_number": "1471c",
+          "urn": 337500,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 5,
+          "collection": "muslim",
+          "hadith_number": "1471e",
+          "urn": 337520,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 6,
+          "collection": "muslim",
+          "hadith_number": "1477a",
+          "urn": 337800,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 7,
+          "collection": "muslim",
+          "hadith_number": "1477d",
+          "urn": 337830,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 8,
+          "collection": "nasai",
+          "hadith_number": "3395",
+          "urn": 1134060,
+          "grade": "hasan",
+          "found_by": "bm25, semantic",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "abudawud",
+          "hadith_number": "2243",
+          "urn": 922460,
+          "grade": "Hasan",
+          "found_by": "bm25, semantic",
+          "rank": 9,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "ibnmajah",
+          "hadith_number": "2020",
+          "urn": 1320990,
+          "grade": "Hasan",
+          "found_by": "bm25, semantic",
+          "rank": 10,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "muslim",
+          "hadith_number": "1471h",
+          "urn": 337550,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 11,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "bukhari",
+          "hadith_number": "6601",
+          "urn": 157130,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 12,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "muslim",
+          "hadith_number": "1477e",
+          "urn": 337840,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 13,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "ibnmajah",
+          "hadith_number": "1951",
+          "urn": 1320280,
+          "grade": "Hasan",
+          "found_by": "semantic",
+          "rank": 14,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "tirmidhi",
+          "hadith_number": "1182",
+          "urn": 712170,
+          "grade": "Da'if",
+          "found_by": "bm25, semantic",
+          "rank": 15,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q10",
+      "query": "advice on marriage",
+      "mode_hint": "concept",
+      "tab": "Q10_marriage",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "bukhari",
+          "hadith_number": "1905",
+          "urn": 118170,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 2,
+          "collection": "nasai",
+          "hadith_number": "3262",
+          "urn": 1132730,
+          "grade": "sahih",
+          "found_by": "semantic",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 3,
+          "collection": "riyadussalihin",
+          "hadith_number": "364",
+          "urn": 1703600,
+          "grade": "",
+          "found_by": "semantic",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 4,
+          "collection": "muslim",
+          "hadith_number": "1408g",
+          "urn": 335310,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 5,
+          "collection": "bukhari",
+          "hadith_number": "5090",
+          "urn": 142950,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 6,
+          "collection": "nasai",
+          "hadith_number": "3260",
+          "urn": 1132710,
+          "grade": "sahih",
+          "found_by": "semantic",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 7,
+          "collection": "nasai",
+          "hadith_number": "3264",
+          "urn": 1132750,
+          "grade": "sahih",
+          "found_by": "semantic",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 8,
+          "collection": "muslim",
+          "hadith_number": "715d",
+          "urn": 337320,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "muslim",
+          "hadith_number": "1400c",
+          "urn": 334890,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 9,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "bukhari",
+          "hadith_number": "5119",
+          "urn": 143230,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 10,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "tirmidhi",
+          "hadith_number": "1081",
+          "urn": 711020,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 11,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "ibnmajah",
+          "hadith_number": "1968",
+          "urn": 1320450,
+          "grade": "Da'if",
+          "found_by": "semantic",
+          "rank": 12,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "nasai",
+          "hadith_number": "3241",
+          "urn": 1132520,
+          "grade": "sahih",
+          "found_by": "semantic",
+          "rank": 13,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "nasai",
+          "hadith_number": "3261",
+          "urn": 1132720,
+          "grade": "sahih",
+          "found_by": "semantic",
+          "rank": 14,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "muslim",
+          "hadith_number": "1409c",
+          "urn": 335370,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 15,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q11",
+      "query": "treating children kindly",
+      "mode_hint": "concept",
+      "tab": "Q11_children",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "nasai",
+          "hadith_number": "3687",
+          "urn": 1137000,
+          "grade": "sahih",
+          "found_by": "semantic",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 2,
+          "collection": "ahmad",
+          "hadith_number": "75",
+          "urn": 5300710,
+          "grade": "Da'if because of the weakness of Farqad as-Sabakhil",
+          "found_by": "bm25",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 3,
+          "collection": "ibnmajah",
+          "hadith_number": "3670",
+          "urn": 1338010,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 4,
+          "collection": "ibnmajah",
+          "hadith_number": "3671",
+          "urn": 1338020,
+          "grade": "Da'if",
+          "found_by": "semantic",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 5,
+          "collection": "ibnmajah",
+          "hadith_number": "3661",
+          "urn": 1337920,
+          "grade": "Hasan",
+          "found_by": "bm25, semantic",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 6,
+          "collection": "nasai",
+          "hadith_number": "3686",
+          "urn": 1136990,
+          "grade": "sahih",
+          "found_by": "semantic",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 7,
+          "collection": "muslim",
+          "hadith_number": "2552b",
+          "urn": 367160,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 8,
+          "collection": "riyadussalihin",
+          "hadith_number": "341",
+          "urn": 1703370,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "abudawud",
+          "hadith_number": "5143",
+          "urn": 951460,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 9,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "bukhari",
+          "hadith_number": "6014",
+          "urn": 173200,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 10,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "riyadussalihin",
+          "hadith_number": "303",
+          "urn": 1703020,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 11,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "bukhari",
+          "hadith_number": "5997",
+          "urn": 173010,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 12,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "abudawud",
+          "hadith_number": "3544",
+          "urn": 935470,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 13,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "mishkat",
+          "hadith_number": "3238",
+          "urn": 5632380,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 14,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "riyadussalihin",
+          "hadith_number": "226",
+          "urn": 1702250,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 15,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q12",
+      "query": "patience",
+      "mode_hint": "keyword",
+      "tab": "Q12_patience",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "riyadussalihin",
+          "hadith_number": "31",
+          "urn": 1700310,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 2,
+          "collection": "bukhari",
+          "hadith_number": "1302",
+          "urn": 111920,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 3,
+          "collection": "tirmidhi",
+          "hadith_number": "987",
+          "urn": 710020,
+          "grade": "Hasan",
+          "found_by": "bm25, semantic",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 4,
+          "collection": "bukhari",
+          "hadith_number": "7154",
+          "urn": 162730,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 5,
+          "collection": "tirmidhi",
+          "hadith_number": "988",
+          "urn": 710030,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 6,
+          "collection": "riyadussalihin",
+          "hadith_number": "26",
+          "urn": 1700260,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 7,
+          "collection": "bukhari",
+          "hadith_number": "1283",
+          "urn": 111730,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 8,
+          "collection": "riyadussalihin",
+          "hadith_number": "671",
+          "urn": 1706670,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "riyadussalihin",
+          "hadith_number": "1351",
+          "urn": 1713410,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 9,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "bukhari",
+          "hadith_number": "2833",
+          "urn": 168510,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 10,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "nasai",
+          "hadith_number": "2408",
+          "urn": 1124170,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 11,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "bukhari",
+          "hadith_number": "6470",
+          "urn": 155800,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 12,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "ibnmajah",
+          "hadith_number": "4014",
+          "urn": 1341490,
+          "grade": "Hasan",
+          "found_by": "bm25",
+          "rank": 13,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "riyadussalihin",
+          "hadith_number": "37",
+          "urn": 1700370,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 14,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "ibnmajah",
+          "hadith_number": "1596",
+          "urn": 1316650,
+          "grade": "Hasan",
+          "found_by": "bm25, semantic",
+          "rank": 15,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q13",
+      "query": "knowledge",
+      "mode_hint": "keyword",
+      "tab": "Q13_knowledge",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "abudawud",
+          "hadith_number": "2885",
+          "urn": 928880,
+          "grade": "Da'if",
+          "found_by": "semantic",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 2,
+          "collection": "mishkat",
+          "hadith_number": "239",
+          "urn": 5602390,
+          "grade": "",
+          "found_by": "semantic",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 3,
+          "collection": "mishkat",
+          "hadith_number": "270",
+          "urn": 5602700,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 4,
+          "collection": "ibnmajah",
+          "hadith_number": "54",
+          "urn": 1300550,
+          "grade": "Da'if",
+          "found_by": "semantic",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 5,
+          "collection": "ibnmajah",
+          "hadith_number": "224",
+          "urn": 1302280,
+          "grade": "Chain is Da'if Jaddan (very weak)",
+          "found_by": "bm25, semantic",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 6,
+          "collection": "riyadussalihin",
+          "hadith_number": "1656",
+          "urn": 1716460,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 7,
+          "collection": "riyadussalihin",
+          "hadith_number": "1392",
+          "urn": 1713820,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 8,
+          "collection": "riyadussalihin",
+          "hadith_number": "1388",
+          "urn": 1713780,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "tirmidhi",
+          "hadith_number": "2652",
+          "urn": 728590,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 9,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "muslim",
+          "hadith_number": "2673a",
+          "urn": 370090,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 10,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "bukhari",
+          "hadith_number": "7307",
+          "urn": 164240,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 11,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "tirmidhi",
+          "hadith_number": "2682",
+          "urn": 728930,
+          "grade": "Da'if",
+          "found_by": "bm25",
+          "rank": 12,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "ibnmajah",
+          "hadith_number": "52",
+          "urn": 1300530,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 13,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "bukhari",
+          "hadith_number": "1039",
+          "urn": 109250,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 14,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "riyadussalihin",
+          "hadith_number": "1384",
+          "urn": 1713740,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 15,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q14",
+      "query": "qunut",
+      "mode_hint": "term",
+      "tab": "Q14_qunut",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "bukhari",
+          "hadith_number": "798",
+          "urn": 186020,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 2,
+          "collection": "bukhari",
+          "hadith_number": "1004",
+          "urn": 108900,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 3,
+          "collection": "bukhari",
+          "hadith_number": "6394",
+          "urn": 154990,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 4,
+          "collection": "muslim",
+          "hadith_number": "677e",
+          "urn": 315820,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 5,
+          "collection": "ibnmajah",
+          "hadith_number": "1243",
+          "urn": 1313000,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 6,
+          "collection": "bukhari",
+          "hadith_number": "1003",
+          "urn": 108890,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 7,
+          "collection": "nasai",
+          "hadith_number": "1076",
+          "urn": 1110810,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 8,
+          "collection": "ibnmajah",
+          "hadith_number": "1184",
+          "urn": 1312390,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "nasai",
+          "hadith_number": "1070",
+          "urn": 1110750,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 9,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "nasai",
+          "hadith_number": "1077",
+          "urn": 1110820,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 10,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "ibnmajah",
+          "hadith_number": "1183",
+          "urn": 1312380,
+          "grade": "Hasan",
+          "found_by": "bm25, semantic",
+          "rank": 11,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "bukhari",
+          "hadith_number": "1002",
+          "urn": 108880,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 12,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "bukhari",
+          "hadith_number": "4096",
+          "urn": 137330,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 13,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "bukhari",
+          "hadith_number": "2932",
+          "urn": 169490,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 14,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "bukhari",
+          "hadith_number": "4089",
+          "urn": 137250,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 15,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q15",
+      "query": "istighfar",
+      "mode_hint": "term",
+      "tab": "Q15_istighfar",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "ibnmajah",
+          "hadith_number": "3820",
+          "urn": 1339510,
+          "grade": "Hasan",
+          "found_by": "semantic",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 2,
+          "collection": "riyadussalihin",
+          "hadith_number": "1875",
+          "urn": 1718630,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 3,
+          "collection": "tirmidhi",
+          "hadith_number": "3259",
+          "urn": 742940,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 4,
+          "collection": "riyadussalihin",
+          "hadith_number": "1876",
+          "urn": 1718640,
+          "grade": "",
+          "found_by": "bm25, term",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 5,
+          "collection": "bukhari",
+          "hadith_number": "6323",
+          "urn": 154280,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 6,
+          "collection": "riyadussalihin",
+          "hadith_number": "1843",
+          "urn": 1718310,
+          "grade": "",
+          "found_by": "term",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 7,
+          "collection": "abudawud",
+          "hadith_number": "3265",
+          "urn": 932680,
+          "grade": "Da'if",
+          "found_by": "term",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 8,
+          "collection": "ibnmajah",
+          "hadith_number": "239",
+          "urn": 1302440,
+          "grade": "Da'if",
+          "found_by": "semantic",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "adab",
+          "hadith_number": "617",
+          "urn": 2306150,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 9,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "muslim",
+          "hadith_number": "591",
+          "urn": 313630,
+          "grade": "Sahih",
+          "found_by": "bm25, term",
+          "rank": 10,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "riyadussalihin",
+          "hadith_number": "1415",
+          "urn": 1714050,
+          "grade": "",
+          "found_by": "bm25, term",
+          "rank": 11,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "bukhari",
+          "hadith_number": "6306",
+          "urn": 154100,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 12,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "hisn",
+          "hadith_number": "96",
+          "urn": 1520960,
+          "grade": "",
+          "found_by": "semantic",
+          "rank": 13,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "tirmidhi",
+          "hadith_number": "3577",
+          "urn": 734280,
+          "grade": "Hasan",
+          "found_by": "semantic",
+          "rank": 14,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "muslim",
+          "hadith_number": "2507",
+          "urn": 366100,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 15,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q16",
+      "query": "laylatul qadr",
+      "mode_hint": "term",
+      "tab": "Q16_laylatul_qadr",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "abudawud",
+          "hadith_number": "1386",
+          "urn": 913890,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 2,
+          "collection": "ahmad",
+          "hadith_number": "1111",
+          "urn": 5310560,
+          "grade": "Sahih because of corroborating evidence; this is a da'eef isnad]",
+          "found_by": "bm25",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 3,
+          "collection": "ahmad",
+          "hadith_number": "793",
+          "urn": 5307540,
+          "grade": "Sahih Hadeeth, its isnad is da'eef because of the weakness of Hudaij]",
+          "found_by": "bm25",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 4,
+          "collection": "abudawud",
+          "hadith_number": "1384",
+          "urn": 913870,
+          "grade": "Da'if",
+          "found_by": "bm25, semantic",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 5,
+          "collection": "ahmad",
+          "hadith_number": "298",
+          "urn": 5302810,
+          "grade": "Qawi (Darussalam)",
+          "found_by": "bm25",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 6,
+          "collection": "riyadussalihin",
+          "hadith_number": "1192",
+          "urn": 1711820,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 7,
+          "collection": "bukhari",
+          "hadith_number": "1156",
+          "urn": 110432,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 8,
+          "collection": "ibnmajah",
+          "hadith_number": "1766",
+          "urn": 1318390,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "muslim",
+          "hadith_number": "1169",
+          "urn": 328310,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 9,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "muslim",
+          "hadith_number": "1165b",
+          "urn": 328170,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 10,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "ibnmajah",
+          "hadith_number": "3850",
+          "urn": 1339810,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 11,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "riyadussalihin",
+          "hadith_number": "1191",
+          "urn": 1711810,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 12,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "muslim",
+          "hadith_number": "1165c",
+          "urn": 328180,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 13,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "riyadussalihin",
+          "hadith_number": "1190",
+          "urn": 1711800,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 14,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "muslim",
+          "hadith_number": "1165f",
+          "urn": 328210,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 15,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q18",
+      "query": "wudu",
+      "mode_hint": "term",
+      "tab": "Q18_wudu",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "nasai",
+          "hadith_number": "140",
+          "urn": 1101410,
+          "grade": "Hasan",
+          "found_by": "semantic",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 2,
+          "collection": "tirmidhi",
+          "hadith_number": "79",
+          "urn": 700790,
+          "grade": "Hasan",
+          "found_by": "semantic",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 3,
+          "collection": "tirmidhi",
+          "hadith_number": "74",
+          "urn": 700740,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 4,
+          "collection": "tirmidhi",
+          "hadith_number": "498",
+          "urn": 705000,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 5,
+          "collection": "tirmidhi",
+          "hadith_number": "57",
+          "urn": 700570,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 6,
+          "collection": "bulugh",
+          "hadith_number": "69",
+          "urn": 2100840,
+          "grade": "",
+          "found_by": "semantic",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 7,
+          "collection": "tirmidhi",
+          "hadith_number": "13",
+          "urn": 700130,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 8,
+          "collection": "nasai",
+          "hadith_number": "173",
+          "urn": 1101740,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "nasai",
+          "hadith_number": "151",
+          "urn": 1101520,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 9,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "tirmidhi",
+          "hadith_number": "81",
+          "urn": 700810,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 10,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "bulugh",
+          "hadith_number": "53",
+          "urn": 2100640,
+          "grade": "",
+          "found_by": "semantic",
+          "rank": 11,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "tirmidhi",
+          "hadith_number": "603",
+          "urn": 706050,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 12,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "nasai",
+          "hadith_number": "147",
+          "urn": 1101480,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 13,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "tirmidhi",
+          "hadith_number": "3631",
+          "urn": 734980,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 14,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "tirmidhi",
+          "hadith_number": "42",
+          "urn": 700420,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 15,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q19",
+      "query": "qiyam ul layl",
+      "mode_hint": "term",
+      "tab": "Q19_qiyam_ul_layl",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "tirmidhi",
+          "hadith_number": "3549",
+          "urn": 733960,
+          "grade": "Da’if",
+          "found_by": "bm25",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 2,
+          "collection": "nasai",
+          "hadith_number": "1601",
+          "urn": 1116090,
+          "grade": "Sahih",
+          "found_by": "term",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 3,
+          "collection": "nasai",
+          "hadith_number": "1763",
+          "urn": 1117710,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 4,
+          "collection": "nasai",
+          "hadith_number": "1764",
+          "urn": 1117720,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 5,
+          "collection": "riyadussalihin",
+          "hadith_number": "1189",
+          "urn": 1711790,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 6,
+          "collection": "nasai",
+          "hadith_number": "2195",
+          "urn": 1122040,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 7,
+          "collection": "nasai",
+          "hadith_number": "1603",
+          "urn": 1116110,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 8,
+          "collection": "nasai",
+          "hadith_number": "1602",
+          "urn": 1116100,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "nasai",
+          "hadith_number": "2198",
+          "urn": 1122070,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 9,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "nasai",
+          "hadith_number": "2201",
+          "urn": 1122100,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 10,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "nasai",
+          "hadith_number": "2191",
+          "urn": 1122000,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 11,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "abudawud",
+          "hadith_number": "1304",
+          "urn": 913070,
+          "grade": "Hasan",
+          "found_by": "bm25",
+          "rank": 12,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "nasai",
+          "hadith_number": "2200",
+          "urn": 1122090,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 13,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "nasai",
+          "hadith_number": "1364",
+          "urn": 1113690,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 14,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "nasai",
+          "hadith_number": "1605",
+          "urn": 1116130,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 15,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q20",
+      "query": "what is the dua before sleep?",
+      "mode_hint": "concept",
+      "tab": "Q20_nl_sleep_dua",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "riyadussalihin",
+          "hadith_number": "1464",
+          "urn": 1714540,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 2,
+          "collection": "riyadussalihin",
+          "hadith_number": "814",
+          "urn": 1708080,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 3,
+          "collection": "tirmidhi",
+          "hadith_number": "457",
+          "urn": 704571,
+          "grade": "Hasan",
+          "found_by": "bm25",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 4,
+          "collection": "bukhari",
+          "hadith_number": "1981",
+          "urn": 118950,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 5,
+          "collection": "riyadussalihin",
+          "hadith_number": "1139",
+          "urn": 1711290,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 6,
+          "collection": "riyadussalihin",
+          "hadith_number": "1258",
+          "urn": 1712480,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 7,
+          "collection": "riyadussalihin",
+          "hadith_number": "1259",
+          "urn": 1712490,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 8,
+          "collection": "nasai",
+          "hadith_number": "2404",
+          "urn": 1124130,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "nasai",
+          "hadith_number": "258",
+          "urn": 1102600,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 9,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "abudawud",
+          "hadith_number": "5057",
+          "urn": 950600,
+          "grade": "Da'if",
+          "found_by": "bm25, semantic",
+          "rank": 10,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "bukhari",
+          "hadith_number": "1178",
+          "urn": 110650,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 11,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "mishkat",
+          "hadith_number": "1262",
+          "urn": 5612620,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 12,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "nasai",
+          "hadith_number": "2403",
+          "urn": 1124120,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 13,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "nasai",
+          "hadith_number": "404",
+          "urn": 1104060,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 14,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "hisn",
+          "hadith_number": "111",
+          "urn": 1521110,
+          "grade": "",
+          "found_by": "term",
+          "rank": 15,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q21",
+      "query": "is fasting on Arafat recommended?",
+      "mode_hint": "concept",
+      "tab": "Q21_nl_arafah",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "bukhari",
+          "hadith_number": "1999",
+          "urn": 119140,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 2,
+          "collection": "bukhari",
+          "hadith_number": "4521",
+          "urn": 178490,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 3,
+          "collection": "ibnmajah",
+          "hadith_number": "1730",
+          "urn": 1318030,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 4,
+          "collection": "abudawud",
+          "hadith_number": "2440",
+          "urn": 924430,
+          "grade": "Da'if",
+          "found_by": "bm25, semantic",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 5,
+          "collection": "ibnmajah",
+          "hadith_number": "1732",
+          "urn": 1318050,
+          "grade": "Hasan",
+          "found_by": "bm25, semantic",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 6,
+          "collection": "tirmidhi",
+          "hadith_number": "751",
+          "urn": 707550,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 7,
+          "collection": "muslim",
+          "hadith_number": "1162b",
+          "urn": 328020,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 8,
+          "collection": "muslim",
+          "hadith_number": "1123a",
+          "urn": 326880,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "bukhari",
+          "hadith_number": "1661",
+          "urn": 115650,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 9,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "bukhari",
+          "hadith_number": "1988",
+          "urn": 119030,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 10,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "bukhari",
+          "hadith_number": "1989",
+          "urn": 119040,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 11,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "ibnmajah",
+          "hadith_number": "1731",
+          "urn": 1318040,
+          "grade": "Da’if",
+          "found_by": "bm25",
+          "rank": 12,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "bukhari",
+          "hadith_number": "5636",
+          "urn": 148430,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 13,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "bukhari",
+          "hadith_number": "5604",
+          "urn": 148110,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 14,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "tirmidhi",
+          "hadith_number": "749",
+          "urn": 707530,
+          "grade": "Da'if",
+          "found_by": "bm25",
+          "rank": 15,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q22",
+      "query": "is qunut required in witr?",
+      "mode_hint": "concept",
+      "tab": "Q22_nl_qunut_witr",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "ibnmajah",
+          "hadith_number": "1182",
+          "urn": 1312370,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 2,
+          "collection": "nasai",
+          "hadith_number": "1699",
+          "urn": 1117070,
+          "grade": "Sahih",
+          "found_by": "bm25, term",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 3,
+          "collection": "ibnmajah",
+          "hadith_number": "3830",
+          "urn": 1339610,
+          "grade": "",
+          "found_by": "term",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 4,
+          "collection": "ahmad",
+          "hadith_number": "1232",
+          "urn": 5311690,
+          "grade": "Qawi (Darussalam)]",
+          "found_by": "bm25, semantic",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 5,
+          "collection": "abudawud",
+          "hadith_number": "1426",
+          "urn": 914290,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 6,
+          "collection": "ibnmajah",
+          "hadith_number": "1169",
+          "urn": 1312230,
+          "grade": "Da’if",
+          "found_by": "bm25, semantic",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 7,
+          "collection": "abudawud",
+          "hadith_number": "1425",
+          "urn": 914280,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 8,
+          "collection": "ahmad",
+          "hadith_number": "786",
+          "urn": 5307470,
+          "grade": "Sahih]",
+          "found_by": "semantic",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "ahmad",
+          "hadith_number": "1220",
+          "urn": 5311570,
+          "grade": "Sahih because of corroborating evidence]",
+          "found_by": "semantic",
+          "rank": 9,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "bukhari",
+          "hadith_number": "798",
+          "urn": 186020,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 10,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "riyadussalihin",
+          "hadith_number": "1132",
+          "urn": 1711220,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 11,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "ibnmajah",
+          "hadith_number": "1242",
+          "urn": 1312990,
+          "grade": "Maudu’",
+          "found_by": "bm25, semantic",
+          "rank": 12,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "bukhari",
+          "hadith_number": "1004",
+          "urn": 108900,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 13,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "ahmad",
+          "hadith_number": "842",
+          "urn": 5308010,
+          "grade": "Qawi (Darussalam)]",
+          "found_by": "semantic",
+          "rank": 14,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "ibnmajah",
+          "hadith_number": "1183",
+          "urn": 1312380,
+          "grade": "Hasan",
+          "found_by": "bm25, semantic",
+          "rank": 15,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q23",
+      "query": "what did the Prophet say about controlling anger?",
+      "mode_hint": "concept",
+      "tab": "Q23_nl_anger",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "riyadussalihin",
+          "hadith_number": "47",
+          "urn": 1700470,
+          "grade": "",
+          "found_by": "semantic",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 2,
+          "collection": "abudawud",
+          "hadith_number": "4780",
+          "urn": 947830,
+          "grade": "Da'if",
+          "found_by": "bm25, semantic",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 3,
+          "collection": "bukhari",
+          "hadith_number": "6116",
+          "urn": 174310,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 4,
+          "collection": "bukhari",
+          "hadith_number": "3282",
+          "urn": 129980,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 5,
+          "collection": "bukhari",
+          "hadith_number": "6114",
+          "urn": 174290,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 6,
+          "collection": "riyadussalihin",
+          "hadith_number": "48",
+          "urn": 1700480,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 7,
+          "collection": "riyadussalihin",
+          "hadith_number": "638",
+          "urn": 1706340,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 8,
+          "collection": "bukhari",
+          "hadith_number": "7404",
+          "urn": 175800,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "tirmidhi",
+          "hadith_number": "3452",
+          "urn": 732871,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 9,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "tirmidhi",
+          "hadith_number": "2493",
+          "urn": 726760,
+          "grade": "Hasan",
+          "found_by": "semantic",
+          "rank": 10,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "bukhari",
+          "hadith_number": "6048",
+          "urn": 173550,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 11,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "bukhari",
+          "hadith_number": "92",
+          "urn": 100920,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 12,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "forty",
+          "hadith_number": "16",
+          "urn": 1500160,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 13,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "riyadussalihin",
+          "hadith_number": "1806",
+          "urn": 1717950,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 14,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "abudawud",
+          "hadith_number": "4782",
+          "urn": 947850,
+          "grade": "Sahih",
+          "found_by": "bm25, semantic",
+          "rank": 15,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q24",
+      "query": "what are the rites of hajj",
+      "mode_hint": "concept",
+      "tab": "Q24_nl_hajj_rites",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "abudawud",
+          "hadith_number": "1744",
+          "urn": 917470,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 2,
+          "collection": "ibnmajah",
+          "hadith_number": "3075",
+          "urn": 1331920,
+          "grade": "Hasan",
+          "found_by": "bm25",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 3,
+          "collection": "muslim",
+          "hadith_number": "1318e",
+          "urn": 332590,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 4,
+          "collection": "abudawud",
+          "hadith_number": "1983",
+          "urn": 919860,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 5,
+          "collection": "muslim",
+          "hadith_number": "1221c",
+          "urn": 330200,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 6,
+          "collection": "muslim",
+          "hadith_number": "1222",
+          "urn": 330220,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 7,
+          "collection": "abudawud",
+          "hadith_number": "1957",
+          "urn": 919600,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 8,
+          "collection": "abudawud",
+          "hadith_number": "1785",
+          "urn": 917880,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "abudawud",
+          "hadith_number": "2338",
+          "urn": 923410,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 9,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "nasai",
+          "hadith_number": "2738",
+          "urn": 1127470,
+          "grade": "",
+          "found_by": "bm25",
+          "rank": 10,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "tirmidhi",
+          "hadith_number": "2966",
+          "urn": 739550,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 11,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "ibnmajah",
+          "hadith_number": "1073",
+          "urn": 1311250,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 12,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "ibnmajah",
+          "hadith_number": "3023",
+          "urn": 1331390,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 13,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "abudawud",
+          "hadith_number": "1735",
+          "urn": 917380,
+          "grade": "Sahih li ghairih",
+          "found_by": "semantic",
+          "rank": 14,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "abudawud",
+          "hadith_number": "2014",
+          "urn": 920170,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 15,
+          "is_seed": false
+        }
+      ]
+    },
+    {
+      "id": "Q25",
+      "query": "how many wives can men marry",
+      "mode_hint": "concept",
+      "tab": "Q25_nl_polygamy",
+      "candidates": [
+        {
+          "n": 1,
+          "collection": "tirmidhi",
+          "hadith_number": "1141",
+          "urn": 711700,
+          "grade": "Da'if",
+          "found_by": "bm25",
+          "rank": 1,
+          "is_seed": false
+        },
+        {
+          "n": 2,
+          "collection": "bukhari",
+          "hadith_number": "268",
+          "urn": 102690,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 2,
+          "is_seed": false
+        },
+        {
+          "n": 3,
+          "collection": "bukhari",
+          "hadith_number": "5261",
+          "urn": 144630,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 3,
+          "is_seed": false
+        },
+        {
+          "n": 4,
+          "collection": "muslim",
+          "hadith_number": "1408b",
+          "urn": 335260,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 4,
+          "is_seed": false
+        },
+        {
+          "n": 5,
+          "collection": "mishkat",
+          "hadith_number": "3204",
+          "urn": 5632040,
+          "grade": "",
+          "found_by": "bm25, semantic",
+          "rank": 5,
+          "is_seed": false
+        },
+        {
+          "n": 6,
+          "collection": "bukhari",
+          "hadith_number": "5068",
+          "urn": 142691,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 6,
+          "is_seed": false
+        },
+        {
+          "n": 7,
+          "collection": "muslim",
+          "hadith_number": "1400c",
+          "urn": 334890,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 7,
+          "is_seed": false
+        },
+        {
+          "n": 8,
+          "collection": "bukhari",
+          "hadith_number": "5215",
+          "urn": 144170,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 8,
+          "is_seed": false
+        },
+        {
+          "n": 9,
+          "collection": "nasai",
+          "hadith_number": "3291",
+          "urn": 1133020,
+          "grade": "sahih",
+          "found_by": "semantic",
+          "rank": 9,
+          "is_seed": false
+        },
+        {
+          "n": 10,
+          "collection": "bukhari",
+          "hadith_number": "7469",
+          "urn": 176460,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 10,
+          "is_seed": false
+        },
+        {
+          "n": 11,
+          "collection": "bukhari",
+          "hadith_number": "284",
+          "urn": 102850,
+          "grade": "Sahih",
+          "found_by": "semantic",
+          "rank": 11,
+          "is_seed": false
+        },
+        {
+          "n": 12,
+          "collection": "ibnmajah",
+          "hadith_number": "1952",
+          "urn": 1320290,
+          "grade": "Da'if",
+          "found_by": "semantic",
+          "rank": 12,
+          "is_seed": false
+        },
+        {
+          "n": 13,
+          "collection": "nasai",
+          "hadith_number": "3198",
+          "urn": 1132090,
+          "grade": "sahih",
+          "found_by": "semantic",
+          "rank": 13,
+          "is_seed": false
+        },
+        {
+          "n": 14,
+          "collection": "bukhari",
+          "hadith_number": "5063",
+          "urn": 142640,
+          "grade": "Sahih",
+          "found_by": "bm25",
+          "rank": 14,
+          "is_seed": false
+        },
+        {
+          "n": 15,
+          "collection": "nasai",
+          "hadith_number": "4682",
+          "urn": 1146970,
+          "grade": "Hasan",
+          "found_by": "semantic",
+          "rank": 15,
+          "is_seed": false
+        }
+      ]
+    }
+  ]
+}

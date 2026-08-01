@@ -1,0 +1,294 @@
+{
+  "_version": "2026-08-01",
+  "_status": "pool built; awaiting expert relevance judgments",
+  "_note": "20-query eval set, cut from the 25-query list locked 2026-06-01 (docs/eval/curation-state.md). All four concept<->natural twin pairs preserved (Q01/Q20 sleep dua, Q03/Q21 Arafah, Q04/Q23 anger, Q14/Q22 qunut) so we can measure whether the LLM router beats plain semantic on identical topics. Dropped: toilet dua (same challenge type as Q01), kindness to neighbours (duplicated by Q11), backbiting, seeking forgiveness (same topic as term-mode Q15 istighfar), dua e qunut (multi-word term coverage retained by Q16).",
+  "_variants_note": "`variants` are hand-authored retrieval paraphrases, NOT LLM-generated at pool time. Each is a noun phrase or keyword set (never a question) and they deliberately diversify literal / synonym / underlying-concept angles. Static so the pool is reproducible and reviewable. No LLM ever supplies a hadith NUMBER -- that is what produced hallucinated refs in the 2026-05-29 session.",
+  "_seeds_note": "`seeds` are refs already vetted by the user during interactive curation. They are force-included in the pool regardless of whether retrieval surfaces them.",
+  "_scale": {
+    "3": "Primary/canonical -- a scholar answering this query would cite this hadith",
+    "2": "Directly relevant -- clearly on-topic, belongs in the answer set",
+    "1": "Marginal -- touches the topic but is not what was asked",
+    "0": "Not relevant"
+  },
+  "queries": [
+    {
+      "id": "Q01",
+      "slug": "sleep_dua",
+      "query": "supplication when going to sleep",
+      "mode_hint": "concept",
+      "variants": [
+        "supplication when going to sleep",
+        "dua before sleeping at night",
+        "what the Prophet said upon lying in bed",
+        "bismika allahumma amutu wa ahya"
+      ],
+      "seeds": [
+        {"collection": "bukhari", "hadith_number": "6312"},
+        {"collection": "bukhari", "hadith_number": "6313"},
+        {"collection": "bukhari", "hadith_number": "6314"},
+        {"collection": "bukhari", "hadith_number": "6315"},
+        {"collection": "bukhari", "hadith_number": "6320"},
+        {"collection": "bukhari", "hadith_number": "6324"},
+        {"collection": "bukhari", "hadith_number": "6296"},
+        {"collection": "bukhari", "hadith_number": "7393"},
+        {"collection": "bukhari", "hadith_number": "1142"},
+        {"collection": "muslim", "hadith_number": "2710a"}
+      ]
+    },
+    {
+      "id": "Q03",
+      "slug": "arafah_fast",
+      "query": "fasting on the day of Arafah",
+      "mode_hint": "concept",
+      "variants": [
+        "fasting on the day of Arafah",
+        "virtue of fasting the ninth of Dhul-Hijjah",
+        "expiation of sins for two years by fasting",
+        "fasting for the pilgrim standing at Arafat"
+      ],
+      "seeds": [
+        {"collection": "muslim", "hadith_number": "1133a"},
+        {"collection": "muslim", "hadith_number": "1134b"},
+        {"collection": "muslim", "hadith_number": "1162"},
+        {"collection": "bukhari", "hadith_number": "1988"},
+        {"collection": "bukhari", "hadith_number": "1989"},
+        {"collection": "abudawud", "hadith_number": "2425"},
+        {"collection": "ibnmajah", "hadith_number": "1730"}
+      ]
+    },
+    {
+      "id": "Q04",
+      "slug": "anger",
+      "query": "controlling anger",
+      "mode_hint": "concept",
+      "variants": [
+        "controlling anger",
+        "the strong man is not the wrestler",
+        "do not become angry",
+        "seeking refuge from Satan when angry"
+      ],
+      "seeds": [
+        {"collection": "bukhari", "hadith_number": "6114"},
+        {"collection": "bukhari", "hadith_number": "6116"},
+        {"collection": "muslim", "hadith_number": "2609a"},
+        {"collection": "muslim", "hadith_number": "2609b"},
+        {"collection": "abudawud", "hadith_number": "4779"},
+        {"collection": "abudawud", "hadith_number": "4782"},
+        {"collection": "bukhari", "hadith_number": "3282"},
+        {"collection": "bukhari", "hadith_number": "6048"},
+        {"collection": "tirmidhi", "hadith_number": "2020"},
+        {"collection": "forty", "hadith_number": "16"},
+        {"collection": "adab", "hadith_number": "1317"}
+      ]
+    },
+    {
+      "id": "Q08",
+      "slug": "intentions",
+      "query": "the hadith of intentions",
+      "mode_hint": "concept",
+      "variants": [
+        "actions are judged by intentions",
+        "innama al-a'mal bil-niyyat",
+        "every man shall have what he intended",
+        "emigration for Allah or for worldly gain"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "Q09",
+      "slug": "divorce",
+      "query": "divorce in Islam",
+      "mode_hint": "concept",
+      "variants": [
+        "divorce",
+        "talaq and the waiting period iddah",
+        "the most hated permissible act to Allah",
+        "divorcing a woman during menstruation"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "Q10",
+      "slug": "marriage",
+      "query": "advice on marriage",
+      "mode_hint": "concept",
+      "variants": [
+        "advice on marriage",
+        "choosing a spouse for her religion",
+        "young men who can afford to marry should marry",
+        "rights of the husband and the wife"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "Q11",
+      "slug": "children",
+      "query": "treating children kindly",
+      "mode_hint": "concept",
+      "variants": [
+        "kindness to children",
+        "the Prophet kissing his grandchildren",
+        "he who does not show mercy to our young",
+        "justice between one's children in gifts"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "Q12",
+      "slug": "patience",
+      "query": "patience",
+      "mode_hint": "keyword",
+      "variants": [
+        "patience",
+        "sabr at the first stroke of calamity",
+        "endurance in hardship and affliction"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "Q13",
+      "slug": "knowledge",
+      "query": "knowledge",
+      "mode_hint": "keyword",
+      "variants": [
+        "knowledge",
+        "seeking knowledge",
+        "the virtue of scholars over worshippers",
+        "a path to Paradise for one who seeks knowledge"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "Q14",
+      "slug": "qunut",
+      "query": "qunut",
+      "mode_hint": "term",
+      "variants": [
+        "qunut",
+        "qunoot supplication in prayer",
+        "the Prophet's qunut for one month against the tribes"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "Q15",
+      "slug": "istighfar",
+      "query": "istighfar",
+      "mode_hint": "term",
+      "variants": [
+        "istighfar",
+        "seeking forgiveness astaghfirullah",
+        "sayyid al-istighfar the master supplication of forgiveness"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "Q16",
+      "slug": "laylatul_qadr",
+      "query": "laylatul qadr",
+      "mode_hint": "term",
+      "variants": [
+        "laylatul qadr",
+        "the night of decree in the last ten nights",
+        "seek the night of power in the odd nights of Ramadan"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "Q18",
+      "slug": "wudu",
+      "query": "wudu",
+      "mode_hint": "term",
+      "variants": [
+        "wudu",
+        "ablution before prayer",
+        "description of the Prophet's ablution"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "Q19",
+      "slug": "qiyam_ul_layl",
+      "query": "qiyam ul layl",
+      "mode_hint": "term",
+      "variants": [
+        "qiyam ul layl",
+        "night prayer tahajjud",
+        "the Prophet's prayer during the night"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "Q20",
+      "slug": "nl_sleep_dua",
+      "query": "what is the dua before sleep?",
+      "mode_hint": "concept",
+      "variants": [
+        "dua before sleep",
+        "supplication upon going to bed",
+        "what to recite before sleeping"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "Q21",
+      "slug": "nl_arafah",
+      "query": "is fasting on Arafat recommended?",
+      "mode_hint": "concept",
+      "variants": [
+        "fasting on the day of Arafah",
+        "ruling on fasting the day of Arafat",
+        "virtue of fasting Arafah for those not on pilgrimage"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "Q22",
+      "slug": "nl_qunut_witr",
+      "query": "is qunut required in witr?",
+      "mode_hint": "concept",
+      "variants": [
+        "qunut in the witr prayer",
+        "supplication in witr",
+        "ruling on qunut"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "Q23",
+      "slug": "nl_anger",
+      "query": "what did the Prophet say about controlling anger?",
+      "mode_hint": "concept",
+      "variants": [
+        "controlling anger",
+        "the Prophet's advice concerning anger",
+        "do not get angry"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "Q24",
+      "slug": "nl_hajj_rites",
+      "query": "what are the rites of hajj",
+      "mode_hint": "concept",
+      "variants": [
+        "rites of hajj",
+        "description of the Prophet's pilgrimage",
+        "tawaf sa'i standing at Arafat stoning the jamarat"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "Q25",
+      "slug": "nl_polygamy",
+      "query": "how many wives can men marry",
+      "mode_hint": "concept",
+      "variants": [
+        "polygamy number of wives",
+        "marrying more than one wife",
+        "justice between co-wives"
+      ],
+      "seeds": []
+    }
+  ]
+}
