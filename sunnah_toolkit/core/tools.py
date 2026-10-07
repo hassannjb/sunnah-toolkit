@@ -24,9 +24,8 @@ from typing import Any, Literal
 
 from . import llm_router
 from . import reranker as reranker_mod
-from . import semantic
 from .data import Hadith, Library, load, parse_narrators, strip_narrator_markup
-from .retrieval import Candidate, retrieve_union, retrieve_union_multi
+from .retrieval import Candidate, retrieve_union, retrieve_union_multi, semantic_backend
 
 logger = logging.getLogger(__name__)
 
@@ -556,7 +555,7 @@ def search_hadith_semantic(
             return {"error": f"Semantic search unavailable: {e}", "kind": "unavailable"}
 
     try:
-        results = semantic.search(query, collection=collection, limit=limit)
+        results = semantic_backend().search(query, collection=collection, limit=limit)
     except FileNotFoundError as e:
         return {"error": f"Semantic search unavailable: {e}", "kind": "unavailable"}
 
@@ -614,11 +613,15 @@ def search_hadith_natural(
     except FileNotFoundError as e:
         return {"error": f"Semantic search unavailable: {e}", "kind": "unavailable"}
 
+    # The router schema also offers "reference" (citation lookups), which the
+    # rerank pipeline has no weights for. Rank those as concept rather than
+    # letting _assert_mode turn a routing quirk into a 500.
+    mode_hint = routed.mode_hint if routed.mode_hint in _MODE_WEIGHTS else "concept"
     response = _rerank_and_split(
         library=library,
         query=query,
         candidates=candidates,
-        mode_hint=routed.mode_hint,
+        mode_hint=mode_hint,
         collection=collection,
         limit=limit,
     )

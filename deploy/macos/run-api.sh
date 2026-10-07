@@ -4,12 +4,20 @@
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 
+# Secrets (ANTHROPIC_API_KEY for the natural-language router) live outside
+# the repo in a chmod 600 file of KEY=value lines.
+ENV_FILE="$HOME/.config/sunnah-toolkit/env"
+if [ -f "$ENV_FILE" ]; then set -a; . "$ENV_FILE"; set +a; fi
+
 export PYTHONUNBUFFERED=1
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 # bge-v2-m3 over the full pool is ~15 min/query on a dual-core i5; the
 # small English cross-encoder over the first-stage top 40 is ~1.5-2.5 s.
 export RERANKER_NAME="${RERANKER_NAME:-minilm-l6}"
 export RERANKER_TOP_N="${RERANKER_TOP_N:-40}"
+# bge-m3 bi-encoder: knows "dua", "qunut", question phrasing; +0.5 s, +1.5 GB.
+# On torch < 2.6 it needs the safetensors weights (refs/pr/130), not the .bin.
+export SEMANTIC_BACKEND="${SEMANTIC_BACKEND:-v2}"
 PORT="${PORT:-8000}"
 
 # The library and bi-encoder load lazily on the first query (~45 s here).

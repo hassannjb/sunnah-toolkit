@@ -12,11 +12,12 @@ from __future__ import annotations
 
 import atexit
 import logging
+import os
 import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
-from . import semantic
+from . import semantic, semantic_v2
 from .data import Hadith, load
 
 logger = logging.getLogger(__name__)
@@ -63,6 +64,14 @@ def _minmax(values: list[float]) -> list[float]:
     return [(v - lo) / (hi - lo) for v in values]
 
 
+def semantic_backend():
+    """$SEMANTIC_BACKEND picks the bi-encoder leg: "v1" (MiniLM, default) or
+    "v2" (bge-m3, dual-language, chapter-aware; see core/semantic_v2.py)."""
+    if os.environ.get("SEMANTIC_BACKEND", "v1").strip().lower() == "v2":
+        return semantic_v2
+    return semantic
+
+
 def retrieve_union(
     query: str,
     collection: str | None = None,
@@ -89,7 +98,7 @@ def retrieve_union(
     def _sem():
         t0 = time.perf_counter()
         try:
-            out = semantic.retrieve(query, collection=collection, limit=k_per_retriever)
+            out = semantic_backend().retrieve(query, collection=collection, limit=k_per_retriever)
         except FileNotFoundError:
             logger.warning("retrieve_union: semantic embeddings unavailable; skipping")
             out = []

@@ -6,7 +6,8 @@ questions) plus a coarse mode hint. The variants are fed into the existing
 union retriever (BM25 ∪ bi-encoder ∪ Arabic-term) per-variant and merged via
 Reciprocal Rank Fusion in `retrieval.retrieve_union_multi`.
 
-Provider selection is via $LLM_PROVIDER. Only `anthropic` is implemented;
+Provider selection is via $LLM_PROVIDER: `anthropic` (Claude Haiku) or
+`llamacpp` (a self-hosted llama-server, for hosts without an API key);
 `openai` and `ollama` stubs are present so the Protocol is honoured and
 future expansion is straightforward — each stub raises NotImplementedError
 from __init__ with a hint to set LLM_PROVIDER=anthropic.
@@ -75,10 +76,70 @@ _TOOL_SCHEMA = {
 }
 
 
+# Small local models (1.5B) need more steering than Haiku. Benchmarked on the
+# 2015 MBP: with no examples, Qwen2.5-1.5B invented surah names and turned
+# "dua when it rains" into "two rak'ahs". Examples are deliberately on topics
+# outside the eval set. "reference" is dropped from the enum because the
+# rerank pipeline has no weights for it.
+_LOCAL_SYSTEM_PROMPT = _SYSTEM_PROMPT + (
+    "\nRules: in at least one variant, translate Islamic terms into plain English "
+    "(dua = supplication, salah = prayer, sawm = fasting, wudu = ablution). "
+    "Never include collection names (Bukhari, Muslim) or book titles. "
+    "Do not invent names of surahs, people or places."
+)
+_LOCAL_FEW_SHOT: list[tuple[str, dict]] = [
+    ("what should I recite after the adhan?",
+     {"mode_hint": "concept", "variants": [
+         "supplication after the call to prayer",
+         "what to say after hearing the adhan",
+         "dua after the muadhin"]}),
+    ("is it allowed to drink while standing",
+     {"mode_hint": "concept", "variants": [
+         "drinking while standing",
+         "etiquette of eating and drinking",
+         "prohibition of drinking standing up"]}),
+    ("salat al istikhara",
+     {"mode_hint": "term", "variants": [
+         "istikhara", "prayer for seeking guidance", "supplication of istikhara"]}),
+    ("what did the Prophet say about lying",
+     {"mode_hint": "concept", "variants": [
+         "prohibition of lying",
+         "truthfulness leads to righteousness",
+         "signs of the hypocrite"]}),
+]
+_LOCAL_SCHEMA = {
+    **_TOOL_SCHEMA["input_schema"],
+    "properties": {
+        **_TOOL_SCHEMA["input_schema"]["properties"],
+        "mode_hint": {"type": "string", "enum": ["concept", "keyword", "term"]},
+    },
+}
+
+
 @dataclass
 class RouterOutput:
     mode_hint: str
     variants: list[str]
+
+
+def _parse_payload(payload: object, who: str) -> RouterOutput | None:
+    """Validate a `{mode_hint, variants}` payload from any provider."""
+    if isinstance(payload, str):
+        payload = json.loads(payload)
+    if not isinstance(payload, dict):
+        logger.warning("%s: payload is %s, not an object", who, type(payload).__name__)
+        return None
+    mode_hint = str(payload.get("mode_hint", "concept"))
+    raw_variants = payload.get("variants") or []
+    variants = [
+        v.strip()
+        for v in raw_variants
+        if isinstance(v, str) and v.strip()
+    ][:_MAX_VARIANTS]
+    if not variants:
+        logger.warning("%s: empty variants list", who)
+        return None
+    return RouterOutput(mode_hint=mode_hint, variants=variants)
 
 
 @runtime_checkable
@@ -125,20 +186,7 @@ class AnthropicRouter:
         try:
             for block in resp.content:
                 if getattr(block, "type", None) == "tool_use":
-                    payload = block.input
-                    if isinstance(payload, str):
-                        payload = json.loads(payload)
-                    mode_hint = str(payload.get("mode_hint", "concept"))
-                    raw_variants = payload.get("variants") or []
-                    variants = [
-                        v.strip()
-                        for v in raw_variants
-                        if isinstance(v, str) and v.strip()
-                    ][:_MAX_VARIANTS]
-                    if not variants:
-                        logger.warning("AnthropicRouter: empty variants list")
-                        return None
-                    return RouterOutput(mode_hint=mode_hint, variants=variants)
+                    return _parse_payload(block.input, "AnthropicRouter")
             logger.warning("AnthropicRouter: no tool_use block in response")
             return None
         except Exception as e:
@@ -147,6 +195,54 @@ class AnthropicRouter:
                 type(e).__name__,
                 e,
             )
+            return None
+
+
+class LlamaCppRouter:
+    """Self-hosted router: a local llama.cpp `llama-server` (OpenAI-compatible).
+
+    The Anthropic prompt plus rules and few-shot examples (see
+    _LOCAL_SYSTEM_PROMPT). The schema is enforced by llama.cpp's
+    grammar-constrained sampling, so a small model cannot emit malformed
+    JSON. Config:
+        LLAMACPP_URL      default http://127.0.0.1:8081
+        LLAMACPP_TIMEOUT  seconds, default 20 (CPU-only hosts are slow)
+    """
+
+    def __init__(self) -> None:
+        import httpx
+
+        self._url = os.environ.get("LLAMACPP_URL", "http://127.0.0.1:8081").rstrip("/")
+        timeout = float(os.environ.get("LLAMACPP_TIMEOUT", "20"))
+        self._client = httpx.Client(timeout=timeout)
+
+    def route(self, query: str) -> RouterOutput | None:
+        shots = [
+            m
+            for question, answer in _LOCAL_FEW_SHOT
+            for m in (
+                {"role": "user", "content": question},
+                {"role": "assistant", "content": json.dumps(answer)},
+            )
+        ]
+        body = {
+            "messages": [{"role": "system", "content": _LOCAL_SYSTEM_PROMPT}]
+            + shots
+            + [{"role": "user", "content": query}],
+            "temperature": 0,
+            "max_tokens": 120,
+            "response_format": {
+                "type": "json_schema",
+                "json_schema": {"name": _TOOL_SCHEMA["name"], "schema": _LOCAL_SCHEMA},
+            },
+        }
+        try:
+            resp = self._client.post(f"{self._url}/v1/chat/completions", json=body)
+            resp.raise_for_status()
+            content = resp.json()["choices"][0]["message"]["content"]
+            return _parse_payload(content, "LlamaCppRouter")
+        except Exception as e:
+            logger.warning("LlamaCppRouter.route failed: %s (%s)", type(e).__name__, e)
             return None
 
 
@@ -184,6 +280,14 @@ def get_router() -> Router | None:
         except Exception as e:
             logger.warning(
                 "AnthropicRouter init failed: %s (%s)", type(e).__name__, e
+            )
+            return None
+    if provider == "llamacpp":
+        try:
+            return LlamaCppRouter()
+        except Exception as e:
+            logger.warning(
+                "LlamaCppRouter init failed: %s (%s)", type(e).__name__, e
             )
             return None
     if provider in {"openai", "ollama"}:

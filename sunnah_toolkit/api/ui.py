@@ -755,7 +755,10 @@ INDEX_HTML = r"""<!doctype html>
       const filteredStrong = applyFilters(lastResults);
       const filteredWeak = applyFilters(lastResultsWeak);
       const strongCount = filteredStrong.length;
-      const visible = weakVisible
+      // Nothing cleared the threshold: show the closest weak matches rather
+      // than an empty page that only says "nothing matches".
+      const autoWeak = !weakVisible && strongCount === 0 && filteredWeak.length > 0;
+      const visible = (weakVisible || autoWeak)
         ? filteredStrong.concat(filteredWeak)
         : filteredStrong;
 
@@ -774,7 +777,7 @@ INDEX_HTML = r"""<!doctype html>
         .join("");
 
       // Single weak-toggle button at the end (only when weak matches exist).
-      if (totalWeak > 0) {
+      if (totalWeak > 0 && !autoWeak) {
         const verb = weakVisible ? "Hide" : "Show";
         const noun = "weak match" + (totalWeak === 1 ? "" : "es");
         html += '<button type="button" id="show-weak" class="weak-toggle">' +
@@ -803,16 +806,17 @@ INDEX_HTML = r"""<!doctype html>
         setStatus(fallbackPrefix + "Nothing matches the current filters. Tick more chips to see hadiths.");
       } else {
         const endIdx = Math.min(start + PAGE_SIZE, visibleTotal);
-        const filteredFromTotal = weakVisible ? (totalStrong + totalWeak) : totalStrong;
+        const filteredFromTotal = (weakVisible || autoWeak) ? (totalStrong + totalWeak) : totalStrong;
         const filteredNote = (visibleTotal < filteredFromTotal)
           ? " (filtered from " + filteredFromTotal.toLocaleString() + ")"
           : "";
         const pageNote = (totalPages > 1) ? " — page " + currentPage + " of " + totalPages : "";
-        const weakHint = (!weakVisible && totalWeak > 0)
+        const weakHint = (!weakVisible && !autoWeak && totalWeak > 0)
           ? " (+ " + totalWeak + " weak hidden)"
           : "";
         setStatus(
           fallbackPrefix +
+          (autoWeak ? "No strong matches, so these are the closest weak ones. " : "") +
           "Showing " + (start + 1).toLocaleString() + "–" + endIdx.toLocaleString() +
           " of " + visibleTotal.toLocaleString() + filteredNote + weakHint + pageNote +
           ". Tap a row to read the full hadith."
