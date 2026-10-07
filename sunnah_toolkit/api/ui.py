@@ -656,6 +656,7 @@ INDEX_HTML = r"""<!doctype html>
       const ok = responses.filter((r) => r.status === "fulfilled").map((r) => r.value);
 
       const merged = { results: [], results_weak: [], matched_words: [] };
+      const gradeFirst = ok.some((j) => j.grade_first);
       const wordSum = new Map();
       for (const j of ok) {
         merged.results.push(...(j.results || []));
@@ -670,7 +671,10 @@ INDEX_HTML = r"""<!doctype html>
 
       // Cross-encoder score is comparable across collections — re-rank globally.
       const cmp = (a, b) => (b.score || b.similarity || 0) - (a.score || a.similarity || 0);
-      merged.results.sort(cmp);
+      // Strong results go grade first (sahih > hasan > daif) when the server
+      // ranked them that way; weak ones stay in relevance order.
+      const byGrade = (a, b) => ((a.grade_rank ?? 3) - (b.grade_rank ?? 3)) || cmp(a, b);
+      merged.results.sort(gradeFirst ? byGrade : cmp);
       merged.results_weak.sort(cmp);
       return merged;
     }

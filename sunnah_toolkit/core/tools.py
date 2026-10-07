@@ -25,7 +25,7 @@ from typing import Any, Literal
 
 from . import llm_router
 from . import reranker as reranker_mod
-from .data import Hadith, Library, load, parse_narrators, strip_narrator_markup
+from .data import Hadith, Library, load, normalize_grade, parse_narrators, strip_narrator_markup
 from .retrieval import Candidate, retrieve_union, retrieve_union_multi, semantic_backend
 
 logger = logging.getLogger(__name__)
@@ -305,15 +305,53 @@ def _score_candidates(
         return _heuristic_scores(candidates, mode_hint), "none", status, -math.inf
 
 
+# Grade order among relevant results: sahih > hasan sahih > hasan > daif.
+# Ungraded sits between hasan and daif because whole collections (Riyad
+# as-Salihin, Hisn al-Muslim, the Forty, most of Mishkat) carry no
+# per-hadith grade in the data; putting them below daif would bury them.
+# Deliberately separate from data.GRADE_TIER, which drives the legacy
+# collection-ordered listings.
+_GRADE_RANK: dict[str, int] = {
+    "sahih": 0,
+    "hasan_sahih": 1,
+    "hasan": 2,
+    "ungraded": 3,
+    "daif": 4,
+    "maudu": 5,
+}
+
+
+def _grade_rank(h: Hadith) -> int:
+    return _GRADE_RANK[normalize_grade(h.english_grade)]
+
+
+def _grade_first_enabled() -> bool:
+    """$RANK_BY_GRADE (default on): sort strong results by grade, then score."""
+    return os.environ.get("RANK_BY_GRADE", "1").strip().lower() not in ("0", "false", "no")
+
+
 def _split_strong_weak(
     scored: list[tuple[Candidate, float]],
     threshold: float,
     limit: int,
+    grade_first: bool = False,
 ) -> tuple[
     list[tuple[Candidate, float]],
     list[tuple[Candidate, float]],
 ]:
-    """Partition `scored` into strong (≥ threshold, capped at `limit`) and weak."""
+    """Partition `scored` into strong (≥ threshold, capped at `limit`) and weak.
+
+    With `grade_first`, everything at or above the threshold is ordered by
+    grade, then score, before the `limit` cap, so a sahih hadith is never
+    pushed out of the strong list by a weaker-graded one. Weak rows keep
+    pure relevance order: they are not confident matches, and grade-sorting
+    them would float off-topic sahih hadiths to the top.
+    """
+    if grade_first:
+        above = [p for p in scored if p[1] >= threshold]
+        below = [p for p in scored if p[1] < threshold]
+        above.sort(key=lambda p: (_grade_rank(p[0].hadith), -p[1]))
+        scored = above + below
     strong: list[tuple[Candidate, float]] = []
     weak: list[tuple[Candidate, float]] = []
     for cand, score in scored:
@@ -336,6 +374,7 @@ def _row_from_candidate(
         "number": h.id_in_book,
         "hadith_number": h.hadith_number,
         "english_grade": h.english_grade,
+        "grade_rank": _grade_rank(h),
         "snippet": _snippet(h.english_text, query),
         "score": float(score),
         "sources": sorted(cand.sources),
@@ -452,7 +491,10 @@ def _rerank_and_split(
     pool_size = len(scored)
     limit = min(limit, pool_size)
 
-    strong_pairs, weak_pairs = _split_strong_weak(scored, threshold, limit)
+    grade_first = reranker_active and _grade_first_enabled()
+    strong_pairs, weak_pairs = _split_strong_weak(
+        scored, threshold, limit, grade_first=grade_first,
+    )
     strong = [_row_from_candidate(library, c, s, query) for c, s in strong_pairs]
     weak = [_row_from_candidate(library, c, s, query) for c, s in weak_pairs]
 
@@ -492,6 +534,7 @@ def _rerank_and_split(
         if reranker_active else 0,
         "reranker": name,
         "reranker_active": reranker_active,
+        "grade_first": grade_first,
         "reranker_status": status,
         "threshold": threshold_field,
         "results": strong,
