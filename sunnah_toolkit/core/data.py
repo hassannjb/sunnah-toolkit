@@ -261,6 +261,14 @@ class Hadith:
     arabic_grade: str = ""     # Arabic grading (e.g. "صحيح")
     english_grade: str = ""    # English grading (e.g. "Sahih")
     grade_tier: int = 4        # GRADE_TIER index; default 4 == "ungraded"
+    # Chapter ("bab") titles, carried per-hadith rather than joined through
+    # `chapter_id`: babID is a REAL in the dump and `chapter_id` truncates it,
+    # so the join is lossy for fractional babIDs. The row already carries the
+    # names, so read them straight off it. Used by the v2 embedding template —
+    # a chapter titled "Supplication When Going To Sleep" is often the single
+    # strongest topical signal a hadith has, and v1 discarded it entirely.
+    english_bab_name: str = ""
+    arabic_bab_name: str = ""
 
 
 @dataclass(frozen=True, slots=True)
@@ -691,6 +699,8 @@ def load() -> Library:
                         arabic_grade=r["arabicgrade1"] or "",
                         english_grade=english_grade,
                         grade_tier=GRADE_TIER[normalize_grade(english_grade)],
+                        english_bab_name=(r["englishBabName"] or "").strip(),
+                        arabic_bab_name=(r["arabicBabName"] or "").strip(),
                     )
                 )
             lib.hadiths[slug] = hadiths

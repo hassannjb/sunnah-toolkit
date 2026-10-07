@@ -29,6 +29,10 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
+# Build/read the expert relevance-review workbook (scripts/build_eval_sheet.py,
+# scripts/ingest_eval_sheet.py). Offline eval tooling only — the runtime
+# container never imports it.
+eval = ["openpyxl>=3.1"]
 # LO-003: INT8/ONNX fallback of cross-encoder rerankers (Issue #2 Phase E).
 # Gated behind an optional extra until Phase E actually wires it in — the
 # runtime container is ~250 MB lighter without these wheels.
