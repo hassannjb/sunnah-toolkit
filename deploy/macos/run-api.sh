@@ -18,6 +18,11 @@ export RERANKER_TOP_N="${RERANKER_TOP_N:-40}"
 # bge-m3 bi-encoder: knows "dua", "qunut", question phrasing; +0.5 s, +1.5 GB.
 # On torch < 2.6 it needs the safetensors weights (refs/pr/130), not the .bin.
 export SEMANTIC_BACKEND="${SEMANTIC_BACKEND:-v2}"
+# v2 extra legs: chapter-title match (needs chapters_*.npy from
+# scripts/build_chapter_embeddings.py) and near-duplicate narrations of the
+# top semantic hits. RETRIEVER_K and FUSION=rrf exist too but showed no gain.
+export RETRIEVAL_CHAPTERS="${RETRIEVAL_CHAPTERS:-1}"
+export RETRIEVAL_NEIGHBORS="${RETRIEVAL_NEIGHBORS:-1}"
 PORT="${PORT:-8000}"
 
 # The library and bi-encoder load lazily on the first query (~45 s here).

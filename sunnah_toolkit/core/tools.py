@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import logging
 import math
+import os
 import random
 from functools import lru_cache
 from typing import Any, Literal
@@ -40,6 +41,24 @@ _MODE_WEIGHTS: dict[Mode, tuple[float, float, float]] = {
     "keyword": (1.0, 0.4, 0.4),
     "term": (0.2, 0.4, 1.0),
 }
+
+
+# Weights for the optional v2 legs, alongside _MODE_WEIGHTS (kept as a
+# 3-tuple; callers and tests rely on it). Hand-set: a chapter-title match is
+# a strong topical signal for concept queries and weaker for exact-word
+# ones. Tune these against expert grades.
+_EXTRA_WEIGHTS: dict[Mode, tuple[float, float]] = {
+    # (chapter_weight, neighbor_weight)
+    "concept": (0.8, 0.5),
+    "keyword": (0.4, 0.3),
+    "term": (0.3, 0.2),
+}
+_RRF_K = 60
+
+
+def _fusion() -> str:
+    """$FUSION: "weighted" (min-max scores x mode weights, default) or "rrf"."""
+    return os.environ.get("FUSION", "weighted").strip().lower()
 
 
 def _assert_mode(mode_hint: str) -> Mode:
@@ -208,10 +227,31 @@ def _heuristic_scores(
     weighted sum of the three normalised retriever signals.
     """
     wb, ws, wt = _MODE_WEIGHTS[mode_hint]
-    scored = [
-        (c, wb * c.bm25_norm + ws * c.semantic_norm + wt * c.term_norm)
-        for c in candidates
-    ]
+    wc, wn = _EXTRA_WEIGHTS[mode_hint]
+    if _fusion() == "rrf":
+        # Reciprocal Rank Fusion: each leg contributes w / (k + rank) for the
+        # candidates it retrieved. Rank-based, so a leg whose raw scores are
+        # bunched together can't swamp the others the way rescaled scores can.
+        legs = (
+            ("bm25", "bm25", wb), ("semantic", "semantic", ws), ("term", "term", wt),
+            ("chapter", "chapter", wc), ("neighbor", "neighbor", wn),
+        )
+        fused = {c.corpus_idx: 0.0 for c in candidates}
+        for source, attr, w in legs:
+            ranked = sorted(
+                (c for c in candidates if source in c.sources),
+                key=lambda c: getattr(c, attr),
+                reverse=True,
+            )
+            for rank, c in enumerate(ranked, start=1):
+                fused[c.corpus_idx] += w / (_RRF_K + rank)
+        scored = [(c, fused[c.corpus_idx]) for c in candidates]
+    else:
+        scored = [
+            (c, wb * c.bm25_norm + ws * c.semantic_norm + wt * c.term_norm
+                + wc * c.chapter_norm + wn * c.neighbor_norm)
+            for c in candidates
+        ]
     scored.sort(key=lambda p: p[1], reverse=True)
     return scored
 
@@ -316,7 +356,7 @@ def search_with_rerank(
     mode_hint: str = "concept",
     collection: str | None = None,
     limit: int = 10,
-    k_per_retriever: int = 100,
+    k_per_retriever: int | None = None,
 ) -> dict[str, Any]:
     """Run the union retriever + cross-encoder reranker, split by threshold.
 

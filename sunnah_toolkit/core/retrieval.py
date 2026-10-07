@@ -17,7 +17,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
-from . import semantic, semantic_v2
+from . import chapters, semantic, semantic_v2
 from .data import Hadith, load
 
 logger = logging.getLogger(__name__)
@@ -43,6 +43,13 @@ class Candidate:
     bm25_norm: float = 0.0
     semantic_norm: float = 0.0
     term_norm: float = 0.0
+    # Optional legs (v2 only, each behind an env switch): members of
+    # chapters whose title matches the query, and near-duplicate narrations
+    # of the top semantic hits.
+    chapter: float = 0.0
+    neighbor: float = 0.0
+    chapter_norm: float = 0.0
+    neighbor_norm: float = 0.0
     matched_words: set[str] = field(default_factory=set)
 
 
@@ -64,6 +71,33 @@ def _minmax(values: list[float]) -> list[float]:
     return [(v - lo) / (hi - lo) for v in values]
 
 
+def default_k() -> int:
+    """$RETRIEVER_K: candidates per retriever leg (default 100). Retrieval is
+    the cheap stage; the reranker only sees the first-stage top N anyway."""
+    try:
+        return max(1, int(os.environ.get("RETRIEVER_K", "100")))
+    except ValueError:
+        return 100
+
+
+def _int_env(name: str, default: int) -> int:
+    try:
+        return int(os.environ.get(name, default))
+    except ValueError:
+        return default
+
+
+def _float_env(name: str, default: float) -> float:
+    try:
+        return float(os.environ.get(name, default))
+    except ValueError:
+        return default
+
+
+def neighbors_enabled() -> bool:
+    return os.environ.get("RETRIEVAL_NEIGHBORS", "").strip() in ("1", "true", "yes")
+
+
 def semantic_backend():
     """$SEMANTIC_BACKEND picks the bi-encoder leg: "v1" (MiniLM, default) or
     "v2" (bge-m3, dual-language, chapter-aware; see core/semantic_v2.py)."""
@@ -75,7 +109,7 @@ def semantic_backend():
 def retrieve_union(
     query: str,
     collection: str | None = None,
-    k_per_retriever: int = 100,
+    k_per_retriever: int | None = None,
 ) -> list[Candidate]:
     """Returns deduplicated union of (bm25 ∪ semantic ∪ term) top-K each.
 
@@ -85,9 +119,12 @@ def retrieve_union(
     """
     if not query.strip():
         return []
+    if k_per_retriever is None:
+        k_per_retriever = default_k()
 
     library = load()
     corpus = library.bm25_corpus
+    v2 = semantic_backend() is semantic_v2
 
     def _bm25():
         t0 = time.perf_counter()
@@ -123,6 +160,24 @@ def retrieve_union(
     sem_hits = f_sem.result()
     term_hits = f_term.result()
 
+    # The extra legs reuse the query vector the semantic leg just cached, so
+    # they cost a matmul each rather than another bge-m3 forward pass.
+    chapter_hits: list[tuple[int, float]] = []
+    if v2 and chapters.enabled():
+        try:
+            chapter_hits = chapters.retrieve(query, collection=collection)
+        except (FileNotFoundError, RuntimeError) as e:
+            logger.warning("retrieve_union: chapter leg unavailable: %s", e)
+    neighbor_hits: list[tuple[int, float]] = []
+    if v2 and neighbors_enabled() and sem_hits:
+        seeds = [idx for idx, _ in sem_hits[: _int_env("NEIGHBOR_SEEDS", 8)]]
+        neighbor_hits = semantic_v2.neighbors(
+            seeds,
+            k=_int_env("NEIGHBOR_K", 5),
+            min_sim=_float_env("NEIGHBOR_MIN_SIM", 0.85),
+            collection=collection,
+        )
+
     bm25_norms = dict(zip(
         [idx for idx, _ in bm25_hits],
         _minmax([s for _, s in bm25_hits]),
@@ -134,6 +189,14 @@ def retrieve_union(
     term_norms = dict(zip(
         [idx for idx, _, _ in term_hits],
         _minmax([s for _, s, _ in term_hits]),
+    ))
+    chapter_norms = dict(zip(
+        [idx for idx, _ in chapter_hits],
+        _minmax([s for _, s in chapter_hits]),
+    ))
+    neighbor_norms = dict(zip(
+        [idx for idx, _ in neighbor_hits],
+        _minmax([s for _, s in neighbor_hits]),
     ))
 
     merged: dict[int, Candidate] = {}
@@ -161,11 +224,23 @@ def retrieve_union(
         c.term = score
         c.term_norm = term_norms.get(idx, 0.0)
         c.matched_words |= matched
+    for idx, score in chapter_hits:
+        c = _get(idx)
+        c.sources.add("chapter")
+        c.chapter = score
+        c.chapter_norm = chapter_norms.get(idx, 0.0)
+    for idx, score in neighbor_hits:
+        c = _get(idx)
+        c.sources.add("neighbor")
+        c.neighbor = score
+        c.neighbor_norm = neighbor_norms.get(idx, 0.0)
 
     total_ms = (time.perf_counter() - t_total) * 1000.0
     logger.debug(
-        "retrieve_union: %d unique candidates in %.1f ms (bm25=%d sem=%d term=%d)",
+        "retrieve_union: %d unique candidates in %.1f ms "
+        "(bm25=%d sem=%d term=%d chapter=%d neighbor=%d)",
         len(merged), total_ms, len(bm25_hits), len(sem_hits), len(term_hits),
+        len(chapter_hits), len(neighbor_hits),
     )
     return list(merged.values())
 
@@ -173,7 +248,7 @@ def retrieve_union(
 def retrieve_union_multi(
     variants: list[str],
     collection: str | None = None,
-    k_per_retriever: int = 100,
+    k_per_retriever: int | None = None,
     rrf_k: int = 60,
 ) -> list[Candidate]:
     """Run `retrieve_union` per variant and merge with Reciprocal Rank Fusion.
@@ -220,6 +295,10 @@ def retrieve_union_multi(
                     bm25_norm=cand.bm25_norm,
                     semantic_norm=cand.semantic_norm,
                     term_norm=cand.term_norm,
+                    chapter=cand.chapter,
+                    neighbor=cand.neighbor,
+                    chapter_norm=cand.chapter_norm,
+                    neighbor_norm=cand.neighbor_norm,
                     matched_words=set(cand.matched_words),
                 )
             else:
@@ -235,6 +314,10 @@ def retrieve_union_multi(
                 existing.bm25_norm = max(existing.bm25_norm, cand.bm25_norm)
                 existing.semantic_norm = max(existing.semantic_norm, cand.semantic_norm)
                 existing.term_norm = max(existing.term_norm, cand.term_norm)
+                existing.chapter = max(existing.chapter, cand.chapter)
+                existing.neighbor = max(existing.neighbor, cand.neighbor)
+                existing.chapter_norm = max(existing.chapter_norm, cand.chapter_norm)
+                existing.neighbor_norm = max(existing.neighbor_norm, cand.neighbor_norm)
 
     ordered = sorted(
         merged.values(),

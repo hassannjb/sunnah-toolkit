@@ -28,6 +28,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+from collections import OrderedDict
 from pathlib import Path
 from threading import Lock
 
@@ -154,17 +155,79 @@ def _ensure_loaded(tag: str | None = None) -> None:
         )
 
 
+# One bge-m3 forward pass is ~0.3-0.5 s on the 2015 MBP, and a single
+# search encodes the same query for both the hadith leg and the chapter leg.
+_QUERY_CACHE: OrderedDict[str, np.ndarray] = OrderedDict()
+_QUERY_CACHE_MAX = 256
+
+
 def encode_query(query: str) -> np.ndarray:
     _ensure_loaded()
     assert _engine.model is not None and _engine.meta is not None
-    prefix = _engine.meta.get("query_prefix", "")
     with _encode_lock:
+        cached = _QUERY_CACHE.get(query)
+        if cached is not None:
+            _QUERY_CACHE.move_to_end(query)
+            return cached.copy()
+        prefix = _engine.meta.get("query_prefix", "")
         v = _engine.model.encode(
             [prefix + query],
             normalize_embeddings=True,
             convert_to_numpy=True,
-        )[0]
-    return v.astype(np.float32)
+        )[0].astype(np.float32)
+        _QUERY_CACHE[query] = v
+        if len(_QUERY_CACHE) > _QUERY_CACHE_MAX:
+            _QUERY_CACHE.popitem(last=False)
+    return v.copy()
+
+
+def doc_scores(q: np.ndarray, indices: list[int]) -> np.ndarray:
+    """Similarity of query vector `q` to specific hadiths, combined like `retrieve`."""
+    _ensure_loaded()
+    idx = np.asarray(indices, dtype=np.int64)
+    en, ar = _engine.en, _engine.ar
+    if en is None:
+        return ar[idx] @ q
+    if ar is None:
+        return en[idx] @ q
+    return np.maximum(en[idx] @ q, ar[idx] @ q)
+
+
+def neighbors(
+    seeds: list[int],
+    k: int = 5,
+    min_sim: float = 0.85,
+    collection: str | None = None,
+) -> list[tuple[int, float]]:
+    """Hadiths whose vectors sit closest to any seed hadith.
+
+    The same report often appears in several collections with different
+    wording (Bukhari, Muslim, Riyad as-Salihin, Hisn al-Muslim); finding one
+    should pull in the others. English vectors only: the Arabic side of two
+    narrations of one hadith is near-identical anyway, and one matmul per
+    seed keeps this to tens of milliseconds.
+    """
+    _ensure_loaded()
+    mat = _engine.en if _engine.en is not None else _engine.ar
+    best: dict[int, float] = {}
+    seed_set = set(seeds)
+    for s_idx in seeds:
+        sims = mat @ mat[s_idx]
+        sims = np.where(_engine.content_mask, sims, -np.inf)
+        if collection is not None:
+            cid = _engine.collection_index.get(collection)
+            if cid is None:
+                return []
+            sims = np.where(_engine.collection_ids == cid, sims, -np.inf)
+        top = np.argpartition(-sims, k + 1)[: k + 1]
+        for i in top:
+            i = int(i)
+            sim = float(sims[i])
+            if i in seed_set or not np.isfinite(sim) or sim < min_sim:
+                continue
+            if sim > best.get(i, -1.0):
+                best[i] = sim
+    return sorted(best.items(), key=lambda p: p[1], reverse=True)
 
 
 def retrieve(
