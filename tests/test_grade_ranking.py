@@ -7,8 +7,8 @@ from types import SimpleNamespace
 from sunnah_toolkit.core.tools import _split_strong_weak
 
 
-def _p(idx, grade, score):
-    h = SimpleNamespace(english_grade=grade)
+def _p(idx, grade, score, collection="abudawud"):
+    h = SimpleNamespace(english_grade=grade, collection=collection)
     return SimpleNamespace(corpus_idx=idx, hadith=h), score
 
 
@@ -16,55 +16,69 @@ def _ids(pairs):
     return [c.corpus_idx for c, _ in pairs]
 
 
-SCORED = [  # reranker order, descending score; threshold 3.5
-    _p(1, "", 6.5),            # ungraded (e.g. Riyad as-Salihin)
-    _p(2, "Da'if", 6.0),
-    _p(3, "Hasan", 5.8),
-    _p(4, "Hasan Sahih", 5.5),
-    _p(5, "Sahih li ghairih", 5.3),
-    _p(6, "Sahih", 5.1),
-    _p(7, "Da'if", 3.0),       # below threshold from here
-    _p(8, "", 2.5),
-    _p(9, "Sahih", 1.0),
-]
+def _order(scored):
+    strong, _ = _split_strong_weak(scored, 3.5, 100, grade_first=True)
+    return _ids(strong)
 
 
-def test_grade_first_orders_strong_by_grade_then_score():
-    strong, weak = _split_strong_weak(SCORED, 3.5, 10, grade_first=True)
-    assert _ids(strong) == [6, 5, 4, 3, 2, 1]
+def test_full_group_order():
+    # Every row scores the same, and listed worst first, so only grade decides.
+    rows = [
+        (11, "Maudu'"),
+        (10, ""),
+        (9, "Sahih Mauquf"),
+        (8, "Da'if Jiddan"),
+        (7, "Da'if"),
+        (6, "Hasan li ghairih"),
+        (5, "Hasan"),
+        (4, "Hasan Sahih"),
+        (3, "Sahih Isnād"),
+        (2, "Sahih"),
+    ]
+    scored = [_p(i, g, 5.0) for i, g in rows] + [_p(1, "Sahih", 5.0, "bukhari")]
+    assert _order(scored) == list(range(1, 12))
 
 
-def test_weak_rows_are_grade_sorted_too():
-    _, weak = _split_strong_weak(SCORED, 3.5, 10, grade_first=True)
-    assert _ids(weak) == [9, 7, 8]
+def test_sahihayn_and_muttafaq_first():
+    scored = [
+        _p(1, "Sahih", 9.0, "abudawud"),
+        _p(2, "Sahih", 4.0, "muslim"),
+        _p(3, "Muttafaqun 'alayh", 5.0, "bulugh"),
+    ]
+    assert _order(scored) == [3, 2, 1]
+
+
+def test_mursal_is_daif_not_end():
+    scored = [_p(1, "", 9.0), _p(2, "Da'if mursal", 4.0), _p(3, "Sahih Mauquf", 8.0)]
+    assert _order(scored) == [2, 3, 1]
+
+
+def test_non_prophetic_sorted_by_own_grade():
+    scored = [_p(1, "Da'if Maqtu'", 9.0), _p(2, "Sahih Mauquf", 4.0), _p(3, "Hasan Maqtu'", 6.0)]
+    assert _order(scored) == [2, 3, 1]
+
+
+def test_munkar_below_daif():
+    assert _order([_p(1, "Munkar", 9.0), _p(2, "Da'if", 4.0)]) == [2, 1]
+
+
+def test_same_group_falls_back_to_score():
+    assert _order([_p(1, "Hasan", 4.0), _p(2, "hasan", 6.0)]) == [2, 1]
+
+
+def test_weak_rows_are_grade_sorted_too_and_strong_stay_first():
+    scored = [_p(1, "", 6.0), _p(2, "Da'if", 3.0), _p(3, "Sahih", 1.0)]
+    strong, weak = _split_strong_weak(scored, 3.5, 10, grade_first=True)
+    assert _ids(strong) == [1] and _ids(weak) == [3, 2]
 
 
 def test_grade_first_applies_before_limit_cap():
-    strong, weak = _split_strong_weak(SCORED, 3.5, 2, grade_first=True)
-    assert _ids(strong) == [6, 5]
-    assert _ids(weak) == [4, 3, 2, 1, 9, 7, 8]
-
-
-def test_ungraded_after_maudu():
-    scored = [_p(1, "", 5.0), _p(2, "Maudu", 4.0), _p(3, "Da'if", 3.6)]
-    strong, _ = _split_strong_weak(scored, 3.5, 10, grade_first=True)
-    assert _ids(strong) == [3, 2, 1]
-
-
-def test_qualified_grades_go_below_plain():
-    scored = [
-        _p(1, "Sahih Isnād", 6.0),
-        _p(2, "Sahih Mauquf", 5.9),
-        _p(3, "Sahih because of corroborating evidence]", 5.8),
-        _p(4, "Sahih (Darussalam)", 4.0),
-        _p(5, "Muttafaqun 'alayh", 3.9),
-        _p(6, "Hasan", 7.0),
-        _p(7, "Hasan li ghairih", 8.0),
-    ]
-    strong, _ = _split_strong_weak(scored, 3.5, 10, grade_first=True)
-    assert _ids(strong) == [4, 5, 1, 2, 3, 6, 7]
+    scored = [_p(1, "Da'if", 6.0), _p(2, "Hasan", 5.0), _p(3, "Sahih", 4.0)]
+    strong, weak = _split_strong_weak(scored, 3.5, 2, grade_first=True)
+    assert _ids(strong) == [3, 2] and _ids(weak) == [1]
 
 
 def test_off_keeps_score_order():
-    strong, _ = _split_strong_weak(SCORED, 3.5, 10)
-    assert _ids(strong) == [1, 2, 3, 4, 5, 6]
+    scored = [_p(1, "Da'if", 6.0), _p(2, "Sahih", 5.0)]
+    strong, _ = _split_strong_weak(scored, 3.5, 10)
+    assert _ids(strong) == [1, 2]

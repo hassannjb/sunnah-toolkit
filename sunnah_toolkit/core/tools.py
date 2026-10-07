@@ -306,31 +306,50 @@ def _score_candidates(
         return _heuristic_scores(candidates, mode_hint), "none", status, -math.inf
 
 
-# Result order by grade: sahih > hasan sahih > hasan > daif > maudu, and
-# ungraded always last. Within a grade, a plain grade ("Sahih") beats a
-# qualified one ("Sahih li ghairih", "Sahih isnad", mauquf, ...).
+# Result order by grade (lower rank first). Marfu' groups, x10:
+#   1 sahih in Bukhari/Muslim, or graded muttafaqun 'alayh
+#   2 sahih, other collections         3 sahih with a qualifier
+#   4 hasan sahih                      5 hasan (incl. qawi)
+#   6 hasan with a qualifier           7 daif (incl. mursal, shadh)
+#   8 daif jiddan, munkar
+# then 90 + group for mauquf/maqtu' (reports from a Companion/Successor,
+# not the Prophet; still ordered by their own grade), 100 ungraded, and
+# 110 maudu (fabricated) last. A qualifier means graded only through other
+# chains ("li ghairih", "corroborating") or only the chain is graded.
 # Deliberately separate from data.GRADE_TIER, which drives the legacy
 # collection-ordered listings.
-_GRADE_RANK: dict[str, int] = {
-    "sahih": 0,
-    "hasan_sahih": 1,
-    "hasan": 2,
-    "daif": 3,
-    "maudu": 4,
-    "ungraded": 5,
-}
-# Graded only through other chains, only the chain is graded, or not a
-# saying of the Prophet (mauquf: a Companion's, maqtu': a Successor's).
+_SAHIHAYN = frozenset({"bukhari", "muslim"})
 _GRADE_QUALIFIER = re.compile(
-    r"li\s*ghair|lighair|corroborat|isn[aā]d|\bchain\b|\bsanad\b|mauq[uū]f|maqt[uū]|mursal",
-    re.IGNORECASE,
+    r"li\s*ghair|lighair|corroborat|isn[aā]d|\bchain\b|\bsanad\b", re.IGNORECASE,
 )
+_NOT_PROPHETIC = re.compile(r"mauq[uū]f|maqt[uū]", re.IGNORECASE)
+_VERY_WEAK = re.compile(r"jiddan|munkar", re.IGNORECASE)
+_RANK_UNGRADED = 100
+_RANK_MAUDU = 110
 
 
 def _grade_rank(h: Hadith) -> int:
-    """2 * grade tier, +1 when the grade is qualified. Lower ranks first."""
-    tier = _GRADE_RANK[normalize_grade(h.english_grade)]
-    return 2 * tier + bool(_GRADE_QUALIFIER.search(h.english_grade))
+    raw = h.english_grade
+    grade = normalize_grade(raw)
+    if grade == "maudu":
+        return _RANK_MAUDU
+    if grade == "ungraded":
+        return _RANK_UNGRADED
+    qualified = bool(_GRADE_QUALIFIER.search(raw))
+    if "mursal" in raw.lower():
+        group = 7
+    elif grade == "sahih":
+        if h.collection in _SAHIHAYN or "muttafaq" in raw.lower():
+            group = 1
+        else:
+            group = 3 if qualified else 2
+    elif grade == "hasan_sahih":
+        group = 4
+    elif grade == "hasan":
+        group = 6 if qualified else 5
+    else:  # daif
+        group = 8 if _VERY_WEAK.search(raw) else 7
+    return 90 + group if _NOT_PROPHETIC.search(raw) else 10 * group
 
 
 def _grade_first_enabled() -> bool:
