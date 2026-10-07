@@ -1,23 +1,29 @@
-# Cloudflare Tunnel config for exposing sunnah-toolkit publicly.
+# Cloudflare named tunnel for sunnah-toolkit: the public site plus admin SSH,
+# both on stable hostnames, with no inbound ports on the host.
 #
-# Setup:
-#   1. brew install cloudflared
-#   2. cloudflared tunnel login
-#   3. cloudflared tunnel create sunnah-toolkit
-#   4. cp config.yml.example ~/.cloudflared/config.yml
-#      and replace REPLACE-WITH-TUNNEL-UUID + USERNAME + your hostname below
-#   5. cloudflared tunnel route dns sunnah-toolkit sunnah.example.com
-#   6. cloudflared tunnel run sunnah-toolkit
-#      (or `cloudflared service install` to run it as a launchd daemon)
+# Setup (the 2015 MBP deploy used the standalone cloudflared binary in ~):
+#   1. cloudflared tunnel login                 # pick the zone in the browser
+#   2. cloudflared tunnel create sunnah
+#   3. cp config.yml.example ~/.cloudflared/config.yml
+#      and fill in the tunnel UUID, USERNAME and your hostnames below
+#   4. cloudflared tunnel route dns sunnah example.com
+#      cloudflared tunnel route dns sunnah ssh.example.com
+#   5. cloudflared tunnel ingress validate
+#   6. sudo deploy/macos/install.sh tunnel      # LaunchDaemon, starts at boot
 #
-# Auth: /v1/* routes can require a bearer token when the container is started
-# with a keys file mounted in. Rate limiting is handled at the Cloudflare edge,
-# not in the app.
+# SSH clients connect through the tunnel with:
+#   ProxyCommand cloudflared access ssh --hostname %h
+#
+# Auth: /v1/* routes can require a bearer token when the server is started
+# with a keys file. Rate limiting is handled at the Cloudflare edge, not in
+# the app.
 
 tunnel: REPLACE-WITH-TUNNEL-UUID
 credentials-file: /Users/USERNAME/.cloudflared/REPLACE-WITH-TUNNEL-UUID.json
 
 ingress:
-  - hostname: sunnah.example.com
+  - hostname: example.com
     service: http://localhost:8000
+  - hostname: ssh.example.com
+    service: ssh://localhost:22
   - service: http_status:404
