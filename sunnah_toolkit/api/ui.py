@@ -671,11 +671,11 @@ INDEX_HTML = r"""<!doctype html>
 
       // Cross-encoder score is comparable across collections — re-rank globally.
       const cmp = (a, b) => (b.score || b.similarity || 0) - (a.score || a.similarity || 0);
-      // Strong results go grade first (sahih > hasan > daif) when the server
-      // ranked them that way; weak ones stay in relevance order.
-      const byGrade = (a, b) => ((a.grade_rank ?? 3) - (b.grade_rank ?? 3)) || cmp(a, b);
+      // Grade first (sahih > hasan > daif > ungraded) when the server ranked
+      // that way, then score.
+      const byGrade = (a, b) => ((a.grade_rank ?? 99) - (b.grade_rank ?? 99)) || cmp(a, b);
       merged.results.sort(gradeFirst ? byGrade : cmp);
-      merged.results_weak.sort(cmp);
+      merged.results_weak.sort(gradeFirst ? byGrade : cmp);
       return merged;
     }
 

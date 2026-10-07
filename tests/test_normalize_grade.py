@@ -67,3 +67,13 @@ def test_unknown_gibberish():
 def test_all_outputs_in_grade_tier():
     for label in ("sahih", "hasan_sahih", "hasan", "daif", "ungraded", "maudu"):
         assert label in GRADE_TIER
+
+
+def test_weak_kinds_map_to_daif():
+    for raw in ("Da if", "Munkar", "Shadh"):
+        assert normalize_grade(raw) == "daif", raw
+
+
+def test_qawi_maps_to_hasan():
+    assert normalize_grade("Qawi (Darussalam)]") == "hasan"
+    assert normalize_grade("lts isnad is Qawi]") == "hasan"

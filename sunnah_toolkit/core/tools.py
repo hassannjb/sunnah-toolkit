@@ -20,6 +20,7 @@ import logging
 import math
 import os
 import random
+import re
 from functools import lru_cache
 from typing import Any, Literal
 
@@ -305,28 +306,35 @@ def _score_candidates(
         return _heuristic_scores(candidates, mode_hint), "none", status, -math.inf
 
 
-# Grade order among relevant results: sahih > hasan sahih > hasan > daif.
-# Ungraded sits between hasan and daif because whole collections (Riyad
-# as-Salihin, Hisn al-Muslim, the Forty, most of Mishkat) carry no
-# per-hadith grade in the data; putting them below daif would bury them.
+# Result order by grade: sahih > hasan sahih > hasan > daif > maudu, and
+# ungraded always last. Within a grade, a plain grade ("Sahih") beats a
+# qualified one ("Sahih li ghairih", "Sahih isnad", mauquf, ...).
 # Deliberately separate from data.GRADE_TIER, which drives the legacy
 # collection-ordered listings.
 _GRADE_RANK: dict[str, int] = {
     "sahih": 0,
     "hasan_sahih": 1,
     "hasan": 2,
-    "ungraded": 3,
-    "daif": 4,
-    "maudu": 5,
+    "daif": 3,
+    "maudu": 4,
+    "ungraded": 5,
 }
+# Graded only through other chains, only the chain is graded, or not a
+# saying of the Prophet (mauquf: a Companion's, maqtu': a Successor's).
+_GRADE_QUALIFIER = re.compile(
+    r"li\s*ghair|lighair|corroborat|isn[aā]d|\bchain\b|\bsanad\b|mauq[uū]f|maqt[uū]|mursal",
+    re.IGNORECASE,
+)
 
 
 def _grade_rank(h: Hadith) -> int:
-    return _GRADE_RANK[normalize_grade(h.english_grade)]
+    """2 * grade tier, +1 when the grade is qualified. Lower ranks first."""
+    tier = _GRADE_RANK[normalize_grade(h.english_grade)]
+    return 2 * tier + bool(_GRADE_QUALIFIER.search(h.english_grade))
 
 
 def _grade_first_enabled() -> bool:
-    """$RANK_BY_GRADE (default on): sort strong results by grade, then score."""
+    """$RANK_BY_GRADE (default on): sort results by grade, then score."""
     return os.environ.get("RANK_BY_GRADE", "1").strip().lower() not in ("0", "false", "no")
 
 
@@ -341,16 +349,15 @@ def _split_strong_weak(
 ]:
     """Partition `scored` into strong (≥ threshold, capped at `limit`) and weak.
 
-    With `grade_first`, everything at or above the threshold is ordered by
-    grade, then score, before the `limit` cap, so a sahih hadith is never
-    pushed out of the strong list by a weaker-graded one. Weak rows keep
-    pure relevance order: they are not confident matches, and grade-sorting
-    them would float off-topic sahih hadiths to the top.
+    With `grade_first`, the rows at or above the threshold and the rows below
+    it are each ordered by grade, then score. Above-threshold rows still all
+    come first, and the sort happens before the `limit` cap, so a sahih
+    hadith is never pushed out of the strong list by a weaker-graded one.
     """
     if grade_first:
-        above = [p for p in scored if p[1] >= threshold]
-        below = [p for p in scored if p[1] < threshold]
-        above.sort(key=lambda p: (_grade_rank(p[0].hadith), -p[1]))
+        key = lambda p: (_grade_rank(p[0].hadith), -p[1])
+        above = sorted((p for p in scored if p[1] >= threshold), key=key)
+        below = sorted((p for p in scored if p[1] < threshold), key=key)
         scored = above + below
     strong: list[tuple[Candidate, float]] = []
     weak: list[tuple[Candidate, float]] = []

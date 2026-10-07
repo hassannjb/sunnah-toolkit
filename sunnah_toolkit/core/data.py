@@ -85,8 +85,12 @@ def normalize_grade(raw: str) -> str:
         return "sahih"
     if "hasan" in folded:
         return "hasan"
-    if "daif" in folded or "weak" in folded:
+    # Munkar and shadh are kinds of weak hadith; "da if" is a typo in the dump.
+    if any(w in folded for w in ("daif", "da if", "weak", "munkar", "shadh")):
         return "daif"
+    # Qawi ("strong") is at least hasan-level.
+    if "qawi" in folded:
+        return "hasan"
     return "ungraded"
 
 
