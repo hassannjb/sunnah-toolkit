@@ -1,0 +1,7 @@
+# torch stopped shipping x86_64 macOS wheels after 2.2.2, and transformers
+# 5.x / sentence-transformers 6.x need a newer torch than that.
+#   uv pip install -c deploy/macos/constraints-intel-mac.txt -e .
+torch==2.2.2
+numpy<2
+transformers<5
+sentence-transformers<6

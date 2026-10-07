@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Cloudflare quick tunnel to sshd for remote admin. The hostname changes
+     on every restart:  grep trycloudflare ~/Library/Logs/cloudflared-ssh.log -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.sunnah-toolkit.ssh-tunnel</string>
+  <key>UserName</key><string>__USER__</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>__HOME__/cloudflared</string>
+    <string>tunnel</string><string>--no-autoupdate</string>
+    <string>--url</string><string>ssh://localhost:22</string>
+  </array>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>ThrottleInterval</key><integer>30</integer>
+  <key>StandardOutPath</key><string>__HOME__/Library/Logs/cloudflared-ssh.log</string>
+  <key>StandardErrorPath</key><string>__HOME__/Library/Logs/cloudflared-ssh.log</string>
+</dict>
+</plist>

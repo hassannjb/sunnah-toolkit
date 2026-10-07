@@ -11,7 +11,8 @@ requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [{name = "Hassan Najeeb"}]
 dependencies = [
-    "mcp[cli]>=1.2",
+    # mcp 2.x renamed FastMCP to MCPServer; mcp/server.py is written for 1.x.
+    "mcp[cli]>=1.2,<2",
     "httpx>=0.27",
     "rank_bm25>=0.2.2",
     "Unidecode>=1.3",

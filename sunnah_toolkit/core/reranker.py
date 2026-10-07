@@ -41,6 +41,7 @@ REGISTRY: dict[str, str] = {
     "bge-v2-m3": "BAAI/bge-reranker-v2-m3",
     "mxbai-v2-base": "mixedbread-ai/mxbai-rerank-base-v2",
     "jina-v2-base": "jinaai/jina-reranker-v2-base-multilingual",
+    "minilm-l6": "cross-encoder/ms-marco-MiniLM-L6-v2",
 }
 
 
@@ -69,6 +70,11 @@ class _CrossEncoderBase:
     name: str = ""
     model_id: str = ""
     max_length: int = 512
+    # Which document template `tools._doc_text` builds for this model:
+    # "full" = title + narrator + English + Arabic matn, "en" = title +
+    # chapter + English only. Small English-only models gain nothing from
+    # the Arabic tail and pay for it in sequence length.
+    doc_template: str = "full"
 
     def __init__(self) -> None:
         self._model = None
@@ -124,6 +130,22 @@ class JinaV2BaseReranker(_CrossEncoderBase):
     name = "jina-v2-base"
     model_id = "jinaai/jina-reranker-v2-base-multilingual"
     max_length = 1024
+
+
+class MiniLML6Reranker(_CrossEncoderBase):
+    """22M-param English cross-encoder for CPU-only hosts.
+
+    Exists for the 2015 MacBook Pro deploy: bge-v2-m3 costs ~3.2 s per pair
+    on its dual-core i5, this one ~30 ms at 256 tokens over a top-40 pool,
+    and it matched bge-v2-m3 on the hand-vetted seed refs. English-only, so
+    Arabic-script queries lean on the term/BM25 first stage. Emits raw
+    logits rather than probabilities, hence its own default threshold.
+    """
+
+    name = "minilm-l6"
+    model_id = "cross-encoder/ms-marco-MiniLM-L6-v2"
+    max_length = 256
+    doc_template = "en"
 
 
 class MxbaiV2BaseReranker(_CrossEncoderBase):
@@ -210,6 +232,7 @@ _BUILDERS: dict[str, type] = {
     "jina-v2-base": JinaV2BaseReranker,
     "mxbai-v2-base": MxbaiV2BaseReranker,
     "jina-v3": JinaV3Reranker,
+    "minilm-l6": MiniLML6Reranker,
 }
 
 
@@ -289,8 +312,30 @@ def reranker_enabled() -> bool:
     return os.environ.get("RERANKER_DISABLED", "").strip() not in ("1", "true", "yes")
 
 
+# Per-model fallback when $RERANKER_THRESHOLD is unset. Score scales differ:
+# bge-v2-m3 emits sigmoid probabilities, minilm-l6 raw logits (-11..+10).
+# minilm-l6's 3.5 is share-matched to bge-v2-m3 @ 0.5 (13% strong) over
+# the top-40 pools of the 20 eval queries; recalibrate on expert grades.
+_DEFAULT_THRESHOLDS: dict[str, float] = {"minilm-l6": 3.5}
+
+
 def default_threshold() -> float:
+    fallback = _DEFAULT_THRESHOLDS.get(default_reranker_name(), 0.5)
     try:
-        return float(os.environ.get("RERANKER_THRESHOLD", "0.5"))
+        return float(os.environ.get("RERANKER_THRESHOLD", fallback))
     except ValueError:
-        return 0.5
+        return fallback
+
+
+def default_top_n() -> int | None:
+    """$RERANKER_TOP_N: rerank only the first-stage top N candidates.
+
+    Unset or 0 means rerank the whole union pool (the original behaviour).
+    On slow CPUs the cross-encoder is the entire latency budget, and the
+    union pool runs 170-300 candidates.
+    """
+    try:
+        n = int(os.environ.get("RERANKER_TOP_N", "0"))
+    except ValueError:
+        return None
+    return n if n > 0 else None

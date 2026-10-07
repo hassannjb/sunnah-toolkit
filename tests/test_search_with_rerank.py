@@ -149,3 +149,23 @@ def test_collection_filter_restricts_results(monkeypatch):
 def test_unknown_mode_hint_raises():
     with pytest.raises(ValueError, match="Unknown mode_hint"):
         tools.search_with_rerank("prayer", mode_hint="conept", limit=10)
+
+
+# RERANKER_TOP_N: only the first-stage head is scored; the tail can only be weak.
+def test_top_n_reranks_head_only(monkeypatch):
+    scored_docs: list[int] = []
+
+    def score_fn(i, _d):
+        scored_docs.append(i)
+        return 1.0  # every head doc clears the threshold
+
+    _install_fake(monkeypatch, score_fn=score_fn, threshold=0.5)
+    monkeypatch.setattr(reranker_mod, "default_top_n", lambda: 5)
+    res = tools.search_with_rerank("prayer", mode_hint="concept", limit=1000)
+    assert res["pool_size"] > 5, "need a pool bigger than top_n for this test"
+    assert len(scored_docs) == 5
+    assert res["reranked"] == 5
+    assert len(res["results"]) == 5
+    # The tail survives in weak, below the threshold, nothing dropped.
+    assert all(r["score"] < 0.5 for r in res["results_weak"])
+    assert len(res["results"]) + len(res["results_weak"]) == res["pool_size"]

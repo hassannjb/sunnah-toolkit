@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- LaunchDaemon: starts at boot without anyone logging in. Install with
+     deploy/macos/install.sh, which fills in __USER__ and __HOME__. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.sunnah-toolkit.api</string>
+  <key>UserName</key><string>__USER__</string>
+  <key>ProgramArguments</key>
+  <array><string>__HOME__/sunnah-toolkit/deploy/macos/run-api.sh</string></array>
+  <key>EnvironmentVariables</key>
+  <dict><key>HOME</key><string>__HOME__</string></dict>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>ThrottleInterval</key><integer>30</integer>
+  <key>StandardOutPath</key><string>__HOME__/Library/Logs/sunnah-api.log</string>
+  <key>StandardErrorPath</key><string>__HOME__/Library/Logs/sunnah-api.log</string>
+</dict>
+</plist>

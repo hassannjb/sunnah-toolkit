@@ -156,7 +156,9 @@ def get_hadith(collection: str, number: int | str) -> dict[str, Any]:
 
 
 @lru_cache(maxsize=8192)
-def _doc_text_by_urn(urn: int, collection: str, english_title: str) -> str:
+def _doc_text_by_urn(
+    urn: int, collection: str, english_title: str, template: str = "full"
+) -> str:
     """ME-003 helper: cached cross-encoder doc template keyed by hadith URN.
 
     The Arabic strip-markup pass and the title lookup are otherwise repeated
@@ -173,6 +175,8 @@ def _doc_text_by_urn(urn: int, collection: str, english_title: str) -> str:
             break
     if target is None:
         return ""
+    if template == "en":
+        return f"{english_title}\n{target.english_bab_name}\n{target.english_text}"
     return (
         f"{english_title}\n"
         f"{target.english_narrator}\n"
@@ -181,17 +185,18 @@ def _doc_text_by_urn(urn: int, collection: str, english_title: str) -> str:
     )
 
 
-def _doc_text(library: Library, c: Candidate) -> str:
+def _doc_text(library: Library, c: Candidate, template: str = "full") -> str:
     """Per-candidate document template for the cross-encoder.
 
-    Stripped Arabic (no [narrator] markup) is appended so the reranker has
-    the matn — important for Arabic-term queries where the English text
-    may not contain the user's transliterated word at all.
+    "full": stripped Arabic (no [narrator] markup) is appended so the
+    reranker has the matn — important for Arabic-term queries where the
+    English text may not contain the user's transliterated word at all.
+    "en": title + chapter + English text, for English-only rerankers.
     """
     h = c.hadith
     col = library.get_collection(h.collection)
     title = col.english_title if col else h.collection
-    return _doc_text_by_urn(h.urn_arabic, h.collection, title)
+    return _doc_text_by_urn(h.urn_arabic, h.collection, title, template)
 
 
 def _heuristic_scores(
@@ -230,12 +235,24 @@ def _score_candidates(
 
     name = reranker_mod.default_reranker_name()
     threshold = reranker_mod.default_threshold()
+    # RERANKER_TOP_N: only the first-stage head goes through the
+    # cross-encoder. The tail keeps its heuristic order and is pinned below
+    # both the head and the threshold, so it can only land in `weak`.
+    head, tail = candidates, []
+    top_n = reranker_mod.default_top_n()
+    if top_n is not None and len(candidates) > top_n:
+        pre = [c for c, _ in _heuristic_scores(candidates, mode_hint)]
+        head, tail = pre[:top_n], pre[top_n:]
     try:
         r = reranker_mod.get_reranker(name)
-        docs = [_doc_text(library, c) for c in candidates]
+        template = getattr(r, "doc_template", "full")
+        docs = [_doc_text(library, c, template) for c in head]
         scores = r.score(query, docs)
-        scored = list(zip(candidates, scores))
+        scored = list(zip(head, scores))
         scored.sort(key=lambda p: p[1], reverse=True)
+        if tail:
+            floor = min([threshold, *scores]) - 1.0
+            scored += [(c, floor - i * 1e-6) for i, c in enumerate(tail)]
         return scored, name, "ok", threshold
     except _RERANKER_FALLBACK_EXC as e:
         # HI-003 / ME-009: surface the failure class in the response so
@@ -342,6 +359,9 @@ def _rerank_and_split(
       {
         "query", "collection", "mode_hint", "limit",
         "pool_size",       # len(candidates) — the universe we ranked
+        "reranked",        # how many of those the cross-encoder scored;
+                           # < pool_size under $RERANKER_TOP_N, whose tail
+                           # rows carry a synthetic below-threshold score
         "total",           # strong + weak count
         "reranker",        # model name (or "none")
         "reranker_active", # bool — True iff a cross-encoder actually scored
@@ -372,6 +392,7 @@ def _rerank_and_split(
             "total": 0,
             "limit": limit,
             "pool_size": 0,
+            "reranked": 0,
             "reranker": "none",
             "reranker_active": False,
             "reranker_status": "disabled" if not reranker_mod.reranker_enabled() else "ok",
@@ -428,6 +449,8 @@ def _rerank_and_split(
         "total": len(strong) + len(weak),
         "limit": limit,
         "pool_size": pool_size,
+        "reranked": min(reranker_mod.default_top_n() or pool_size, pool_size)
+        if reranker_active else 0,
         "reranker": name,
         "reranker_active": reranker_active,
         "reranker_status": status,
