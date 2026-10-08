@@ -16,6 +16,7 @@ baseline.
 
 from __future__ import annotations
 
+import json
 import logging
 import math
 import os
@@ -86,6 +87,38 @@ def _collection_meta(library: Library, slug: str) -> dict[str, Any]:
     }
 
 
+def _grade_display(raw: str) -> str:
+    """Grade text for people: unpack the JSON grade blobs and stray brackets.
+
+    '[{"graded_by": "Al-Albani", "grade": "Sahih"}]' -> "Sahih (Al-Albani)",
+    "Sahih (Darussalam)]" -> "Sahih (Darussalam)".
+    """
+    text = (raw or "").strip()
+    if text.startswith("[{"):
+        try:
+            data = json.loads(text)
+            first = data[0] if isinstance(data, list) and data else {}
+            grade = str(first.get("grade", "")).strip()
+            by = str(first.get("graded_by", "")).strip()
+            return f"{grade} ({by})" if grade and by else grade
+        except (ValueError, AttributeError):
+            pass
+    text = re.sub(r"\[\s*\.?\s*$", "", text)       # dangling "[" or "[."
+    text = text.strip("[] \t")
+    text = re.sub(r"^lts\b", "Its", text)              # OCR typo in the dump
+    return re.sub(r"\s+", " ", text)
+
+
+def _grade_fields(h: Hadith) -> dict[str, Any]:
+    """Display fields shared by search rows and the hadith view."""
+    return {
+        "grade_display": _grade_display(h.english_grade),
+        # sahih | hasan_sahih | hasan | daif | maudu | ungraded
+        "grade_class": normalize_grade(h.english_grade),
+        "chapter": h.english_bab_name.strip(),
+    }
+
+
 def _hadith_dict(library: Library, h: Hadith) -> dict[str, Any]:
     col = library.get_collection(h.collection)
     # Reference URL uses the canonical citation number sunnah.com serves on.
@@ -105,6 +138,7 @@ def _hadith_dict(library: Library, h: Hadith) -> dict[str, Any]:
         "arabic": h.arabic,
         "english_grade": h.english_grade,
         "arabic_grade": h.arabic_grade,
+        **_grade_fields(h),
         "chain": parse_narrators(h.arabic),
         "urn": h.urn_english,
         "reference": f"sunnah.com/{h.collection}:{cite_id}",
@@ -401,6 +435,7 @@ def _row_from_candidate(
         "hadith_number": h.hadith_number,
         "english_grade": h.english_grade,
         "grade_rank": _grade_rank(h),
+        **_grade_fields(h),
         "snippet": _snippet(h.english_text, query),
         "score": float(score),
         "sources": sorted(cand.sources),

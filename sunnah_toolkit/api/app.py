@@ -89,7 +89,7 @@ def create_app(keys_file: str | Path | None = None) -> FastAPI:
             yield
 
     app = FastAPI(
-        title="sunnah-toolkit",
+        title="Sunnah Semantic Search",
         description="Hadith lookup over REST (/v1/...) and MCP (/mcp).",
         version="0.1.0",
         lifespan=lifespan,
