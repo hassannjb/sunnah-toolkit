@@ -7,6 +7,7 @@
 #   3. cp config.yml.example ~/.cloudflared/config.yml
 #      and fill in the tunnel UUID, USERNAME and your hostnames below
 #   4. cloudflared tunnel route dns sunnah example.com
+#      cloudflared tunnel route dns sunnah www.example.com    # app 301s www to the bare domain
 #      cloudflared tunnel route dns sunnah ssh.example.com
 #   5. cloudflared tunnel ingress validate
 #   6. sudo deploy/macos/install.sh tunnel      # LaunchDaemon, starts at boot
@@ -23,6 +24,8 @@ credentials-file: /Users/USERNAME/.cloudflared/REPLACE-WITH-TUNNEL-UUID.json
 
 ingress:
   - hostname: example.com
+    service: http://localhost:8000
+  - hostname: www.example.com
     service: http://localhost:8000
   - hostname: ssh.example.com
     service: ssh://localhost:22

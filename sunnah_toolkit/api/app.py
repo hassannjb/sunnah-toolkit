@@ -12,7 +12,8 @@ import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from ..core import reranker as _reranker_mod
@@ -107,6 +108,15 @@ def create_app(keys_file: str | Path | None = None) -> FastAPI:
         allow_methods=["GET", "POST"],
         allow_headers=allow_headers,
     )
+
+    # www.<domain> -> <domain>, so the site has one canonical address.
+    @app.middleware("http")
+    async def _strip_www(request: Request, call_next):
+        host = request.headers.get("host", "")
+        if host.startswith("www."):
+            url = request.url.replace(scheme="https", netloc=host[4:])
+            return RedirectResponse(str(url), status_code=301)
+        return await call_next(request)
 
     @app.get("/healthz")
     def healthz() -> dict:

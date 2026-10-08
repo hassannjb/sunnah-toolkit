@@ -95,3 +95,14 @@ def test_paired_range_first_part_resolves(lib):
             assert looked_up.hadith_number == h.hadith_number
             return
     pytest.skip("No paired-range hadith_number in this dataset snapshot.")
+
+
+def test_www_redirects_to_bare_domain():
+    from fastapi.testclient import TestClient
+
+    from sunnah_toolkit.api.app import create_app
+
+    client = TestClient(create_app())
+    r = client.get("/?q=anger", headers={"host": "www.example.com"}, follow_redirects=False)
+    assert r.status_code == 301
+    assert r.headers["location"] == "https://example.com/?q=anger"
