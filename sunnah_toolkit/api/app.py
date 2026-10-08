@@ -16,6 +16,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 
+from ..core import querylog
 from ..core import reranker as _reranker_mod
 from ..mcp.server import mcp
 from . import auth
@@ -117,6 +118,34 @@ def create_app(keys_file: str | Path | None = None) -> FastAPI:
             url = request.url.replace(scheme="https", netloc=host[4:])
             return RedirectResponse(str(url), status_code=301)
         return await call_next(request)
+
+    # Who is asking, for the query log (core/querylog.py). No IPs or user
+    # agents: only the source, Cloudflare's country code, and ids the web UI
+    # sends to group one search's calls and one tab's searches.
+    @app.middleware("http")
+    async def _query_meta(request: Request, call_next):
+        h = request.headers
+
+        def clean(v: str | None, n: int = 64) -> str | None:
+            return v.strip()[:n] if v and v.strip() else None
+
+        path = request.url.path
+        meta = {
+            "source": "mcp" if path.startswith("/mcp") else ("web" if h.get("x-client") == "web" else "api"),
+            "local": 0 if h.get("cf-ray") else 1,
+            "country": clean(h.get("cf-ipcountry"), 8),
+            "session": clean(h.get("x-session")),
+            "search_id": clean(h.get("x-search-id")),
+            "trigger": clean(h.get("x-search-trigger"), 16),
+            "ui_mode": clean(h.get("x-ui-mode"), 16),
+            "collections": clean(h.get("x-collections"), 2000),
+            "skip": h.get("x-warmup") == "1",
+        }
+        token = querylog.request_meta.set(meta)
+        try:
+            return await call_next(request)
+        finally:
+            querylog.request_meta.reset(token)
 
     @app.get("/healthz")
     def healthz() -> dict:

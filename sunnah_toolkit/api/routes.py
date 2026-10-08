@@ -11,7 +11,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 
-from ..core import tools
+from ..core import querylog, tools
 from .auth import authenticate
 
 router = APIRouter(prefix="/v1")
@@ -50,6 +50,13 @@ def get_hadith(collection: str, number: str, _: Auth) -> dict:
     # ("402b", "1134b") resolve correctly. tools.get_hadith → library.get_hadith
     # tries hadith_number first and falls back to id_in_book if the input is
     # a plain integer.
+    meta = querylog.request_meta.get() or {}
+    # The web UI also fetches hadiths to expand rows and copy them; only a
+    # reference the user typed (sent with a search id) counts as a query.
+    if meta.get("source") != "web" or meta.get("search_id"):
+        return _unwrap(querylog.timed(
+            "get_hadith", f"{collection} {number}",
+            lambda: tools.get_hadith(collection, number), collection=collection))
     return _unwrap(tools.get_hadith(collection, number))
 
 
@@ -60,7 +67,9 @@ def search_hadith(
     collection: str | None = None,
     limit: int = Query(10, ge=1, le=50000),
 ) -> dict:
-    return _unwrap(tools.search_hadith(query, collection=collection, limit=limit))
+    return _unwrap(querylog.timed(
+        "search", query, lambda: tools.search_hadith(query, collection=collection, limit=limit),
+        collection=collection, limit=limit))
 
 
 @router.get("/search/term")
@@ -70,7 +79,9 @@ def search_hadith_term(
     collection: str | None = None,
     limit: int = Query(20, ge=1, le=50000),
 ) -> dict:
-    return _unwrap(tools.search_hadith_term(term, collection=collection, limit=limit))
+    return _unwrap(querylog.timed(
+        "search_term", term, lambda: tools.search_hadith_term(term, collection=collection, limit=limit),
+        collection=collection, limit=limit))
 
 
 @router.get("/search/semantic")
@@ -80,7 +91,9 @@ def search_hadith_semantic(
     collection: str | None = None,
     limit: int = Query(10, ge=1, le=50000),
 ) -> dict:
-    return _unwrap(tools.search_hadith_semantic(query, collection=collection, limit=limit))
+    return _unwrap(querylog.timed(
+        "search_semantic", query, lambda: tools.search_hadith_semantic(query, collection=collection, limit=limit),
+        collection=collection, limit=limit))
 
 
 @router.get("/search/natural")
@@ -90,7 +103,9 @@ def search_hadith_natural(
     collection: str | None = None,
     limit: int = Query(10, ge=1, le=50000),
 ) -> dict:
-    return _unwrap(tools.search_hadith_natural(query, collection=collection, limit=limit))
+    return _unwrap(querylog.timed(
+        "search_natural", query, lambda: tools.search_hadith_natural(query, collection=collection, limit=limit),
+        collection=collection, limit=limit))
 
 
 @router.get("/random")

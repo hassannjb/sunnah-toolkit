@@ -23,13 +23,16 @@ export SEMANTIC_BACKEND="${SEMANTIC_BACKEND:-v2}"
 # top semantic hits. RETRIEVER_K and FUSION=rrf exist too but showed no gain.
 export RETRIEVAL_CHAPTERS="${RETRIEVAL_CHAPTERS:-1}"
 export RETRIEVAL_NEIGHBORS="${RETRIEVAL_NEIGHBORS:-1}"
+# Searches are logged for later analysis (no IPs; see core/querylog.py).
+# data/logs/ is not part of the code sync, so redeploys leave it alone.
+export QUERY_LOG_PATH="${QUERY_LOG_PATH:-$PWD/data/logs/queries.sqlite}"
 PORT="${PORT:-8000}"
 
 # The library and bi-encoder load lazily on the first query (~45 s here).
 # Pay that at boot with one throwaway search instead of on a real user.
 (
   until curl -fsS "http://127.0.0.1:$PORT/healthz" >/dev/null 2>&1; do sleep 2; done
-  curl -fsS "http://127.0.0.1:$PORT/v1/search?query=warmup&limit=1" >/dev/null 2>&1 \
+  curl -fsS -H "X-Warmup: 1" "http://127.0.0.1:$PORT/v1/search?query=warmup&limit=1" >/dev/null 2>&1 \
     && echo "warm-up search done"
 ) &
 

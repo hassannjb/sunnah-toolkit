@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from mcp.server.fastmcp import FastMCP
 
-from ..core import text_format, tools
+from ..core import querylog, text_format, tools
 
 mcp = FastMCP("sunnah-toolkit")
 
@@ -62,7 +62,9 @@ def get_hadith(collection: str, number: int | str) -> str:
             back to the internal `id_in_book` ordinal for hadiths whose
             sunnah.com number is unavailable.
     """
-    return text_format.hadith(tools.get_hadith(collection, number))
+    return text_format.hadith(querylog.timed(
+        "get_hadith", f"{collection} {number}", lambda: tools.get_hadith(collection, number),
+        source="mcp", collection=collection))
 
 
 @mcp.tool()
@@ -83,7 +85,9 @@ def search_hadith(query: str, collection: str | None = None, limit: int = 10) ->
         collection: optional slug to restrict search to one collection.
         limit: max number of results (1..50).
     """
-    return text_format.search_hadith(tools.search_hadith(query, collection=collection, limit=limit))
+    return text_format.search_hadith(querylog.timed(
+        "search", query, lambda: tools.search_hadith(query, collection=collection, limit=limit),
+        source="mcp", collection=collection, limit=limit))
 
 
 @mcp.tool()
@@ -116,7 +120,9 @@ def search_hadith_term(term: str, collection: str | None = None, limit: int = 20
         collection: optional slug to restrict the search.
         limit: max number of hadiths to return (1..100).
     """
-    return text_format.search_hadith_term(tools.search_hadith_term(term, collection=collection, limit=limit))
+    return text_format.search_hadith_term(querylog.timed(
+        "search_term", term, lambda: tools.search_hadith_term(term, collection=collection, limit=limit),
+        source="mcp", collection=collection, limit=limit))
 
 
 @mcp.tool()
@@ -149,7 +155,9 @@ def search_hadith_semantic(query: str, collection: str | None = None, limit: int
         collection: optional slug to restrict to one collection.
         limit: max number of hadiths to return (1..50).
     """
-    return text_format.search_hadith_semantic(tools.search_hadith_semantic(query, collection=collection, limit=limit))
+    return text_format.search_hadith_semantic(querylog.timed(
+        "search_semantic", query, lambda: tools.search_hadith_semantic(query, collection=collection, limit=limit),
+        source="mcp", collection=collection, limit=limit))
 
 
 @mcp.tool()

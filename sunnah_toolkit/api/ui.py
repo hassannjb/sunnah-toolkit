@@ -411,7 +411,8 @@ INDEX_HTML = r"""<!doctype html>
 
     <footer>
       <p>Hadith text and grades from <a href="https://sunnah.com" target="_blank" rel="noopener">sunnah.com</a>. Results are ordered by grade, then relevance.<br>
-      Press <kbd>/</kbd> to search. For rulings, consult a qualified scholar.</p>
+      Press <kbd>/</kbd> to search. For rulings, consult a qualified scholar.<br>
+      Searches are stored anonymously to improve results.</p>
     </footer>
   </main>
 
@@ -744,10 +745,10 @@ INDEX_HTML = r"""<!doctype html>
 
     // Full hadiths fetched for expanded rows and for copy/share.
     const hadithCache = new Map();
-    async function getHadith(slug, num) {
+    async function getHadith(slug, num, ctx) {
       const key = slug + "|" + num;
       if (!hadithCache.has(key)) {
-        hadithCache.set(key, call("/v1/hadith/" + encodeURIComponent(slug) + "/" + encodeURIComponent(num))
+        hadithCache.set(key, call("/v1/hadith/" + encodeURIComponent(slug) + "/" + encodeURIComponent(num), ctx)
           .catch((e) => { hadithCache.delete(key); throw e; }));
       }
       return hadithCache.get(key);
@@ -877,16 +878,16 @@ INDEX_HTML = r"""<!doctype html>
 
     // Server-side collection filtering: one API call per ticked collection in
     // parallel, then merge in the server's order (grade, then score).
-    async function searchAcrossCollections(mode, query) {
+    async function searchAcrossCollections(mode, query, ctx) {
       if (!isCollectionFilterActive()) {
-        return await call(buildSearchUrl(mode, query, null, ALL_LIMIT));
+        return await call(buildSearchUrl(mode, query, null, ALL_LIMIT), ctx);
       }
       const slugs = Array.from(selectedCollections);
       if (slugs.length === 1) {
-        return await call(buildSearchUrl(mode, query, slugs[0], ALL_LIMIT));
+        return await call(buildSearchUrl(mode, query, slugs[0], ALL_LIMIT), ctx);
       }
       const responses = await Promise.allSettled(
-        slugs.map((s) => call(buildSearchUrl(mode, query, s, ALL_LIMIT)))
+        slugs.map((s) => call(buildSearchUrl(mode, query, s, ALL_LIMIT), ctx))
       );
       const ok = responses.filter((r) => r.status === "fulfilled").map((r) => r.value);
 
@@ -1078,8 +1079,22 @@ INDEX_HTML = r"""<!doctype html>
       });
     }
 
-    async function call(url) {
-      const r = await fetch(url);
+    // Anonymous ids for the query log: one per browser tab, one per search.
+    // No IP or user agent is stored server-side.
+    function randomId() {
+      return (crypto.randomUUID && crypto.randomUUID()) || (Date.now().toString(36) + Math.random().toString(36).slice(2));
+    }
+    const SESSION_ID = (() => {
+      try {
+        let s = sessionStorage.getItem("sss_session");
+        if (!s) { s = randomId(); sessionStorage.setItem("sss_session", s); }
+        return s;
+      } catch (_) { return randomId(); }
+    })();
+
+    // `ctx` carries the search-level headers; row expands and copies pass none.
+    async function call(url, ctx) {
+      const r = await fetch(url, { headers: Object.assign({ "X-Client": "web", "X-Session": SESSION_ID }, ctx || {}) });
       if (!r.ok) {
         let detail = await r.text();
         try { detail = JSON.parse(detail).detail || detail; } catch (_) {}
@@ -1089,10 +1104,10 @@ INDEX_HTML = r"""<!doctype html>
       return r.json();
     }
 
-    async function showHadith(slug, number) {
+    async function showHadith(slug, number, ctx) {
       setStatus("Loading hadith…");
       try {
-        const h = await getHadith(slug, number);
+        const h = await getHadith(slug, number, ctx);
         detailEl.innerHTML = renderHadithCard(h);
         setStatus("");
         document.body.classList.add("has-results");
@@ -1121,13 +1136,21 @@ INDEX_HTML = r"""<!doctype html>
     let lastResolvedNote = "";
     let searchSeq = 0;
 
-    async function doSearch(mode, q) {
+    // trigger: "typed" for a search the user ran, "link" for one opened from
+    // a URL (shared link, reload), "back" for one replayed by history navigation.
+    async function doSearch(mode, q, trigger) {
       const seq = ++searchSeq;
       clearAll();
       q = q.trim();
       if (!q) { setStatus("Type something first.", true); return; }
       await collectionsReady;
       const resolved = resolveMode(mode, q);
+      const ctx = {
+        "X-Search-Id": randomId(),
+        "X-Search-Trigger": trigger || "typed",
+        "X-UI-Mode": mode,
+        "X-Collections": isCollectionFilterActive() ? Array.from(selectedCollections).join(",") : "",
+      };
       lastResolvedNote = (mode === "auto" && resolved === "term") ? "searched as an Arabic term" : "";
       document.title = q + " · Sunnah Semantic Search";
       document.body.classList.add("has-results");
@@ -1138,14 +1161,14 @@ INDEX_HTML = r"""<!doctype html>
           setStatus("Couldn’t recognise that reference. Try “Bukhari 1” or “Sahih Muslim 5”.", true);
           return;
         }
-        await showHadith(ref.slug, ref.number);
+        await showHadith(ref.slug, ref.number, ctx);
         return;
       }
 
       setStatus("Searching…");
       setLoading(true);
       try {
-        const j = await searchAcrossCollections(resolved, q);
+        const j = await searchAcrossCollections(resolved, q, ctx);
         if (seq !== searchSeq) return;        // a newer search started meanwhile
         const items = j.results || [];
         const weakItems = j.results_weak || [];
@@ -1180,7 +1203,8 @@ INDEX_HTML = r"""<!doctype html>
       return "/?" + p.toString();
     }
 
-    async function applyUrl() {
+    // trigger is "link" on page load (shared link, reload), "back" on history navigation.
+    async function applyUrl(trigger) {
       await collectionsReady;
       const p = new URLSearchParams(location.search);
       const h = p.get("h");
@@ -1195,7 +1219,7 @@ INDEX_HTML = r"""<!doctype html>
         await showHadith(h.slice(0, i), h.slice(i + 1));
       } else if (q) {
         qIn.value = q;
-        await doSearch(currentMode(), q);
+        await doSearch(currentMode(), q, trigger === "back" ? "back" : "link");
       } else {
         clearAll();
         qIn.value = "";
@@ -1227,7 +1251,7 @@ INDEX_HTML = r"""<!doctype html>
       qIn.focus();
     });
 
-    window.addEventListener("popstate", applyUrl);
+    window.addEventListener("popstate", () => applyUrl("back"));
 
     randomBtn.addEventListener("click", async () => {
       clearAll();
