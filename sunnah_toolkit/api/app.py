@@ -1,8 +1,8 @@
 """FastAPI application factory. Serves REST under /v1 and MCP under /mcp.
 
-Rate limiting is intentionally left to the edge (Cloudflare Rate Limiting
-in front of the public instance, or whatever the self-hoster puts in
-front). The app only handles auth + business logic.
+Rate limiting is off by default (self-hosters can do it at their edge).
+The public instance turns on the in-memory per-client limits in
+api/ratelimit.py via RATE_LIMIT_SEARCH_PER_MIN / RATE_LIMIT_PER_MIN.
 """
 
 from __future__ import annotations
@@ -13,13 +13,13 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, Request
-from fastapi.responses import RedirectResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from ..core import querylog
 from ..core import reranker as _reranker_mod
 from ..mcp.server import mcp
-from . import auth
+from . import auth, ratelimit
 from .routes import router
 from .ui import index as _ui_index
 
@@ -117,6 +117,20 @@ def create_app(keys_file: str | Path | None = None) -> FastAPI:
         if host.startswith("www."):
             url = request.url.replace(scheme="https", netloc=host[4:])
             return RedirectResponse(str(url), status_code=301)
+        return await call_next(request)
+
+    search_limit, general_limit = ratelimit.from_env()
+
+    @app.middleware("http")
+    async def _rate_limit(request: Request, call_next):
+        limiter = search_limit if ratelimit.is_search(request.method, request.url.path) else general_limit
+        if limiter is not None:
+            key = ratelimit.client_key(request.headers, request.client.host if request.client else None)
+            wait = limiter.hit(key)
+            if wait:
+                return JSONResponse(
+                    {"detail": f"Too many requests. Try again in {wait} seconds."},
+                    status_code=429, headers={"Retry-After": str(wait)})
         return await call_next(request)
 
     # Who is asking, for the query log (core/querylog.py). No IPs or user

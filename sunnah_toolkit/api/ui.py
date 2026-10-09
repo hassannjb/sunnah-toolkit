@@ -1099,6 +1099,7 @@ INDEX_HTML = r"""<!doctype html>
         let detail = await r.text();
         try { detail = JSON.parse(detail).detail || detail; } catch (_) {}
         if (typeof detail !== "string") detail = JSON.stringify(detail);
+        if (r.status === 429) throw new Error(detail);
         throw new Error(r.status === 404 ? "not found" : "HTTP " + r.status + ": " + detail);
       }
       return r.json();

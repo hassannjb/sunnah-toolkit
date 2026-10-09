@@ -26,6 +26,10 @@ export RETRIEVAL_NEIGHBORS="${RETRIEVAL_NEIGHBORS:-1}"
 # Searches are logged for later analysis (no IPs; see core/querylog.py).
 # data/logs/ is not part of the code sync, so redeploys leave it alone.
 export QUERY_LOG_PATH="${QUERY_LOG_PATH:-$PWD/data/logs/queries.sqlite}"
+# Per-client limits (api/ratelimit.py). A web search with several collections
+# ticked is one call per collection, hence the headroom.
+export RATE_LIMIT_SEARCH_PER_MIN="${RATE_LIMIT_SEARCH_PER_MIN:-60}"
+export RATE_LIMIT_PER_MIN="${RATE_LIMIT_PER_MIN:-600}"
 PORT="${PORT:-8000}"
 
 # The library and bi-encoder load lazily on the first query (~45 s here).
